@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import 'tailwindcss';
+
+@theme {
+  --color-brainstormyBg: #232323;
+  --color-brainstormySecondary: #9c9c9c;
+  --color-brainstormyPrimary: #8b5cf6;
+
+  --text-brainstormyBase: 1rem;
+  --text-brainstormyBigger: 1.25rem;
+  --text-brainstormyHeading: 2rem;
+}
+
+@layer base {
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: #232323;
+    font-size: 1rem;
+    color: white;
+  }
+}
