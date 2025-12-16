@@ -99,11 +99,12 @@ export const MethodPicker: FC<PickerProps> = ({
   };
 
   return (
-    <div className="relative">
+    <div className="relative w-8">
       <div
-        className="bg-brainstormySecondary flex w-8 origin-bottom flex-col
-          items-center justify-center overflow-hidden rounded-[37px] p-2
-          transition-all duration-[0.2s] ease-in-out hover:cursor-pointer"
+        className="bg-brainstormySecondary absolute right-0 bottom-0 flex w-8
+          origin-bottom flex-col items-center justify-end overflow-hidden
+          rounded-[37px] px-2 py-[6px] transition-all duration-[0.2s]
+          ease-in-out hover:cursor-pointer"
         onMouseLeave={handlePickerMouseLeave}
         style={{
           height: `${!isHovered ? 32 : calculateHeight()}px`,
