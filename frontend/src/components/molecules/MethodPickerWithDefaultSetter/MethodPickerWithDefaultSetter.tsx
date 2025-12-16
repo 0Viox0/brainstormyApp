@@ -7,9 +7,9 @@ export type PickerWithDefaultSetterProps = {
   onOptionPick: (option: PickOption) => void;
 };
 
-export const PickerWithDefaultSetter: FC<PickerWithDefaultSetterProps> = ({
-  onOptionPick,
-}) => {
+export const MethodPickerWithDefaultSetter: FC<
+  PickerWithDefaultSetterProps
+> = ({ onOptionPick }) => {
   const [currentOption, setCurrentOption] = useState<PickOption | undefined>(
     undefined,
   );

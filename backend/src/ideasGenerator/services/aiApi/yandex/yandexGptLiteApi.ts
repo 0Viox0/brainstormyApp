@@ -1,10 +1,12 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { CompletionResponse, Operation } from './types';
 
 @Injectable()
 export class YandexGptService {
   constructor(private configService: ConfigService) {}
+
+  private readonly logger = new Logger(YandexGptService.name);
 
   async execPrompt(prompt: string): Promise<string> {
     const IAM_TOKEN = this.configService.get<string>('IAM_TOKEN');
@@ -22,7 +24,7 @@ export class YandexGptService {
 
     const modelConfig = {
       temperature: 0.1,
-      maxResponseTokens: 150,
+      maxResponseTokens: 250,
     };
 
     const response = await fetch(url, {
@@ -68,6 +70,7 @@ export class YandexGptService {
       const data = (await res.json()) as CompletionResponse;
 
       if (data.done) {
+        this.logger.log('got successfull response form model: ', data);
         return data.response.alternatives[0].message.text;
       }
 

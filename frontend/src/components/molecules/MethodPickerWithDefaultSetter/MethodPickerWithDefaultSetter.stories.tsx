@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { PickerWithDefaultSetter } from './PickerWithDefaultSetter';
+import { MethodPickerWithDefaultSetter } from './MethodPickerWithDefaultSetter';
 
 const meta = {
-  component: PickerWithDefaultSetter,
-} satisfies Meta<typeof PickerWithDefaultSetter>;
+  component: MethodPickerWithDefaultSetter,
+} satisfies Meta<typeof MethodPickerWithDefaultSetter>;
 
 export default meta;
 

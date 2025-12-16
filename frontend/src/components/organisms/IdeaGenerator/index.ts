@@ -1,0 +1,1 @@
+export { IdeaGenerator } from './IdeaGenerator';

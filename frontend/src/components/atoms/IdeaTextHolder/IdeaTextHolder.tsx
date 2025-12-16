@@ -1,27 +1,56 @@
 import { cn } from '@/shared/utils';
-import { useState, type FC } from 'react';
+import { useState, useRef, type FC, useLayoutEffect } from 'react';
+
+const containerPadding = 25;
+const containerPaddingClass = `p-[${containerPadding}px]`;
 
 export type IdeaTextHolderProps = {
   text: string;
 };
 
 export const IdeaTextHolder: FC<IdeaTextHolderProps> = ({ text }) => {
+  const [isOverflowing, setIsOverflowing] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+
+  const outerContainerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    const outerEl = outerContainerRef.current;
+    const el = containerRef.current;
+
+    if (el && outerEl) {
+      setIsOverflowing(
+        outerEl.clientHeight - containerPadding * 2 < el.clientHeight,
+      );
+    }
+  }, [text]);
 
   return (
     <div
-      className="border-brainstormySecondary w-[288px] rounded-[22px]
-        border-[1px] p-[25px]"
+      ref={outerContainerRef}
+      className={cn(
+        `border-brainstormySecondary h-[129px] w-[288px] overflow-hidden
+        rounded-[22px] border-[1px] text-center`,
+        containerPaddingClass,
+        {
+          'flex items-center justify-center': !isOverflowing,
+          'h-auto': isOverflowing && isHovered,
+        },
+      )}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div
-        className={cn('h-full w-full text-center', {
-          'line-clamp-3': !isHovered,
-        })}
-      >
-        {text}
-      </div>
+      {
+        <div
+          ref={containerRef}
+          className={cn('', {
+            'line-clamp-3': isOverflowing && !isHovered,
+          })}
+        >
+          {text}
+        </div>
+      }
     </div>
   );
 };

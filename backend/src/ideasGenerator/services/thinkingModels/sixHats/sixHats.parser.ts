@@ -4,8 +4,19 @@ import { SixHatsResponse } from './types';
 @Injectable()
 export class SixHatsParser {
   parse(ideas: string): SixHatsResponse {
-    const sixHatsJson = JSON.parse(ideas) as SixHatsResponse;
+    const cleanJson = this.stripCodeFences(ideas);
+    const sixHatsJson = JSON.parse(cleanJson) as SixHatsResponse['data'];
 
-    return sixHatsJson;
+    return {
+      type: 'sixHats',
+      data: sixHatsJson,
+    };
+  }
+
+  private stripCodeFences(text: string): string {
+    return text
+      .replace(/^```(?:json)?\s*/i, '')
+      .replace(/\s*```$/i, '')
+      .trim();
   }
 }
