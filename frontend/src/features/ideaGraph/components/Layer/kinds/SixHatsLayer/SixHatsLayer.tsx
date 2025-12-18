@@ -1,19 +1,13 @@
 import { GraphConnector } from '@/components/molecules';
 import { IdeaGenerator } from '@/components/organisms/IdeaGenerator';
 import type { IdeaGeneratorState } from '@/components/organisms/IdeaGenerator/IdeaGenerator';
+import type { SixHatsData } from '@/features/ideaGraph/types';
 import { SixHatsLogo } from '@/shared/icons';
 import type { FC } from 'react';
 
 export type SixHatsProps = {
   onGenerateIdea: (ideaGeneratorState: IdeaGeneratorState) => void;
-  data: {
-    blue: string;
-    white: string;
-    green: string;
-    yellow: string;
-    black: string;
-    red: string;
-  };
+  data: SixHatsData;
 };
 
 export const SixHatsLayer: FC<SixHatsProps> = ({ data, onGenerateIdea }) => {
