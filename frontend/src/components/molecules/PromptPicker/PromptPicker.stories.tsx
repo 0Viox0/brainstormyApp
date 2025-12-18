@@ -13,6 +13,8 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
+    hoverText: 'Вспомогательный промпт',
+    onTextEnter: () => {},
     icon: <TextDefaultIcon />,
   },
 };

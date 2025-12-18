@@ -1,8 +1,9 @@
 import { cn } from '@/shared/utils';
 import { useState, useRef, type FC, useLayoutEffect } from 'react';
 
+// should be the same number
 const containerPadding = 25;
-const containerPaddingClass = `p-[${containerPadding}px]`;
+const containerPaddingClass = `p-[25px]`;
 
 export type IdeaTextHolderProps = {
   text: string;

@@ -1,16 +1,13 @@
 import { Tooltip } from '@/components/atoms';
-import {
-  useEffect,
-  useState,
-  type FC,
-  type MouseEvent,
-  type ReactNode,
-} from 'react';
+import { useState, type FC, type MouseEvent, type ReactNode } from 'react';
+
+export type Method = 'sixHats' | 'scamper';
 
 export type PickOption = {
   id: number;
   name: string;
   icon: ReactNode;
+  type: Method;
 };
 
 type ToolTipState = {
@@ -24,42 +21,29 @@ type TooltipPosition = {
 };
 
 export type PickerProps = {
-  currentOption?: PickOption;
-  defaultOption: PickOption;
+  defaultOptionId: number;
   options: PickOption[];
-  onOptionPick: (option: PickOption) => void;
+  onOptionPick: (option: number) => void;
 };
 
 const APPROXIMATE_ITEM_HEIGHT = 32; // px
 
 export const MethodPicker: FC<PickerProps> = ({
-  currentOption,
-  defaultOption,
   onOptionPick,
   options,
+  defaultOptionId,
 }) => {
   const [isHovered, setIsHovered] = useState(false);
-  const [currentOptionInner, setCurrentOptionInner] =
-    useState<PickOption | null>(currentOption ?? null);
+  const [currentOptionId, setCurrentOptionId] = useState(defaultOptionId);
   const [tooltipState, setTooltipState] = useState<ToolTipState | null>(null);
 
-  useEffect(() => {
-    setCurrentOptionInner(currentOption ?? null);
-  }, [currentOption]);
-
-  const calculateHeight = () =>
-    APPROXIMATE_ITEM_HEIGHT *
-      (options.filter(
-        (option) => !currentOptionInner || option.id !== currentOptionInner.id,
-      ).length +
-        1) +
-    4;
+  const calculateHeight = () => APPROXIMATE_ITEM_HEIGHT * options.length + 4;
 
   const handleOptionClick = (option: PickOption) => {
-    setCurrentOptionInner(option);
+    setCurrentOptionId(option.id);
     setIsHovered(false);
 
-    onOptionPick(option);
+    onOptionPick(option.id);
   };
 
   const handlePickerMouseLeave = () => {
@@ -71,6 +55,8 @@ export const MethodPicker: FC<PickerProps> = ({
     event: MouseEvent<HTMLSpanElement>,
     option: PickOption,
   ) => {
+    setIsHovered(true);
+
     const hoveredIcon = event.target as HTMLElement;
     const rect = hoveredIcon.getBoundingClientRect();
 
@@ -88,23 +74,20 @@ export const MethodPicker: FC<PickerProps> = ({
     });
   };
 
-  const handleDefaultIconHover = (event: MouseEvent<HTMLSpanElement>) => {
-    setIsHovered(true);
-
-    handleOptionMouseEnter(event, currentOptionInner || defaultOption);
-  };
-
   const handleOptionMouseLeave = () => {
     setTooltipState(null);
   };
+
+  const getCurrentOption = () =>
+    options.find((option) => option.id === currentOptionId) || options[0];
 
   return (
     <div className="relative w-8">
       <div
         className="bg-brainstormySecondary absolute right-0 bottom-0 flex w-8
           origin-bottom flex-col items-center justify-end overflow-hidden
-          rounded-[37px] px-2 py-[6px] transition-all duration-[0.2s]
-          ease-in-out hover:cursor-pointer"
+          rounded-[37px] p-2 transition-all duration-[0.2s] ease-in-out
+          hover:cursor-pointer"
         onMouseLeave={handlePickerMouseLeave}
         style={{
           height: `${!isHovered ? 32 : calculateHeight()}px`,
@@ -113,10 +96,7 @@ export const MethodPicker: FC<PickerProps> = ({
         {isHovered && (
           <>
             {options
-              .filter(
-                (option) =>
-                  !currentOptionInner || option.id !== currentOptionInner.id,
-              )
+              .filter((option) => option.id !== currentOptionId)
               .map((option, index) => (
                 <span
                   key={index}
@@ -135,10 +115,12 @@ export const MethodPicker: FC<PickerProps> = ({
           </>
         )}
         <span
-          onMouseEnter={(event) => handleDefaultIconHover(event)}
+          onMouseEnter={(event) =>
+            handleOptionMouseEnter(event, getCurrentOption())
+          }
           className="flex-0"
         >
-          {currentOptionInner?.icon || defaultOption.icon}
+          {getCurrentOption().icon}
         </span>
       </div>
       {tooltipState && (

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { MethodPicker } from './MethodPicker';
-import { MethologyDefaultIcon, ScamperLogo, SixHatsLogo } from '@/shared/icons';
+import { ScamperLogo, SixHatsLogo } from '@/shared/icons';
 
 const meta = {
   component: MethodPicker,
@@ -13,21 +13,19 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    defaultOption: {
-      id: -1,
-      icon: <MethologyDefaultIcon />,
-      name: 'Choose strategy',
-    },
+    defaultOptionId: 1,
     options: [
       {
         id: 2,
         icon: <ScamperLogo />,
-        name: 'SCAMPER',
+        name: 'Скампер',
+        type: 'scamper',
       },
       {
         id: 1,
         icon: <SixHatsLogo />,
-        name: 'Six hats',
+        name: 'Шесть шляп',
+        type: 'sixHats',
       },
     ],
     onOptionPick: () => {},

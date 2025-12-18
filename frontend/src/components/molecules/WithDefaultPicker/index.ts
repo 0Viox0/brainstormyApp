@@ -1,1 +1,0 @@
-export { WithDefaultPicker } from './WithDefaultPicker';
