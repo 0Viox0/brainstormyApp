@@ -1,3 +1,4 @@
+import { GraphConnector } from '@/components/molecules';
 import { IdeaGenerator } from '@/components/organisms/IdeaGenerator';
 import type { IdeaGeneratorState } from '@/components/organisms/IdeaGenerator/IdeaGenerator';
 import { SixHatsLogo } from '@/shared/icons';
@@ -13,24 +14,6 @@ export type SixHatsProps = {
     black: string;
     red: string;
   };
-};
-
-const buildPath = (
-  mount: { x: number; y: number },
-  hat: { x: number; y: number },
-  radius = 8,
-) => {
-  const splitX = mount.x + (hat.x - mount.x) / 2;
-  const dirY = hat.y > mount.y ? 1 : -1;
-
-  return `
-    M ${mount.x} ${mount.y}
-    H ${splitX - radius}
-    Q ${splitX} ${mount.y} ${splitX} ${mount.y + radius * dirY}
-    V ${hat.y - radius * dirY}
-    Q ${splitX} ${hat.y} ${splitX + radius} ${hat.y}
-    H ${hat.x}
-  `;
 };
 
 export const SixHatsLayer: FC<SixHatsProps> = ({ data, onGenerateIdea }) => {
@@ -50,7 +33,15 @@ export const SixHatsLayer: FC<SixHatsProps> = ({ data, onGenerateIdea }) => {
   return (
     <div>
       {Object.entries(data).map(([hatColor, idea], index) => (
-        <div className="mb-[58px] flex items-center" key={index}>
+        <div
+          className="relative mb-[58px] flex h-[129px] items-center"
+          key={index}
+        >
+          <GraphConnector
+            currentIndex={index}
+            putMountPointInFrontOfNthGenerator={2}
+            spaceBetweenIdeaGeneratorsPx={187}
+          />
           <div
             className="border-brainstormySecondary flex aspect-square w-12
               items-center justify-center rounded-[13px] border-[3px]"
