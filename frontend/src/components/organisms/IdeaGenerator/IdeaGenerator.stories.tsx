@@ -30,12 +30,14 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
+    text: 'some text',
     onGenerate: () => {},
   },
 };
 
 export const First: Story = {
   args: {
+    text: 'some text',
     isFirstIdea: true,
     onGenerate: () => {},
   },

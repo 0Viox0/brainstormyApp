@@ -12,26 +12,30 @@ import { useState, type FC } from 'react';
 
 type Prompt = string;
 export type IdeaGeneratorState = {
+  text: string;
   method: Method;
   prompt: Prompt;
 };
 
 export type IdeaGeneratorProps = {
+  text: string;
   onGenerate: (ideaGeneratorState: IdeaGeneratorState) => void;
   isFirstIdea?: boolean;
 };
 
 const defaultIdeaGeneratorState: IdeaGeneratorState = {
+  text: '',
   method: 'sixHats',
   prompt: '',
 };
 
 export const IdeaGenerator: FC<IdeaGeneratorProps> = ({
+  text,
   onGenerate,
   isFirstIdea,
 }) => {
   const [ideaGeneratorState, setIdeaGeneratorState] =
-    useState<IdeaGeneratorState>(defaultIdeaGeneratorState);
+    useState<IdeaGeneratorState>({ ...defaultIdeaGeneratorState, text });
 
   const methodOptions: PickOption[] = [
     {
@@ -76,7 +80,7 @@ export const IdeaGenerator: FC<IdeaGeneratorProps> = ({
   return (
     <div className="relative flex items-center">
       <div className="relative mr-[7px]">
-        <IdeaTextHolder text={'here is some text'} />
+        <IdeaTextHolder text={text} />
         <div
           className={cn('absolute top-[42%] left-[94%] space-y-4', {
             'top-[62%]': isFirstIdea,
