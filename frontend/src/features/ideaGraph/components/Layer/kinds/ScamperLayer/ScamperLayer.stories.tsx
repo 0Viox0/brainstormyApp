@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { ScamperLayer } from './ScamperLayer';
 
 const meta = {
+  title: 'features/ideagraph/kind/scamper',
   component: ScamperLayer,
 } satisfies Meta<typeof ScamperLayer>;
 
