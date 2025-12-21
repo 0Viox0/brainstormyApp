@@ -1,48 +1,53 @@
-import { GenerateIdeaButton } from '@/components/atoms';
 import type { Method } from '@/components/molecules/MethodPicker/MethodPicker';
-import { useEffect, useState, type FC } from 'react';
+import { type FC } from 'react';
 import { ScamperLayer, SixHatsLayer } from './kinds';
 import type { IdeaGeneratorState } from '@/components/organisms/IdeaGenerator/IdeaGenerator';
-import type { ScamperData, SixHatsData } from '../../types';
 import { LayerLoader } from './LayerLoader/LayerLoader';
+import type { ScamperData, SixHatsData } from '../../store/state';
+import { useQuery } from '@tanstack/react-query';
+import { fetchIdeas } from '../../data/fetch';
+import { toLayerData } from '../../utils/mappers/layerResponseToData';
 
-export type LayerProps = {
+export type OpenLayerProps = {
   triggerGenerateNewLayer: (ideaGeneratorState: IdeaGeneratorState) => void;
   layerData: {
     method: Method;
     baseIdea: string;
     helpingPrompt: string;
+    data?: LayerBackendData;
   };
 };
 
 type LayerBackendData = SixHatsData | ScamperData;
 
-export const Layer: FC<LayerProps> = ({
+export const OpenLayer: FC<OpenLayerProps> = ({
   triggerGenerateNewLayer,
   layerData,
 }) => {
-  const [ideaData, setIdeaData] = useState<LayerBackendData | null>(null);
-
-  useEffect(() => {
-    const fetchIdeas = async () => {
-      const response = await fetch(
-        `http://localhost:3000/ideas/${layerData.method}?baseIdea=${layerData.baseIdea}&prompt=${layerData.helpingPrompt}`,
+  const { data, isLoading } = useQuery({
+    queryKey: [
+      'ideas',
+      layerData.method,
+      layerData.baseIdea,
+      layerData.helpingPrompt,
+    ],
+    queryFn: async () => {
+      const layerDataResponse = await fetchIdeas(
+        layerData.method,
+        layerData.baseIdea,
+        layerData.helpingPrompt,
       );
 
-      const data = await response.json();
-
-      setIdeaData(data.data);
-    };
-
-    fetchIdeas();
-  }, [layerData]);
+      return toLayerData(layerDataResponse);
+    },
+  });
 
   const renderLayer = () => {
     const getIdeasCountToGenerate = () => {
       return layerData.method === 'sixHats' ? 6 : 7;
     };
 
-    if (!ideaData) {
+    if (isLoading) {
       return (
         <LayerLoader
           mountPointAgainstIdeaNumber={2}
@@ -55,7 +60,7 @@ export const Layer: FC<LayerProps> = ({
       return (
         <SixHatsLayer
           onGenerateIdea={triggerGenerateNewLayer}
-          data={ideaData as SixHatsData}
+          data={data as SixHatsData}
         />
       );
     }
@@ -64,7 +69,7 @@ export const Layer: FC<LayerProps> = ({
       return (
         <ScamperLayer
           onGenerateIdea={triggerGenerateNewLayer}
-          data={ideaData as ScamperData}
+          data={data as ScamperData}
         />
       );
     }

@@ -1,11 +1,28 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-import { Layer } from './Layer';
+import { OpenLayer } from './Layer';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 0,
+      gcTime: 0,
+    },
+  },
+});
 
 const meta = {
-  title: 'features/ideagraph/layer',
-  component: Layer,
-} satisfies Meta<typeof Layer>;
+  title: 'features/ideagraph/OpenLayer',
+  component: OpenLayer,
+  decorators: [
+    (Story) => (
+      <QueryClientProvider client={queryClient}>
+        <Story />
+      </QueryClientProvider>
+    ),
+  ],
+} satisfies Meta<typeof OpenLayer>;
 
 export default meta;
 

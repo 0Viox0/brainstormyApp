@@ -3,7 +3,7 @@ import {
   IdeaGenerator,
   type IdeaGeneratorState,
 } from '@/components/organisms/IdeaGenerator/IdeaGenerator';
-import type { ScamperData } from '@/features/ideaGraph/types';
+import type { ScamperData } from '@/features/ideaGraph/store/state';
 import type { FC } from 'react';
 
 export type ScamperLayerProps = {
@@ -17,7 +17,7 @@ export const ScamperLayer: FC<ScamperLayerProps> = ({
 }) => {
   return (
     <div>
-      {Object.entries(data).map(([letter, idea], index) => (
+      {Object.entries(data.data).map(([letter, idea], index) => (
         <div
           className="relative mb-[58px] flex h-[129px] items-center"
           key={index}
@@ -37,7 +37,7 @@ export const ScamperLayer: FC<ScamperLayerProps> = ({
             className="border-t-brainstormySecondary w-[22px] border-t-[1px]
               border-dashed"
           />
-          <IdeaGenerator text={idea} onGenerate={onGenerateIdea} />
+          <IdeaGenerator text={idea.content} onGenerate={onGenerateIdea} />
         </div>
       ))}
     </div>
