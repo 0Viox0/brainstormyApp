@@ -36,6 +36,7 @@ export const IdeaGenerator: FC<IdeaGeneratorProps> = ({
 }) => {
   const [ideaGeneratorState, setIdeaGeneratorState] =
     useState<IdeaGeneratorState>({ ...defaultIdeaGeneratorState, text });
+  const [isButtonVisible, setIsButtonVisible] = useState<boolean>(true);
 
   const methodOptions: PickOption[] = [
     {
@@ -69,6 +70,9 @@ export const IdeaGenerator: FC<IdeaGeneratorProps> = ({
   };
 
   const handleGenerateIdea = () => {
+    if (isFirstIdea) {
+      setIsButtonVisible(false);
+    }
     onGenerate(ideaGeneratorState);
   };
 
@@ -105,12 +109,14 @@ export const IdeaGenerator: FC<IdeaGeneratorProps> = ({
       ) : (
         <div className="bg-brainstormySecondary ml-[7px] h-[1px] w-[38px]"></div>
       )}
-      <WithTooltip
-        tooltipText="Сгенерировать идеи"
-        className="top-1/2 left-[130%] -translate-y-1/2 text-nowrap"
-      >
-        <GenerateIdeaButton onClick={handleGenerateIdea} />
-      </WithTooltip>
+      {isButtonVisible && (
+        <WithTooltip
+          tooltipText="Сгенерировать идеи"
+          className="top-1/2 left-[130%] -translate-y-1/2 text-nowrap"
+        >
+          <GenerateIdeaButton onClick={handleGenerateIdea} />
+        </WithTooltip>
+      )}
     </div>
   );
 };

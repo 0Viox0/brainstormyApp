@@ -1,26 +1,32 @@
+import type { ScamperData, SixHatsData } from '../store/state';
+
+export type ScamperDataResponse = {
+  s: string;
+  c: string;
+  a: string;
+  m: string;
+  p: string;
+  e: string;
+  r: string;
+};
+
+export type SixHatsDataResponse = {
+  blue: string;
+  white: string;
+  green: string;
+  yellow: string;
+  black: string;
+  red: string;
+};
+
 export type ScamperResponse = {
   type: 'scamper';
-  data: {
-    s: string;
-    c: string;
-    a: string;
-    m: string;
-    p: string;
-    e: string;
-    r: string;
-  };
+  data: ScamperDataResponse;
 };
 
 export type SixHatsResponse = {
   type: 'sixHats';
-  data: {
-    blue: string;
-    white: string;
-    green: string;
-    yellow: string;
-    black: string;
-    red: string;
-  };
+  data: SixHatsDataResponse;
 };
 
 export type LayerDataResponse = SixHatsResponse | ScamperResponse;

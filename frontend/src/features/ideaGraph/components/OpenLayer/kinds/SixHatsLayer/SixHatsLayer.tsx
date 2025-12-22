@@ -6,11 +6,14 @@ import { SixHatsLogo } from '@/shared/icons';
 import type { FC } from 'react';
 
 export type SixHatsProps = {
-  onGenerateIdea: (ideaGeneratorState: IdeaGeneratorState) => void;
+  onGenerateIdea: (
+    fromHat: SixHatsKeys,
+    ideaGeneratorState: IdeaGeneratorState,
+  ) => void;
   data: SixHatsData;
 };
 
-type SixHatsKeys = keyof SixHatsData['data'];
+export type SixHatsKeys = keyof SixHatsData;
 
 export const SixHatsLayer: FC<SixHatsProps> = ({ data, onGenerateIdea }) => {
   const createHatIcon = (hatColor: SixHatsKeys) => {
@@ -28,7 +31,7 @@ export const SixHatsLayer: FC<SixHatsProps> = ({ data, onGenerateIdea }) => {
 
   return (
     <div>
-      {Object.entries(data.data).map(([hatColor, idea], index) => (
+      {Object.entries(data).map(([hatColor, idea], index) => (
         <div
           className="relative mb-[58px] flex h-[129px] items-center"
           key={index}
@@ -48,7 +51,12 @@ export const SixHatsLayer: FC<SixHatsProps> = ({ data, onGenerateIdea }) => {
             className="border-t-brainstormySecondary w-[22px] border-t-[1px]
               border-dashed"
           />
-          <IdeaGenerator text={idea.content} onGenerate={onGenerateIdea} />
+          <IdeaGenerator
+            text={idea.content}
+            onGenerate={(ideaGeneratorState) =>
+              onGenerateIdea(hatColor as SixHatsKeys, ideaGeneratorState)
+            }
+          />
         </div>
       ))}
     </div>

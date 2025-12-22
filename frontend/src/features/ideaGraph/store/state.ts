@@ -8,38 +8,39 @@ export type Idea = {
 };
 
 export type ScamperData = {
-  method: 'scamper';
-  data: {
-    s: Idea;
-    c: Idea;
-    a: Idea;
-    m: Idea;
-    p: Idea;
-    e: Idea;
-    r: Idea;
-  };
+  s: Idea;
+  c: Idea;
+  a: Idea;
+  m: Idea;
+  p: Idea;
+  e: Idea;
+  r: Idea;
 };
 
 export type SixHatsData = {
-  method: 'sixHats';
-  data: {
-    blue: Idea;
-    white: Idea;
-    green: Idea;
-    yellow: Idea;
-    black: Idea;
-    red: Idea;
-  };
+  blue: Idea;
+  white: Idea;
+  green: Idea;
+  yellow: Idea;
+  black: Idea;
+  red: Idea;
 };
 
 export type IdeasData = SixHatsData | ScamperData;
 
+export type CollapsedData = {
+  chosenMethod: Method;
+  chosenPrompt: string;
+};
+
 export type IdeasLayer = {
   id: LayerId;
-  isCollapsed: boolean;
+  collapsedData: CollapsedData | null;
   baseIdea: string;
   helperPrompt: string;
-} & IdeasData;
+  method: Method;
+  ideas: IdeasData;
+};
 
 export type IdeaGraph = {
   isLoadingNewLayer: boolean;

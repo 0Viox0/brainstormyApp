@@ -33,9 +33,7 @@ export const ViewOnlyIdeaGenerator: FC<IdeaGeneratorProps> = ({
         >
           <ViewOnlyMethodPicker method={ideaGeneratorState.method} />
           {!isFirstIdea && (
-            <ViewOnlyPromptPicker
-              isPromptEmpty={Boolean(ideaGeneratorState.text)}
-            />
+            <ViewOnlyPromptPicker isPromptEmpty={!ideaGeneratorState.prompt} />
           )}
         </div>
       </div>

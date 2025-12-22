@@ -2,9 +2,9 @@ import type { FC } from 'react';
 import { useIdeasGraph } from '../../store';
 import { GenerateIdeaButton } from '@/components/atoms';
 import { SixHatsLogo } from '@/shared/icons';
-import type { SixHatsData } from '../../store/state';
 import type { IdeaGeneratorState } from '@/components/organisms/IdeaGenerator/IdeaGenerator';
 import { ViewOnlyIdeaGenerator } from '@/components/organisms/ViewOnlyIdeaGenerator/ViewOnlyIdeaGenerator';
+import type { SixHatsKeys } from '../OpenLayer/kinds/SixHatsLayer/SixHatsLayer';
 
 export type CollapsedLayerProps = {
   layerId: number;
@@ -24,7 +24,7 @@ export const CollapsedLayer: FC<CollapsedLayerProps> = ({ layerId }) => {
 
   const renderChosenIdeaLogo = () => {
     if (layer.method === 'sixHats') {
-      const hatsColorMap: Record<keyof SixHatsData['data'], string> = {
+      const hatsColorMap: Record<SixHatsKeys, string> = {
         blue: '#4f62ae',
         white: '#fff',
         green: '#48b86a',
@@ -33,21 +33,17 @@ export const CollapsedLayer: FC<CollapsedLayerProps> = ({ layerId }) => {
         red: '#c73939',
       };
 
-      const chosenHat = Object.entries(layer.data).find(
+      const chosenHat = Object.entries(layer.ideas).find(
         ([, idea]) => idea.chosen,
       );
 
       if (!chosenHat) return;
 
-      return (
-        <SixHatsLogo
-          color={hatsColorMap[chosenHat[0] as keyof SixHatsData['data']]}
-        />
-      );
+      return <SixHatsLogo color={hatsColorMap[chosenHat[0]]} />;
     }
 
     if (layer.method === 'scamper') {
-      const chosenEntry = Object.entries(layer.data).find(
+      const chosenEntry = Object.entries(layer.ideas).find(
         ([, idea]) => idea.chosen,
       );
 
@@ -58,11 +54,11 @@ export const CollapsedLayer: FC<CollapsedLayerProps> = ({ layerId }) => {
   };
 
   const getIdeaGeneratorState = (): IdeaGeneratorState => {
-    const chosenEntry = Object.entries(layer.data).find(
+    const chosenEntry = Object.entries(layer.ideas).find(
       ([, idea]) => idea.chosen,
     );
 
-    if (!chosenEntry) {
+    if (!chosenEntry || !layer.collapsedData) {
       return {
         text: '',
         method: 'sixHats',
@@ -74,13 +70,13 @@ export const CollapsedLayer: FC<CollapsedLayerProps> = ({ layerId }) => {
 
     return {
       text: chosenIdea.content,
-      method: layer.method,
-      prompt: layer.helperPrompt,
+      method: layer.collapsedData.chosenMethod,
+      prompt: layer.collapsedData.chosenPrompt,
     };
   };
 
   const getLayerIdeasLength = () => {
-    return Object.keys(layer.data).length;
+    return Object.keys(layer.ideas).length;
   };
 
   return (

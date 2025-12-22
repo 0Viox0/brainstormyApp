@@ -22,7 +22,7 @@ export const ViewOnlyPromptPicker: FC<ViewOnlyPromptPickerProps> = ({
           `bg-brainstormySecondary absolute right-[-5px] bottom-[-4px] h-4 w-4
           rounded-full border-[3.5px] border-[#232323]`,
           {
-            'bg-[#579e67]': isPromptEmpty,
+            'bg-[#579e67]': !isPromptEmpty,
           },
         )}
       />
