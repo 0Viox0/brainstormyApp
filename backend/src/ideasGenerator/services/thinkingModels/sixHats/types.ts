@@ -8,4 +8,5 @@ export type SixHatsResponse = {
     black: string;
     red: string;
   };
+  tokensUsed: number;
 };

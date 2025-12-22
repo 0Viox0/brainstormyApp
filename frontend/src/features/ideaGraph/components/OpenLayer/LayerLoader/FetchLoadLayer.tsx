@@ -6,6 +6,8 @@ import { useIdeasGraph } from '@/features/ideaGraph/store';
 import { fetchIdeas } from '@/features/ideaGraph/data/fetch';
 import { toLayerData } from '@/features/ideaGraph/utils/mappers/layerResponseToData';
 import type { IdeaGeneratorState } from '@/components/organisms/IdeaGenerator/IdeaGenerator';
+import { historyManger } from '@/features/ideaGraph/sevices/contextSaver';
+import { tokenCounter } from '@/features/ideaGraph/sevices/tokensCounter';
 
 export type FetchLoadLayerProps = {
   ideaGeneratorState: IdeaGeneratorState;
@@ -32,6 +34,7 @@ export const FetchLoadLayer: FC<FetchLoadLayerProps> = ({
         method,
         baseIdea,
         helpingPrompt,
+        historyManger.getHistory(),
       );
 
       const newIdeasLayer: IdeasLayer = {
@@ -43,6 +46,7 @@ export const FetchLoadLayer: FC<FetchLoadLayerProps> = ({
         ideas: toLayerData(layerDataResponse),
       };
 
+      tokenCounter.addTokens(layerDataResponse.tokensUsed);
       addLayer(newIdeasLayer);
       goToLayer(newIdeasLayer.id);
       finishLoadingNewLayer();
@@ -54,6 +58,7 @@ export const FetchLoadLayer: FC<FetchLoadLayerProps> = ({
   const getIdeasCountToGenerate = () => {
     return method === 'sixHats' ? 6 : 7;
   };
+
   return (
     <div className="flex items-start">
       <div className="mt-[420px]"></div>

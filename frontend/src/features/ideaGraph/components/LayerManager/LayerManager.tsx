@@ -14,6 +14,7 @@ import { useIdeasGraph } from '../../store';
 import { CollapsedLayer } from '../CollapsedLayer/CollapsedLayer';
 import { OpenLayer } from '../OpenLayer/Layer';
 import { FetchLoadLayer } from '../OpenLayer/LayerLoader/FetchLoadLayer';
+import { historyManger } from '../../sevices/contextSaver';
 
 export type LayersManagerProps = {
   initialIdea: string;
@@ -60,6 +61,8 @@ export const LayersManager: FC<LayersManagerProps> = ({ initialIdea }) => {
 
     const continueGenerating = chosenIdea && layerId !== currentLayer;
 
+    historyManger.addHistoryItem(layer.baseIdea);
+
     return (
       <>
         {layer.collapsedData && layer.collapsedData.isCollapsed ? (
@@ -76,8 +79,6 @@ export const LayersManager: FC<LayersManagerProps> = ({ initialIdea }) => {
       </>
     );
   };
-
-  console.log('layers: ', layers);
 
   return (
     <div

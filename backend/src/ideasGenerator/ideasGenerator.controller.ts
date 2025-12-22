@@ -15,18 +15,26 @@ export class IdeasGeneratorController {
   async getSixHatsIdeas(
     @Query('baseIdea') baseIdea: string,
     @Query('prompt') prompt: string,
+    @Query('history') historyRaw: string,
   ) {
     // return this.getDummySixHatsResponse();
-    return this.sixHatsService.getSixHats(baseIdea);
+
+    const history = historyRaw ? (JSON.parse(historyRaw) as string[]) : [];
+
+    return this.sixHatsService.getSixHats(baseIdea, prompt, history);
   }
 
   @Get('scamper')
   async getScamperIdeas(
     @Query('baseIdea') baseIdea: string,
     @Query('prompt') prompt: string,
+    @Query('history') historyRaw: string,
   ) {
     // return this.getDummyScamperResponse();
-    return this.scamperService.getSixHats(baseIdea);
+
+    const history = historyRaw ? (JSON.parse(historyRaw) as string[]) : [];
+
+    return this.scamperService.getScamper(baseIdea, prompt, history);
   }
 
   private async getDummySixHatsResponse() {
@@ -44,6 +52,7 @@ export class IdeasGeneratorController {
           'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Impedit, expedita.',
         red: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Impedit, expedita.',
       },
+      tokensUsed: -1,
     };
 
     await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -62,6 +71,7 @@ export class IdeasGeneratorController {
         e: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Impedit, expedita.',
         r: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Impedit, expedita.',
       },
+      tokensUsed: -1,
     };
 
     await new Promise((resolve) => setTimeout(resolve, 1000));

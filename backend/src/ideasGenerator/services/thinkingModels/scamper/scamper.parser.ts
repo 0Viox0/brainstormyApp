@@ -3,13 +3,14 @@ import { ScamperResponse } from './types';
 
 @Injectable()
 export class ScamperParser {
-  parse(ideas: string): ScamperResponse {
+  parse(ideas: string, tokensUsed: number): ScamperResponse {
     const cleanJson = this.stripCodeFences(ideas);
     const sixHatsJson = JSON.parse(cleanJson) as ScamperResponse['data'];
 
     return {
       type: 'scamper',
       data: sixHatsJson,
+      tokensUsed,
     };
   }
 

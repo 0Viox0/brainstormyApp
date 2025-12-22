@@ -11,7 +11,7 @@ export class AiApi implements IAiApi {
     this.aiProvider = new YandexGptService(configService);
   }
 
-  async execPrompt(prompt: string) {
-    return this.aiProvider.execPrompt(prompt);
+  async execPrompt(prompt: string, history: string[]) {
+    return this.aiProvider.execPrompt(prompt, history);
   }
 }

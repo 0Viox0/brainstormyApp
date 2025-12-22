@@ -5,3 +5,4 @@ export { GenerateIdeaButton } from './GenerateIdeaButton';
 export { ThreeWayLine } from './ThreeWayLine';
 export { TextFieldLoader } from './TextFieldLoader/';
 export { GoFurtherButton } from './GoFurtherButton';
+export { TokensUsed } from './TokensUsed';

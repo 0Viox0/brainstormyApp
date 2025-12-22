@@ -3,13 +3,14 @@ import { SixHatsResponse } from './types';
 
 @Injectable()
 export class SixHatsParser {
-  parse(ideas: string): SixHatsResponse {
+  parse(ideas: string, tokensUsed: number): SixHatsResponse {
     const cleanJson = this.stripCodeFences(ideas);
     const sixHatsJson = JSON.parse(cleanJson) as SixHatsResponse['data'];
 
     return {
       type: 'sixHats',
       data: sixHatsJson,
+      tokensUsed: tokensUsed,
     };
   }
 

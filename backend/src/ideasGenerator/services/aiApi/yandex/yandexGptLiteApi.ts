@@ -8,7 +8,10 @@ export class YandexGptService {
 
   private readonly logger = new Logger(YandexGptService.name);
 
-  async execPrompt(prompt: string): Promise<string> {
+  async execPrompt(
+    prompt: string,
+    history: string[],
+  ): Promise<[string, number]> {
     const IAM_TOKEN = this.configService.get<string>('IAM_TOKEN');
     const FOLDER_ID = this.configService.get<string>('FOLDER_ID');
 
@@ -42,7 +45,13 @@ export class YandexGptService {
           maxTokens: modelConfig.maxResponseTokens,
           reasoningOptions: { mode: 'DISABLED' },
         },
-        messages: [{ role: 'user', text: prompt }],
+        messages: [
+          {
+            role: 'system',
+            text: `Ты — помощник для генерации идей. Используй предоставленный контекст: ${history.join(';')}`,
+          },
+          { role: 'user', text: prompt },
+        ],
       }),
     });
 
@@ -53,8 +62,11 @@ export class YandexGptService {
 
     const data = (await response.json()) as CompletionResponse;
 
-    console.log(data.result);
+    this.logger.log(data);
 
-    return data.result.alternatives[0].message.text;
+    return [
+      data.result.alternatives[0].message.text,
+      parseInt(data.result.usage.totalTokens),
+    ];
   }
 }

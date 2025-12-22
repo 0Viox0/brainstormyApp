@@ -1,5 +1,6 @@
 import { useState, type ChangeEvent, type FormEvent } from 'react';
 import { LayersManager } from './features/ideaGraph/components/LayerManager';
+import { TokensUsed } from './components/atoms';
 
 function App() {
   const [firstIdea, setFirstIdea] = useState<string>('');
@@ -15,7 +16,10 @@ function App() {
   };
 
   return displayGraph ? (
-    <LayersManager initialIdea={firstIdea} />
+    <>
+      <LayersManager initialIdea={firstIdea} />
+      <TokensUsed />
+    </>
   ) : (
     <div className="flex min-h-[100vh] items-center justify-center">
       <form onSubmit={handleSubmit}>

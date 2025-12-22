@@ -20,11 +20,13 @@ export type SixHatsDataResponse = {
 export type ScamperResponse = {
   type: 'scamper';
   data: ScamperDataResponse;
+  tokensUsed: number;
 };
 
 export type SixHatsResponse = {
   type: 'sixHats';
   data: SixHatsDataResponse;
+  tokensUsed: number;
 };
 
 export type LayerDataResponse = SixHatsResponse | ScamperResponse;

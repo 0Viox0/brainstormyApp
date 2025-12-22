@@ -9,4 +9,5 @@ export type ScamperResponse = {
     e: string;
     r: string;
   };
+  tokensUsed: number;
 };
