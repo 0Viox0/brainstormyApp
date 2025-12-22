@@ -1,96 +1,34 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react';
-import { IdeaGenerator } from './components/organisms/IdeaGenerator';
-import type { IdeaGeneratorState } from './components/organisms/IdeaGenerator/IdeaGenerator';
-import { OpenLayer } from './features/ideaGraph/components/OpenLayer/Layer';
-import { useIdeasGraph } from './features/ideaGraph/store';
-import { CollapsedLayer } from './features/ideaGraph/components/CollapsedLayer/CollapsedLayer';
-import { FetchLoadLayer } from './features/ideaGraph/components/OpenLayer/LayerLoader/FetchLoadLayer';
+import { useState, type ChangeEvent, type FormEvent } from 'react';
+import { LayersManager } from './features/ideaGraph/components/LayerManager';
 
 function App() {
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const [newLayerData, setNewLayerData] = useState<IdeaGeneratorState>();
-  const { currentLayer, isLoadingNewLayer, loadNewLayer, layers } =
-    useIdeasGraph((state) => state);
+  const [firstIdea, setFirstIdea] = useState<string>('');
+  const [displayGraph, setDisplayGraph] = useState(false);
 
-  const handleGenerateNewLayer = (ideaGeneratorState: IdeaGeneratorState) => {
-    setNewLayerData(ideaGeneratorState);
-    loadNewLayer();
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setFirstIdea(event.target.value);
   };
 
-  useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-
-    if (!isLoadingNewLayer) return;
-
-    el.scrollTo({
-      top: 0,
-      left: el.scrollWidth,
-      behavior: 'smooth',
-    });
-  }, [isLoadingNewLayer, currentLayer]);
-
-  const renderLayres = (layerId: number | undefined): ReactNode => {
-    if (!layerId) return;
-
-    const layer = layers.find((layer) => layer.id === layerId);
-    if (!layer) return;
-
-    const chosenIdea = Object.values(layer.ideas).find((idea) => idea.chosen);
-
-    const continueGenerating = chosenIdea && layerId !== currentLayer;
-
-    return (
-      <>
-        {layer.collapsedData && layer.collapsedData.isCollapsed ? (
-          <div className="mt-[374px]">
-            <CollapsedLayer layerId={layer.id} />
-          </div>
-        ) : (
-          <OpenLayer
-            layerId={layer.id}
-            triggerGenerateNewLayer={handleGenerateNewLayer}
-          />
-        )}
-        {continueGenerating && renderLayres(chosenIdea.nextLayer)}
-      </>
-    );
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setDisplayGraph(true);
   };
 
-  console.log('layers: ', layers);
-
-  return (
-    <div
-      ref={scrollRef}
-      className="bg-brainstormyBg flex h-screen items-start overflow-x-auto
-        text-white"
-    >
-      <div className="mt-[374px]">
-        <IdeaGenerator
-          text="flying boats"
-          onGenerate={handleGenerateNewLayer}
-          isFirstIdea={true}
+  return displayGraph ? (
+    <LayersManager initialIdea={firstIdea} />
+  ) : (
+    <div className="flex min-h-[100vh] items-center justify-center">
+      <form onSubmit={handleSubmit}>
+        <input
+          onChange={handleChange}
+          value={firstIdea}
+          type="text"
+          className="border-brainstormySecondary text-brainstormySecondary
+            h-[44px] w-[480px] rounded-[9px] border-[1px] px-[20px] font-bold
+            outline-none"
+          placeholder="Введи начальную идею"
         />
-      </div>
-      {layers.length !== 0 && renderLayres(layers[0].id)}
-      {
-        //   layers.map((layer) =>
-        //   layer.collapsedData ? (
-        //     <div className="mt-[374px]">
-        //       <CollapsedLayer layerId={layer.id} />
-        //     </div>
-        //   ) : (
-        //     <OpenLayer
-        //       layerId={layer.id}
-        //       triggerGenerateNewLayer={handleGenerateNewLayer}
-        //     />
-        //   ),
-        // )
-      }
-      {isLoadingNewLayer && newLayerData && (
-        <FetchLoadLayer ideaGeneratorState={newLayerData} />
-      )}
-      <div className="h-[100px] w-[600px] shrink-0 grow-0" />
+      </form>
     </div>
   );
 }

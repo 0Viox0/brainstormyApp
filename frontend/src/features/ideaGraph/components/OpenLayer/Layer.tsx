@@ -28,8 +28,6 @@ export const OpenLayer: FC<OpenLayerProps> = ({
       ) => {
         const nextLayerId = Date.now() + Math.random();
 
-        console.log(fromHat, ideaGeneratorState);
-
         const updatedIdeas = Object.fromEntries(
           Object.entries(layer.ideas).map(([key, idea]) => [
             key,
@@ -58,6 +56,8 @@ export const OpenLayer: FC<OpenLayerProps> = ({
               ...updatedIdeas[fromHat],
               chosen: true,
               nextLayer: nextLayerId,
+              nextMethod: ideaGeneratorState.method,
+              nextPrompt: ideaGeneratorState.prompt,
             },
           },
         });
@@ -83,6 +83,21 @@ export const OpenLayer: FC<OpenLayerProps> = ({
       ) => {
         const nextLayerId = Date.now() + Math.random();
 
+        const updatedIdeas = Object.fromEntries(
+          Object.entries(layer.ideas).map(([key, idea]) => [
+            key,
+            {
+              ...idea,
+              chosen: false,
+            },
+          ]),
+        ) as IdeasData;
+
+        changeLayer(layer.id, {
+          ...layer,
+          ideas: updatedIdeas,
+        });
+
         changeLayer(layer.id, {
           ...layer,
           method: 'scamper',
@@ -92,11 +107,13 @@ export const OpenLayer: FC<OpenLayerProps> = ({
             isCollapsed: true,
           },
           ideas: {
-            ...layer.ideas,
+            ...updatedIdeas,
             [fromLetter]: {
-              ...layer.ideas[fromLetter],
+              ...updatedIdeas[fromLetter],
               chosen: true,
               nextLayer: nextLayerId,
+              nextMethod: ideaGeneratorState.method,
+              nextPrompt: ideaGeneratorState.prompt,
             },
           },
         });

@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { LayerLoader } from './LayerLoader';
 import type { IdeasLayer } from '@/features/ideaGraph/store/state';
-import type { FC } from 'react';
+import { useEffect, type FC } from 'react';
 import { useIdeasGraph } from '@/features/ideaGraph/store';
 import { fetchIdeas } from '@/features/ideaGraph/data/fetch';
 import { toLayerData } from '@/features/ideaGraph/utils/mappers/layerResponseToData';
@@ -9,13 +9,21 @@ import type { IdeaGeneratorState } from '@/components/organisms/IdeaGenerator/Id
 
 export type FetchLoadLayerProps = {
   ideaGeneratorState: IdeaGeneratorState;
+  onMount: () => void;
 };
 
 export const FetchLoadLayer: FC<FetchLoadLayerProps> = ({
   ideaGeneratorState,
+  onMount,
 }) => {
-  const { addLayer, finishLoadingNewLayer } = useIdeasGraph((state) => state);
+  const { addLayer, finishLoadingNewLayer, goToLayer } = useIdeasGraph(
+    (state) => state,
+  );
   const { method, text: baseIdea, prompt: helpingPrompt } = ideaGeneratorState;
+
+  useEffect(() => {
+    onMount();
+  }, [onMount]);
 
   useQuery({
     queryKey: ['ideas', method, baseIdea, helpingPrompt],
@@ -36,6 +44,7 @@ export const FetchLoadLayer: FC<FetchLoadLayerProps> = ({
       };
 
       addLayer(newIdeasLayer);
+      goToLayer(newIdeasLayer.id);
       finishLoadingNewLayer();
 
       return toLayerData(layerDataResponse);

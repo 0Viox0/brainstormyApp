@@ -1,1 +1,1 @@
-export { LayerManager } from './LayerManager';
+export { LayersManager } from './LayerManager';

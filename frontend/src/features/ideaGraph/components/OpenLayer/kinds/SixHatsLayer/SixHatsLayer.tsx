@@ -127,8 +127,8 @@ export const SixHatsLayer: FC<SixHatsProps> = ({ data, onGenerateIdea }) => {
               onGoFurther={() => handleGoFurther(idea.nextLayer, hatColor)}
               ideaGeneratorState={{
                 text: idea.content,
-                method: 'sixHats',
-                prompt: '',
+                method: idea.nextMethod || 'sixHats',
+                prompt: idea.nextPrompt || '',
               }}
             />
           ) : (

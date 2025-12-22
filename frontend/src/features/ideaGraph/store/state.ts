@@ -5,6 +5,8 @@ export type Idea = {
   content: string;
   chosen?: boolean;
   nextLayer?: LayerId;
+  nextMethod?: Method;
+  nextPrompt?: string;
 };
 
 export type ScamperData = {
