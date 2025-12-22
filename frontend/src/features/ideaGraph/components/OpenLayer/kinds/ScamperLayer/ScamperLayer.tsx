@@ -11,7 +11,7 @@ export type ScamperLayerProps = {
     fromLetter: string,
     ideaGeneratorState: IdeaGeneratorState,
   ) => void;
-  data: ScamperData['data'];
+  data: ScamperData;
 };
 
 export const ScamperLayer: FC<ScamperLayerProps> = ({

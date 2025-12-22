@@ -1,7 +1,13 @@
 import { GraphConnector } from '@/components/molecules';
+import { GoFurtherIdeaGenerator } from '@/components/organisms/GoFurtherIdeaGenerator/GoFurtherIdeaGenerator';
 import { IdeaGenerator } from '@/components/organisms/IdeaGenerator';
 import type { IdeaGeneratorState } from '@/components/organisms/IdeaGenerator/IdeaGenerator';
-import type { SixHatsData } from '@/features/ideaGraph/store/state';
+import { useIdeasGraph } from '@/features/ideaGraph/store';
+import type {
+  CollapsedData,
+  IdeasData,
+  SixHatsData,
+} from '@/features/ideaGraph/store/state';
 import { SixHatsLogo } from '@/shared/icons';
 import type { FC } from 'react';
 
@@ -16,6 +22,13 @@ export type SixHatsProps = {
 export type SixHatsKeys = keyof SixHatsData;
 
 export const SixHatsLayer: FC<SixHatsProps> = ({ data, onGenerateIdea }) => {
+  const {
+    goToLayer,
+    changeLayer,
+    currentLayer: currentLayerId,
+    layers,
+  } = useIdeasGraph((state) => state);
+
   const createHatIcon = (hatColor: SixHatsKeys) => {
     const hatsColorMap: Record<SixHatsKeys, string> = {
       blue: '#4f62ae',
@@ -27,6 +40,64 @@ export const SixHatsLayer: FC<SixHatsProps> = ({ data, onGenerateIdea }) => {
     };
 
     return <SixHatsLogo color={hatsColorMap[hatColor]} />;
+  };
+
+  const handleGoFurther = (layerId: number | undefined, fromHat: string) => {
+    if (!layerId) return;
+
+    const currentLayer = layers.find((layer) => layer.id === currentLayerId);
+    const nextLayer = layers.find((layer) => layer.id === layerId);
+
+    if (!currentLayer || !nextLayer) return;
+
+    // reset chosen ideas
+    const updatedIdeas = Object.fromEntries(
+      Object.entries(currentLayer.ideas).map(([key, idea]) => [
+        key,
+        {
+          ...idea,
+          chosen: false,
+        },
+      ]),
+    ) as IdeasData;
+
+    // collapse current layer
+    changeLayer(currentLayerId, {
+      ...currentLayer,
+      ideas: updatedIdeas,
+      collapsedData: {
+        ...currentLayer.collapsedData,
+        isCollapsed: true,
+      } as CollapsedData,
+    });
+
+    // set proper chosen idea
+    changeLayer(currentLayerId, {
+      ...currentLayer,
+      ideas: {
+        ...updatedIdeas,
+        [fromHat]: {
+          ...updatedIdeas[fromHat],
+          chosen: true,
+        },
+      },
+      collapsedData: {
+        ...currentLayer.collapsedData,
+        isCollapsed: true,
+      } as CollapsedData,
+    });
+
+    // uncollapse layer we are going to
+    changeLayer(layerId, {
+      ...nextLayer,
+      collapsedData: {
+        ...nextLayer.collapsedData,
+        isCollapsed: false,
+      } as CollapsedData,
+    });
+
+    // change layer
+    goToLayer(layerId);
   };
 
   return (
@@ -51,12 +122,23 @@ export const SixHatsLayer: FC<SixHatsProps> = ({ data, onGenerateIdea }) => {
             className="border-t-brainstormySecondary w-[22px] border-t-[1px]
               border-dashed"
           />
-          <IdeaGenerator
-            text={idea.content}
-            onGenerate={(ideaGeneratorState) =>
-              onGenerateIdea(hatColor as SixHatsKeys, ideaGeneratorState)
-            }
-          />
+          {idea.nextLayer ? (
+            <GoFurtherIdeaGenerator
+              onGoFurther={() => handleGoFurther(idea.nextLayer, hatColor)}
+              ideaGeneratorState={{
+                text: idea.content,
+                method: 'sixHats',
+                prompt: '',
+              }}
+            />
+          ) : (
+            <IdeaGenerator
+              text={idea.content}
+              onGenerate={(ideaGeneratorState) =>
+                onGenerateIdea(hatColor as SixHatsKeys, ideaGeneratorState)
+              }
+            />
+          )}
         </div>
       ))}
     </div>

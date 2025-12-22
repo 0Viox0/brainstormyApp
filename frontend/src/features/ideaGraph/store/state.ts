@@ -29,6 +29,7 @@ export type SixHatsData = {
 export type IdeasData = SixHatsData | ScamperData;
 
 export type CollapsedData = {
+  isCollapsed: boolean;
   chosenMethod: Method;
   chosenPrompt: string;
 };

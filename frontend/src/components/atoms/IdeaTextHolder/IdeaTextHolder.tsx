@@ -7,9 +7,13 @@ const containerPaddingClass = `p-[25px]`;
 
 export type IdeaTextHolderProps = {
   text: string;
+  className?: string;
 };
 
-export const IdeaTextHolder: FC<IdeaTextHolderProps> = ({ text }) => {
+export const IdeaTextHolder: FC<IdeaTextHolderProps> = ({
+  text,
+  className,
+}) => {
   const [isOverflowing, setIsOverflowing] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -38,6 +42,7 @@ export const IdeaTextHolder: FC<IdeaTextHolderProps> = ({ text }) => {
           'flex items-center justify-center': !isOverflowing,
           'h-auto': isOverflowing && isHovered,
         },
+        className,
       )}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}

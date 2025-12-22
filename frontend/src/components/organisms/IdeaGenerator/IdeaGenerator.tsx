@@ -12,6 +12,7 @@ import { useState, type FC } from 'react';
 
 type Prompt = string;
 export type IdeaGeneratorState = {
+  layerId?: number;
   text: string;
   method: Method;
   prompt: Prompt;

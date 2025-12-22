@@ -3,7 +3,7 @@ import { ScamperLayer, SixHatsLayer } from './kinds';
 import type { IdeaGeneratorState } from '@/components/organisms/IdeaGenerator/IdeaGenerator';
 import { useIdeasGraph } from '../../store';
 import type { SixHatsKeys } from './kinds/SixHatsLayer/SixHatsLayer';
-import type { SixHatsData } from '../../store/state';
+import type { IdeasData, ScamperData, SixHatsData } from '../../store/state';
 import { GenerateIdeaButton } from '@/components/atoms';
 
 export type OpenLayerProps = {
@@ -26,22 +26,46 @@ export const OpenLayer: FC<OpenLayerProps> = ({
         fromHat: SixHatsKeys,
         ideaGeneratorState: IdeaGeneratorState,
       ) => {
+        const nextLayerId = Date.now() + Math.random();
+
+        console.log(fromHat, ideaGeneratorState);
+
+        const updatedIdeas = Object.fromEntries(
+          Object.entries(layer.ideas).map(([key, idea]) => [
+            key,
+            {
+              ...idea,
+              chosen: false,
+            },
+          ]),
+        ) as IdeasData;
+
+        changeLayer(layer.id, {
+          ...layer,
+          ideas: updatedIdeas,
+        });
+
         changeLayer(layer.id, {
           ...layer,
           collapsedData: {
             chosenMethod: ideaGeneratorState.method,
             chosenPrompt: ideaGeneratorState.prompt,
+            isCollapsed: true,
           },
           ideas: {
-            ...layer.ideas,
+            ...updatedIdeas,
             [fromHat]: {
-              ...layer.ideas[fromHat],
+              ...updatedIdeas[fromHat],
               chosen: true,
+              nextLayer: nextLayerId,
             },
           },
         });
 
-        triggerGenerateNewLayer(ideaGeneratorState);
+        triggerGenerateNewLayer({
+          ...ideaGeneratorState,
+          layerId: nextLayerId,
+        });
       };
 
       return (
@@ -57,29 +81,36 @@ export const OpenLayer: FC<OpenLayerProps> = ({
         fromLetter: string,
         ideaGeneratorState: IdeaGeneratorState,
       ) => {
+        const nextLayerId = Date.now() + Math.random();
+
         changeLayer(layer.id, {
           ...layer,
           method: 'scamper',
           collapsedData: {
             chosenMethod: ideaGeneratorState.method,
             chosenPrompt: ideaGeneratorState.prompt,
+            isCollapsed: true,
           },
           ideas: {
             ...layer.ideas,
             [fromLetter]: {
               ...layer.ideas[fromLetter],
               chosen: true,
+              nextLayer: nextLayerId,
             },
           },
         });
 
-        triggerGenerateNewLayer(ideaGeneratorState);
+        triggerGenerateNewLayer({
+          ...ideaGeneratorState,
+          layerId: nextLayerId,
+        });
       };
 
       return (
         <ScamperLayer
           onGenerateIdea={triggerGenerateNewLayerAndChange}
-          data={layer.ideas}
+          data={layer.ideas as ScamperData}
         />
       );
     }
@@ -88,7 +119,10 @@ export const OpenLayer: FC<OpenLayerProps> = ({
   return (
     <div className="flex items-start">
       <div className="mt-[420px]">
-        <GenerateIdeaButton onClick={() => {}} />
+        <GenerateIdeaButton
+          onClick={() => {}}
+          className="hover:scale-100 hover:cursor-default"
+        />
       </div>
       <div className="ml-[100px]">{renderLayer()}</div>
     </div>

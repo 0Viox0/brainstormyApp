@@ -4,16 +4,21 @@ import type { FC } from 'react';
 
 export type ViewOnlyPromptPickerProps = {
   isPromptEmpty: boolean;
+  className?: string;
 };
 
 export const ViewOnlyPromptPicker: FC<ViewOnlyPromptPickerProps> = ({
   isPromptEmpty,
+  className,
 }) => {
   return (
     <div className="relative">
       <div
-        className="bg-brainstormySecondary flex aspect-square w-8 items-center
-          justify-center overflow-hidden rounded-[37px] p-2"
+        className={cn(
+          `bg-brainstormySecondary flex aspect-square w-8 items-center
+          justify-center overflow-hidden rounded-[37px] p-2`,
+          className,
+        )}
       >
         <TextDefaultIcon />
       </div>

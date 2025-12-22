@@ -27,10 +27,10 @@ export const FetchLoadLayer: FC<FetchLoadLayerProps> = ({
       );
 
       const newIdeasLayer: IdeasLayer = {
-        id: Date.now() + Math.random(),
+        id: ideaGeneratorState.layerId || Date.now() + Math.random(),
         baseIdea: baseIdea,
         helperPrompt: helpingPrompt,
-        isCollapsed: false,
+        collapsedData: null,
         method: method,
         ideas: toLayerData(layerDataResponse),
       };

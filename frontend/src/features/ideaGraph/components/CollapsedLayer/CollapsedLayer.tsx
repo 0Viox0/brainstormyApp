@@ -5,6 +5,8 @@ import { SixHatsLogo } from '@/shared/icons';
 import type { IdeaGeneratorState } from '@/components/organisms/IdeaGenerator/IdeaGenerator';
 import { ViewOnlyIdeaGenerator } from '@/components/organisms/ViewOnlyIdeaGenerator/ViewOnlyIdeaGenerator';
 import type { SixHatsKeys } from '../OpenLayer/kinds/SixHatsLayer/SixHatsLayer';
+import { WithTooltip } from '@/components/molecules';
+import type { CollapsedData } from '../../store/state';
 
 export type CollapsedLayerProps = {
   layerId: number;
@@ -14,12 +16,19 @@ export const CollapsedLayer: FC<CollapsedLayerProps> = ({ layerId }) => {
   const layer = useIdeasGraph((state) =>
     state.layers.find((layer) => layer.id === layerId),
   );
-  const goToLayer = useIdeasGraph((state) => state.goToLayer);
+  const { goToLayer, changeLayer } = useIdeasGraph((state) => state);
 
   if (!layer) return <></>;
 
   const handleGoToLayer = () => {
     goToLayer(layerId);
+    changeLayer(layerId, {
+      ...layer,
+      collapsedData: {
+        ...layer.collapsedData,
+        isCollapsed: false,
+      } as CollapsedData,
+    });
   };
 
   const renderChosenIdeaLogo = () => {
@@ -82,7 +91,12 @@ export const CollapsedLayer: FC<CollapsedLayerProps> = ({ layerId }) => {
   return (
     <div className="flex items-center">
       <div className="relative flex flex-col items-center">
-        <GenerateIdeaButton onClick={handleGoToLayer} />
+        <WithTooltip
+          tooltipText="Перейти на этот слой"
+          className="top-[-35px] left-1/2 -translate-x-1/2 text-nowrap"
+        >
+          <GenerateIdeaButton onClick={handleGoToLayer} />
+        </WithTooltip>
         <div className="absolute top-[100%] flex flex-col items-center">
           <div className="bg-brainstormySecondary h-[30px] w-[2px]" />
           <div

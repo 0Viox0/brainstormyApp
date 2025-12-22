@@ -1,5 +1,3 @@
-import type { ScamperData, SixHatsData } from '../store/state';
-
 export type ScamperDataResponse = {
   s: string;
   c: string;
