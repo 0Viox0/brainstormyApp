@@ -4,28 +4,31 @@ import { useState, type FC, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 
 export type PromptPickerProps = {
-  onTextEnter: (newPrompt: string) => void;
+  onTextEnter?: (newPrompt: string) => void;
   icon: ReactNode;
-  hoverText: string;
+  hoverText?: string;
+  disabled?: boolean;
 };
 
 export const PromptPicker: FC<PromptPickerProps> = ({
   icon,
   hoverText,
   onTextEnter,
+  disabled,
 }) => {
   const [savedText, setSavedText] = useState('');
   const [isHovered, setIsHovered] = useState(false);
   const [openModal, setOpenModal] = useState(false);
 
   const handleIconClick = () => {
+    if (disabled) return;
     setOpenModal(true);
   };
 
   const handleTextChange = (newText: string) => {
     setOpenModal(false);
     setSavedText(newText);
-    onTextEnter(newText);
+    onTextEnter?.(newText);
   };
 
   return (
@@ -67,7 +70,7 @@ export const PromptPicker: FC<PromptPickerProps> = ({
         )}
       {isHovered && (
         <Tooltip
-          text={hoverText}
+          text={hoverText || ''}
           className="absolute top-[-100%] left-1/2 -translate-x-1/2 text-nowrap"
         />
       )}

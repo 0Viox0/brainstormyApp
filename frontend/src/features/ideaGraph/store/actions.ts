@@ -4,4 +4,7 @@ export type IdeaGraphAction = {
   goToLayer: (layerId: LayerId) => void;
   changeLayer: (layerId: LayerId, changedLayer: IdeasLayer) => void;
   addLayer: (newLayer: IdeasLayer) => void;
+
+  loadNewLayer: () => void;
+  finishLoadingNewLayer: () => void;
 };

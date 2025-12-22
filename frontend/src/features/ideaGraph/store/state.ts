@@ -42,6 +42,7 @@ export type IdeasLayer = {
 } & IdeasData;
 
 export type IdeaGraph = {
+  isLoadingNewLayer: boolean;
   currentLayer: LayerId;
   layers: IdeasLayer[];
 };

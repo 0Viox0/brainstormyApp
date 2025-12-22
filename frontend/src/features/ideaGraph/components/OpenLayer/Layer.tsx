@@ -3,27 +3,30 @@ import { type FC } from 'react';
 import { ScamperLayer, SixHatsLayer } from './kinds';
 import type { IdeaGeneratorState } from '@/components/organisms/IdeaGenerator/IdeaGenerator';
 import { LayerLoader } from './LayerLoader/LayerLoader';
-import type { ScamperData, SixHatsData } from '../../store/state';
+import type { IdeasLayer, ScamperData, SixHatsData } from '../../store/state';
 import { useQuery } from '@tanstack/react-query';
 import { fetchIdeas } from '../../data/fetch';
 import { toLayerData } from '../../utils/mappers/layerResponseToData';
+import { useIdeasGraph } from '../../store';
 
 export type OpenLayerProps = {
   triggerGenerateNewLayer: (ideaGeneratorState: IdeaGeneratorState) => void;
+  layerId?: number;
   layerData: {
     method: Method;
     baseIdea: string;
     helpingPrompt: string;
-    data?: LayerBackendData;
   };
 };
 
-type LayerBackendData = SixHatsData | ScamperData;
-
 export const OpenLayer: FC<OpenLayerProps> = ({
+  layerId,
   triggerGenerateNewLayer,
   layerData,
 }) => {
+  const { addLayer, changeLayer, finishLoadingNewLayer, layers } =
+    useIdeasGraph((state) => state);
+
   const { data, isLoading } = useQuery({
     queryKey: [
       'ideas',
@@ -37,6 +40,17 @@ export const OpenLayer: FC<OpenLayerProps> = ({
         layerData.baseIdea,
         layerData.helpingPrompt,
       );
+
+      const newIdeasLayer: IdeasLayer = {
+        id: Date.now() + Math.random(),
+        baseIdea: layerData.baseIdea,
+        helperPrompt: layerData.helpingPrompt,
+        isCollapsed: false,
+        ...toLayerData(layerDataResponse),
+      };
+
+      addLayer(newIdeasLayer);
+      finishLoadingNewLayer();
 
       return toLayerData(layerDataResponse);
     },
