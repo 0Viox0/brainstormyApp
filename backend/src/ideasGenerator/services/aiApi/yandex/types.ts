@@ -10,7 +10,7 @@ export type Operation = {
 
 export type CompletionResponse = {
   done: boolean;
-  response: {
+  result: {
     '@type': string;
     alternatives: {
       message: { role: string; text: string };

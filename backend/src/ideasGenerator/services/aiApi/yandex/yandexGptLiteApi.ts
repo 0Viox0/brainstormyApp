@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { CompletionResponse, Operation } from './types';
+import { CompletionResponse } from './types';
 
 @Injectable()
 export class YandexGptService {
@@ -20,7 +20,7 @@ export class YandexGptService {
     }
 
     const url =
-      'https://llm.api.cloud.yandex.net/foundationModels/v1/completionAsync';
+      'https://llm.api.cloud.yandex.net/foundationModels/v1/completion';
 
     const modelConfig = {
       temperature: 0.1,
@@ -46,39 +46,15 @@ export class YandexGptService {
       }),
     });
 
-    const operation = (await response.json()) as Operation;
-
-    const result = await this.waitForOperation(operation.id, IAM_TOKEN);
-
-    return result;
-  }
-
-  private async waitForOperation(
-    operationId: string,
-    token: string,
-    interval = 2000,
-    timeout = 60000,
-  ): Promise<string> {
-    const start = Date.now();
-    const operationUrl = `https://operation.api.cloud.yandex.net/operations/${operationId}`;
-
-    while (true) {
-      const res = await fetch(operationUrl, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      const data = (await res.json()) as CompletionResponse;
-
-      if (data.done) {
-        this.logger.log('got successfull response form model: ', data);
-        return data.response.alternatives[0].message.text;
-      }
-
-      if (Date.now() - start > timeout) {
-        throw new Error('Yandex GPT operation timeout');
-      }
-
-      await new Promise((r) => setTimeout(r, interval));
+    if (!response.ok) {
+      const text = await response.text();
+      throw new HttpException(text, response.status);
     }
+
+    const data = (await response.json()) as CompletionResponse;
+
+    console.log(data.result);
+
+    return data.result.alternatives[0].message.text;
   }
 }

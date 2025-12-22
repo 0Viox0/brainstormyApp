@@ -2,17 +2,34 @@ import { Controller, Get, Query } from '@nestjs/common';
 import { SixHatsService } from './services/thinkingModels/sixHats/sixHats.service';
 import { SixHatsResponse } from './services/thinkingModels/sixHats/types';
 import { ScamperResponse } from './services/thinkingModels/scamper/types';
+import { ScamperService } from './services/thinkingModels/scamper/scamper.service';
 
 @Controller('ideas')
 export class IdeasGeneratorController {
-  constructor(private readonly sixHatsService: SixHatsService) {}
+  constructor(
+    private readonly sixHatsService: SixHatsService,
+    private readonly scamperService: ScamperService,
+  ) {}
 
   @Get('sixHats')
   async getSixHatsIdeas(
     @Query('baseIdea') baseIdea: string,
     @Query('prompt') prompt: string,
   ) {
-    // return this.sixHatsService.getSixHats(baseIdea);
+    // return this.getDummySixHatsResponse();
+    return this.sixHatsService.getSixHats(baseIdea);
+  }
+
+  @Get('scamper')
+  async getScamperIdeas(
+    @Query('baseIdea') baseIdea: string,
+    @Query('prompt') prompt: string,
+  ) {
+    // return this.getDummyScamperResponse();
+    return this.scamperService.getSixHats(baseIdea);
+  }
+
+  private async getDummySixHatsResponse() {
     const dummyReponse: SixHatsResponse = {
       type: 'sixHats',
       data: {
@@ -31,15 +48,9 @@ export class IdeasGeneratorController {
 
     await new Promise((resolve) => setTimeout(resolve, 1000));
     return dummyReponse;
-
-    // return this.sixHatsService.getSixHats(baseIdea);
   }
 
-  @Get('scamper')
-  async getScamperIdeas(
-    @Query('baseIdea') baseIdea: string,
-    @Query('prompt') prompt: string,
-  ) {
+  private async getDummyScamperResponse() {
     const dummyReponse: ScamperResponse = {
       type: 'scamper',
       data: {
@@ -54,6 +65,7 @@ export class IdeasGeneratorController {
     };
 
     await new Promise((resolve) => setTimeout(resolve, 1000));
+
     return dummyReponse;
   }
 }
