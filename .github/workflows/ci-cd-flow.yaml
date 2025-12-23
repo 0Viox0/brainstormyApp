@@ -18,30 +18,34 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             set -Eeuo pipefail
-
+                  
             echo "🚀 Starting deployment"
-
+                  
             APP_DIR="$HOME/brainstormy"
-            REPO_URL="git@github.com:Incept10n/brainstormy.git"
             BRANCH="master"
-
-            if [ ! -d "$APP_DIR/.git" ]; then
-              echo "📦 Cloning repository"
-              git clone -b "$BRANCH" "$REPO_URL" "$APP_DIR"
-            else
-              echo "📥 Updating repository"
-              cd "$APP_DIR"
-              git fetch origin
-              git checkout "$BRANCH"
-              git pull origin "$BRANCH"
-            fi
-
+                  
             cd "$APP_DIR"
-
+                  
+            echo "🧪 Checking required secrets"
+            : "${IAM_TOKEN:?Missing IAM_TOKEN}"
+            : "${FOLDER_ID:?Missing FOLDER_ID}"
+            : "${VITE_BASE_URL:?Missing VITE_BASE_URL}"
+                  
+            echo "📝 Writing .env file"
+            cat > .env <<EOF
+            IAM_TOKEN=${{ secrets.IAM_TOKEN }}
+            FOLDER_ID=${{ secrets.FOLDER_ID }}
+            VITE_BASE_URL=${{ secrets.VITE_BASE_URL }}
+            EOF
+                  
+            echo "📥 Updating code"
+            git pull origin "$BRANCH"
+                  
             echo "🛑 Stopping containers"
-            docker compose down
-
+            docker compose --env-file .env down
+                  
             echo "🏗 Building and starting containers"
-            docker compose up --build -d
-
+            docker compose --env-file .env up --build -d
+                  
             echo "✅ Deployment finished successfully"
+                  
