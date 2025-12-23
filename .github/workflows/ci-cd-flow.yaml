@@ -18,15 +18,31 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            set -Eeuo pipefail
 
-            echo -n ${{ secrets.SSH_PRIVATE_KEY }} > ~/.ssh/id_rsa
+            echo "🚀 Starting deployment"
 
-            rm -r brainstormy
+            APP_DIR="$HOME/brainstormy"
+            REPO_URL="git@github.com:Incept10n/brainstormy.git"
+            BRANCH="master"
 
-            git clone git@github.com:Incept10n/brainstormy.git
+            if [ ! -d "$APP_DIR/.git" ]; then
+              echo "📦 Cloning repository"
+              git clone -b "$BRANCH" "$REPO_URL" "$APP_DIR"
+            else
+              echo "📥 Updating repository"
+              cd "$APP_DIR"
+              git fetch origin
+              git checkout "$BRANCH"
+              git pull origin "$BRANCH"
+            fi
 
-            echo "Building and starting containers..."
+            cd "$APP_DIR"
+
+            echo "🛑 Stopping containers"
             docker compose down
+
+            echo "🏗 Building and starting containers"
             docker compose up --build -d
 
-            echo "Deployment finished"
+            echo "✅ Deployment finished successfully"
