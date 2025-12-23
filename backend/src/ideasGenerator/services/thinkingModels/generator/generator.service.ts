@@ -20,7 +20,7 @@ export class GeneratorService {
     const [ideas, tokensUsed] = await this.aiApi.execPrompt(
       promptToExecute,
       history,
-      300,
+      370,
     );
 
     return this.sixHatsParser.parse(ideas, tokensUsed);
