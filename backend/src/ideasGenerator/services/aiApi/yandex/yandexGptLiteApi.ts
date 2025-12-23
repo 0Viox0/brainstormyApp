@@ -11,6 +11,7 @@ export class YandexGptService {
   async execPrompt(
     prompt: string,
     history: string[],
+    maxTokens?: number,
   ): Promise<[string, number]> {
     const IAM_TOKEN = this.configService.get<string>('IAM_TOKEN');
     const FOLDER_ID = this.configService.get<string>('FOLDER_ID');
@@ -27,7 +28,7 @@ export class YandexGptService {
 
     const modelConfig = {
       temperature: 0.1,
-      maxResponseTokens: 250,
+      maxResponseTokens: maxTokens ?? 250,
     };
 
     const response = await fetch(url, {
@@ -48,7 +49,7 @@ export class YandexGptService {
         messages: [
           {
             role: 'system',
-            text: `Ты — помощник для генерации идей. Используй предоставленный контекст: ${history.join(';')}`,
+            text: `Используй предоставленный контекст, чтобы сгенерировать идеи: ${history.join(' -> ')}`,
           },
           { role: 'user', text: prompt },
         ],

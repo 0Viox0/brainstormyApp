@@ -5,15 +5,19 @@ import { IdeasGeneratorController } from './ideasGenerator.controller';
 import { SixHatsService } from './services/thinkingModels/sixHats/sixHats.service';
 import { ScamperService } from './services/thinkingModels/scamper/scamper.service';
 import { ScamperParser } from './services/thinkingModels/scamper/scamper.parser';
+import { GeneratorService } from './services/thinkingModels/generator/generator.service';
+import { GeneratorParser } from './services/thinkingModels/generator/generator.parser';
 
 @Module({
   controllers: [IdeasGeneratorController],
   providers: [
     SixHatsService,
     ScamperService,
+    GeneratorService,
     AiApi,
     SixHatsParser,
     ScamperParser,
+    GeneratorParser,
   ],
 })
 export class IdeasGeneratorModule {}

@@ -1,5 +1,5 @@
 import type { Method } from '@/features/ideaGraph/store/state';
-import { ScamperLogo, SixHatsLogo } from '@/shared/icons';
+import { LightBulbIcon, ScamperLogo, SixHatsLogo } from '@/shared/icons';
 import { cn } from '@/shared/utils';
 import { type FC } from 'react';
 
@@ -15,6 +15,10 @@ export const ViewOnlyMethodPicker: FC<PickerProps> = ({
   const getMethodIcon = () => {
     if (method === 'sixHats') {
       return <SixHatsLogo />;
+    }
+
+    if (method === 'generator') {
+      return <LightBulbIcon className="mb-[-1px] ml-[1px]" />;
     }
 
     return <ScamperLogo />;

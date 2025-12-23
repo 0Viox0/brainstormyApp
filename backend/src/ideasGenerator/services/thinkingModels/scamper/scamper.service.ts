@@ -15,8 +15,6 @@ export class ScamperService {
     prompt: string,
     history: string[],
   ): Promise<ScamperResponse> {
-    // const prompt = `Use six hats brainstorming model to generate ideas from this one: ${baseIdea}. Present the result in JSON format where key is the hat color in lowercase and value is the idea. RETURN IN JSON FORMAT`;
-
     const promptToExecute = `Используй модель мозгового штурма “SCAMPER”, чтобы сгенерировать идеи на основе этой: ${baseIdea} ${prompt ? `+ ${prompt}` : ''}. Представь результат в формате JSON, где ключ — это буква в нижнем регистре на английском, а значение — идея на русском. ВЕРНИ В ФОРМАТЕ JSON.`;
 
     const [ideas, tokensUsed] = await this.aiApi.execPrompt(

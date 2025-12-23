@@ -1,3 +1,7 @@
 export interface IAiApi {
-  execPrompt(request: string, history: string[]): Promise<[string, number]>;
+  execPrompt(
+    request: string,
+    history: string[],
+    maxTokens?: number,
+  ): Promise<[string, number]>;
 }
