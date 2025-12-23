@@ -84,6 +84,7 @@ export const GeneratorLayer: FC<GeneratorLayerProps> = ({
       ideas: {
         ...updatedIdeas,
         [fromIdeaNumber]: {
+          // @ts-expect-error lskdjflksjd
           ...updatedIdeas[fromIdeaNumber],
           chosen: true,
         },

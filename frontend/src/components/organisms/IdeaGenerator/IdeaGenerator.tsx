@@ -1,10 +1,10 @@
 import { GenerateIdeaButton, IdeaTextHolder } from '@/components/atoms';
 import { PromptPicker, WithTooltip } from '@/components/molecules';
 import {
-  type Method,
   type PickOption,
   MethodPicker,
 } from '@/components/molecules/MethodPicker/MethodPicker';
+import type { Method } from '@/features/ideaGraph/store/state';
 import {
   LightBulbIcon,
   ScamperLogo,

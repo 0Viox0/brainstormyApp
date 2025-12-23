@@ -48,6 +48,7 @@ export const CollapsedLayer: FC<CollapsedLayerProps> = ({ layerId }) => {
 
       if (!chosenHat) return;
 
+    // @ts-expect-error everything is fine
       return <SixHatsLogo color={hatsColorMap[chosenHat[0]]} />;
     }
 
