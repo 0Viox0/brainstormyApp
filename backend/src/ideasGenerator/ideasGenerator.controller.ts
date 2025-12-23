@@ -6,7 +6,7 @@ import { ScamperService } from './services/thinkingModels/scamper/scamper.servic
 import { GeneratorResponse } from './services/thinkingModels/generator/types';
 import { GeneratorService } from './services/thinkingModels/generator/generator.service';
 
-@Controller('ideas')
+@Controller('/api/ideas')
 export class IdeasGeneratorController {
   constructor(
     private readonly sixHatsService: SixHatsService,
