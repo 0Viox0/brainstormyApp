@@ -38,8 +38,9 @@ jobs:
                   
             echo "🛑 Stopping containers"
             docker compose --env-file .env down
-            docker rm $(docker rm -qa)
-            docker rmi $(docker images -q)
+            docker container prune -f
+            docker image prune -f
+            docker volume prune -f
                   
             echo "🏗 Building and starting containers"
             docker compose --env-file .env up --build --no-build-cache -d
