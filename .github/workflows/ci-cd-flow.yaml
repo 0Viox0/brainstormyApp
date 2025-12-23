@@ -26,11 +26,6 @@ jobs:
                   
             cd "$APP_DIR"
                   
-            echo "🧪 Checking required secrets"
-            : "${IAM_TOKEN:?Missing IAM_TOKEN}"
-            : "${FOLDER_ID:?Missing FOLDER_ID}"
-            : "${VITE_BASE_URL:?Missing VITE_BASE_URL}"
-                  
             echo "📝 Writing .env file"
             cat > .env <<EOF
             IAM_TOKEN=${{ secrets.IAM_TOKEN }}
