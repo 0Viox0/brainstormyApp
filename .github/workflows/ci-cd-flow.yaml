@@ -39,7 +39,7 @@ jobs:
             echo "🛑 Stopping containers"
             docker compose --env-file .env down
             docker rm $(docker rm -qa)
-            docker rmi $(docker rmi -q)
+            docker rmi $(docker images -q)
                   
             echo "🏗 Building and starting containers"
             docker compose --env-file .env up --build --no-build-cache -d
