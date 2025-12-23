@@ -18,6 +18,8 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            echo -n ${{ secrets.SSH_PRIVATE_KEY }} > id_rsa
+
             rm brainstormy
 
             git clone git@github.com:Incept10n/brainstormy.git
