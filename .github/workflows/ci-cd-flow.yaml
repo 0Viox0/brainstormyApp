@@ -43,7 +43,8 @@ jobs:
             docker volume prune -f
                   
             echo "🏗 Building and starting containers"
-            docker compose --env-file .env up --build --no-cache -d
+            docker compose --env-file .env build --no-cache
+            docker compose --env-file .env up -d
 
                   
             echo "✅ Deployment finished successfully"
