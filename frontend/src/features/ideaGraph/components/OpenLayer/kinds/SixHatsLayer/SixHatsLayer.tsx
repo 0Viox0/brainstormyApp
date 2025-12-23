@@ -77,6 +77,7 @@ export const SixHatsLayer: FC<SixHatsProps> = ({ data, onGenerateIdea }) => {
       ideas: {
         ...updatedIdeas,
         [fromHat]: {
+          // @ts-expect-error lskdjflksjd
           ...updatedIdeas[fromHat],
           chosen: true,
         },

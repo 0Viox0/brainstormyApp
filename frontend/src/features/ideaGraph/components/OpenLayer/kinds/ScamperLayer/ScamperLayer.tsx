@@ -66,6 +66,7 @@ export const ScamperLayer: FC<ScamperLayerProps> = ({
       ideas: {
         ...updatedIdeas,
         [fromLetter]: {
+          // @ts-expect-error lskdjflksjd
           ...updatedIdeas[fromLetter],
           chosen: true,
         },
