@@ -1,11 +1,11 @@
 import { GoFurtherButton, IdeaTextHolder } from '@/components/atoms';
-import { type Method } from '@/components/molecules/MethodPicker/MethodPicker';
 import { MainBlockConnector } from '@/shared/images';
 import { cn } from '@/shared/utils';
 import { type FC } from 'react';
 import { ViewOnlyMethodPicker } from '../ViewOnlyIdeaGenerator/components/ViewOnlyMethodPicker';
 import { ViewOnlyPromptPicker } from '../ViewOnlyIdeaGenerator/components/ViewOnlyPromptPicker';
 import { WithTooltip } from '@/components/molecules';
+import type { Method } from '@/features/ideaGraph/store/state';
 
 type Prompt = string;
 export type IdeaGeneratorState = {

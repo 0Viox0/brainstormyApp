@@ -3,8 +3,13 @@ import { ScamperLayer, SixHatsLayer } from './kinds';
 import type { IdeaGeneratorState } from '@/components/organisms/IdeaGenerator/IdeaGenerator';
 import { useIdeasGraph } from '../../store';
 import type { SixHatsKeys } from './kinds/SixHatsLayer/SixHatsLayer';
-import type { IdeasData, ScamperData, SixHatsData } from '../../store/state';
+import type {
+  GeneratorData,
+  ScamperData,
+  SixHatsData,
+} from '../../store/state';
 import { GenerateIdeaButton } from '@/components/atoms';
+import { GeneratorLayer } from './kinds/GeneratorLayer/GeneratorLayer';
 
 export type OpenLayerProps = {
   triggerGenerateNewLayer: (ideaGeneratorState: IdeaGeneratorState) => void;
@@ -15,7 +20,7 @@ export const OpenLayer: FC<OpenLayerProps> = ({
   layerId,
   triggerGenerateNewLayer,
 }) => {
-  const { changeLayer, layers } = useIdeasGraph((state) => state);
+  const { layers, setNextLayerForIdea } = useIdeasGraph((state) => state);
   const layer = layers.find((layer) => layer.id === layerId);
 
   if (!layer) return <></>;
@@ -28,39 +33,13 @@ export const OpenLayer: FC<OpenLayerProps> = ({
       ) => {
         const nextLayerId = Date.now() + Math.random();
 
-        const updatedIdeas = Object.fromEntries(
-          Object.entries(layer.ideas).map(([key, idea]) => [
-            key,
-            {
-              ...idea,
-              chosen: false,
-            },
-          ]),
-        ) as IdeasData;
-
-        changeLayer(layer.id, {
-          ...layer,
-          ideas: updatedIdeas,
-        });
-
-        changeLayer(layer.id, {
-          ...layer,
-          collapsedData: {
-            chosenMethod: ideaGeneratorState.method,
-            chosenPrompt: ideaGeneratorState.prompt,
-            isCollapsed: true,
-          },
-          ideas: {
-            ...updatedIdeas,
-            [fromHat]: {
-              ...updatedIdeas[fromHat],
-              chosen: true,
-              nextLayer: nextLayerId,
-              nextMethod: ideaGeneratorState.method,
-              nextPrompt: ideaGeneratorState.prompt,
-            },
-          },
-        });
+        setNextLayerForIdea(
+          layer.id,
+          fromHat,
+          nextLayerId,
+          ideaGeneratorState.method,
+          ideaGeneratorState.prompt,
+        );
 
         triggerGenerateNewLayer({
           ...ideaGeneratorState,
@@ -83,40 +62,13 @@ export const OpenLayer: FC<OpenLayerProps> = ({
       ) => {
         const nextLayerId = Date.now() + Math.random();
 
-        const updatedIdeas = Object.fromEntries(
-          Object.entries(layer.ideas).map(([key, idea]) => [
-            key,
-            {
-              ...idea,
-              chosen: false,
-            },
-          ]),
-        ) as IdeasData;
-
-        changeLayer(layer.id, {
-          ...layer,
-          ideas: updatedIdeas,
-        });
-
-        changeLayer(layer.id, {
-          ...layer,
-          method: 'scamper',
-          collapsedData: {
-            chosenMethod: ideaGeneratorState.method,
-            chosenPrompt: ideaGeneratorState.prompt,
-            isCollapsed: true,
-          },
-          ideas: {
-            ...updatedIdeas,
-            [fromLetter]: {
-              ...updatedIdeas[fromLetter],
-              chosen: true,
-              nextLayer: nextLayerId,
-              nextMethod: ideaGeneratorState.method,
-              nextPrompt: ideaGeneratorState.prompt,
-            },
-          },
-        });
+        setNextLayerForIdea(
+          layer.id,
+          fromLetter,
+          nextLayerId,
+          ideaGeneratorState.method,
+          ideaGeneratorState.prompt,
+        );
 
         triggerGenerateNewLayer({
           ...ideaGeneratorState,
@@ -128,6 +80,35 @@ export const OpenLayer: FC<OpenLayerProps> = ({
         <ScamperLayer
           onGenerateIdea={triggerGenerateNewLayerAndChange}
           data={layer.ideas as ScamperData}
+        />
+      );
+    }
+
+    if (layer.method === 'generator') {
+      const triggerGenerateNewLayerAndChange = (
+        fromIdeaNumber: string,
+        ideaGeneratorState: IdeaGeneratorState,
+      ) => {
+        const nextLayerId = Date.now() + Math.random();
+
+        setNextLayerForIdea(
+          layer.id,
+          fromIdeaNumber,
+          nextLayerId,
+          ideaGeneratorState.method,
+          ideaGeneratorState.prompt,
+        );
+
+        triggerGenerateNewLayer({
+          ...ideaGeneratorState,
+          layerId: nextLayerId,
+        });
+      };
+
+      return (
+        <GeneratorLayer
+          onGenerateIdea={triggerGenerateNewLayerAndChange}
+          data={layer.ideas as GeneratorData}
         />
       );
     }

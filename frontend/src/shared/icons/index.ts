@@ -5,3 +5,5 @@ export { ScamperLogo } from './ScamperLogo';
 export { SetDefaultOptionIcon } from './SetDefaultOptionIcon';
 export { SixHatsLogo } from './SixHatsLogo';
 export { TextDefaultIcon } from './TextDefaultIcon';
+export { LightBulbIcon } from './LightBulbIcon';
+export { BulbForOpenLayer } from './BulbForOpenLayer';

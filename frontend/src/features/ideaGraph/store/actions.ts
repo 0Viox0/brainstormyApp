@@ -1,4 +1,4 @@
-import type { IdeasLayer, LayerId } from './state';
+import type { IdeasLayer, LayerId, Method } from './state';
 
 export type IdeaGraphAction = {
   goToLayer: (layerId: LayerId) => void;
@@ -7,4 +7,13 @@ export type IdeaGraphAction = {
 
   loadNewLayer: () => void;
   finishLoadingNewLayer: () => void;
+
+  resetChosenIdeas: (layerId: LayerId) => void;
+  setNextLayerForIdea: (
+    layerId: LayerId,
+    ideaKey: string,
+    nextLayerId: LayerId,
+    nextMethod: Method,
+    nextPrompt: string,
+  ) => void;
 };

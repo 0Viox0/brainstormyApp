@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import { useIdeasGraph } from '../../store';
 import { GenerateIdeaButton } from '@/components/atoms';
-import { SixHatsLogo } from '@/shared/icons';
+import { BulbForOpenLayer, SixHatsLogo } from '@/shared/icons';
 import type { IdeaGeneratorState } from '@/components/organisms/IdeaGenerator/IdeaGenerator';
 import { ViewOnlyIdeaGenerator } from '@/components/organisms/ViewOnlyIdeaGenerator/ViewOnlyIdeaGenerator';
 import type { SixHatsKeys } from '../OpenLayer/kinds/SixHatsLayer/SixHatsLayer';
@@ -59,6 +59,30 @@ export const CollapsedLayer: FC<CollapsedLayerProps> = ({ layerId }) => {
       if (!chosenEntry) return;
 
       return <div className="font-bold">{chosenEntry[0].toUpperCase()}</div>;
+    }
+
+    if (layer.method === 'generator') {
+      const chosenEntry = Object.entries(layer.ideas).find(
+        ([, idea]) => idea.chosen,
+      );
+
+      if (!chosenEntry) return;
+
+      const createIdeaIcon = (ideaNumber: string) => {
+        return (
+          <div className="relative">
+            <BulbForOpenLayer />
+            <span
+              className="absolute top-[40%] left-1/2 -translate-1/2 font-bold
+                text-[#DBB345]"
+            >
+              {ideaNumber}
+            </span>
+          </div>
+        );
+      };
+
+      return createIdeaIcon(chosenEntry[0]);
     }
   };
 

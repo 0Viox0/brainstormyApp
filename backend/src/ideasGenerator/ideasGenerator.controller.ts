@@ -3,6 +3,7 @@ import { SixHatsService } from './services/thinkingModels/sixHats/sixHats.servic
 import { SixHatsResponse } from './services/thinkingModels/sixHats/types';
 import { ScamperResponse } from './services/thinkingModels/scamper/types';
 import { ScamperService } from './services/thinkingModels/scamper/scamper.service';
+import { GeneratorResponse } from './services/thinkingModels/generator/types';
 
 @Controller('ideas')
 export class IdeasGeneratorController {
@@ -17,11 +18,11 @@ export class IdeasGeneratorController {
     @Query('prompt') prompt: string,
     @Query('history') historyRaw: string,
   ) {
-    // return this.getDummySixHatsResponse();
+    return this.getDummySixHatsResponse();
 
-    const history = historyRaw ? (JSON.parse(historyRaw) as string[]) : [];
-
-    return this.sixHatsService.getSixHats(baseIdea, prompt, history);
+    // const history = historyRaw ? (JSON.parse(historyRaw) as string[]) : [];
+    //
+    // return this.sixHatsService.getSixHats(baseIdea, prompt, history);
   }
 
   @Get('scamper')
@@ -30,11 +31,24 @@ export class IdeasGeneratorController {
     @Query('prompt') prompt: string,
     @Query('history') historyRaw: string,
   ) {
-    // return this.getDummyScamperResponse();
+    return this.getDummyScamperResponse();
 
-    const history = historyRaw ? (JSON.parse(historyRaw) as string[]) : [];
+    // const history = historyRaw ? (JSON.parse(historyRaw) as string[]) : [];
+    //
+    // return this.scamperService.getScamper(baseIdea, prompt, history);
+  }
 
-    return this.scamperService.getScamper(baseIdea, prompt, history);
+  @Get('generator')
+  async getGeneratorIdeas(
+    @Query('baseIdea') baseIdea: string,
+    @Query('prompt') prompt: string,
+    @Query('history') historyRaw: string,
+  ) {
+    return this.getDummyGeneratorResponse();
+
+    // const history = historyRaw ? (JSON.parse(historyRaw) as string[]) : [];
+    //
+    // return this.scamperService.getScamper(baseIdea, prompt, history);
   }
 
   private async getDummySixHatsResponse() {
@@ -52,7 +66,7 @@ export class IdeasGeneratorController {
           'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Impedit, expedita.',
         red: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Impedit, expedita.',
       },
-      tokensUsed: -1,
+      tokensUsed: 160,
     };
 
     await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -71,7 +85,29 @@ export class IdeasGeneratorController {
         e: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Impedit, expedita.',
         r: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Impedit, expedita.',
       },
-      tokensUsed: -1,
+      tokensUsed: 160,
+    };
+
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    return dummyReponse;
+  }
+
+  private async getDummyGeneratorResponse() {
+    const dummyReponse: GeneratorResponse = {
+      type: 'generator',
+      data: {
+        1: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Impedit, expedita.',
+        2: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Impedit, expedita.',
+        3: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Impedit, expedita.',
+        4: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Impedit, expedita.',
+        5: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Impedit, expedita.',
+        6: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Impedit, expedita.',
+        7: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Impedit, expedita.',
+        8: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Impedit, expedita.',
+        9: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Impedit, expedita.',
+      },
+      tokensUsed: 160,
     };
 
     await new Promise((resolve) => setTimeout(resolve, 1000));

@@ -5,7 +5,12 @@ import {
   type PickOption,
   MethodPicker,
 } from '@/components/molecules/MethodPicker/MethodPicker';
-import { ScamperLogo, SixHatsLogo, TextDefaultIcon } from '@/shared/icons';
+import {
+  LightBulbIcon,
+  ScamperLogo,
+  SixHatsLogo,
+  TextDefaultIcon,
+} from '@/shared/icons';
 import { MainBlockConnector } from '@/shared/images';
 import { cn } from '@/shared/utils';
 import { useState, type FC } from 'react';
@@ -26,7 +31,7 @@ export type IdeaGeneratorProps = {
 
 const defaultIdeaGeneratorState: IdeaGeneratorState = {
   text: '',
-  method: 'sixHats',
+  method: 'generator',
   prompt: '',
 };
 
@@ -40,6 +45,12 @@ export const IdeaGenerator: FC<IdeaGeneratorProps> = ({
   const [isButtonVisible, setIsButtonVisible] = useState<boolean>(true);
 
   const methodOptions: PickOption[] = [
+    {
+      id: 3,
+      icon: <LightBulbIcon className="mb-[-1px]" />,
+      name: 'Генератор',
+      type: 'generator',
+    },
     {
       id: 2,
       icon: <ScamperLogo />,

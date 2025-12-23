@@ -1,4 +1,4 @@
-export type Method = 'sixHats' | 'scamper';
+export type Method = 'sixHats' | 'scamper' | 'generator';
 export type LayerId = number;
 
 export type Idea = {
@@ -28,7 +28,19 @@ export type SixHatsData = {
   red: Idea;
 };
 
-export type IdeasData = SixHatsData | ScamperData;
+export type GeneratorData = {
+  1: Idea;
+  2: Idea;
+  3: Idea;
+  4: Idea;
+  5: Idea;
+  6: Idea;
+  7: Idea;
+  8: Idea;
+  9: Idea;
+};
+
+export type IdeasData = SixHatsData | ScamperData | GeneratorData;
 
 export type CollapsedData = {
   isCollapsed: boolean;

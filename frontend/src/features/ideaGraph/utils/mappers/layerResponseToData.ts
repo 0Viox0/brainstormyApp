@@ -28,6 +28,19 @@ export const toLayerData = (response: LayerDataResponse): IdeasData => {
         red: toIdea(response.data.red),
       };
 
+    case 'generator':
+      return {
+        1: toIdea(response.data['1']),
+        2: toIdea(response.data['2']),
+        3: toIdea(response.data['3']),
+        4: toIdea(response.data['4']),
+        5: toIdea(response.data['5']),
+        6: toIdea(response.data['6']),
+        7: toIdea(response.data['7']),
+        8: toIdea(response.data['8']),
+        9: toIdea(response.data['9']),
+      };
+
     default: {
       const _exhaustive: never = response;
       return _exhaustive;

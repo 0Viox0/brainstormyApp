@@ -1,8 +1,7 @@
+import type { Method } from '@/features/ideaGraph/store/state';
 import { ScamperLogo, SixHatsLogo } from '@/shared/icons';
 import { cn } from '@/shared/utils';
 import { type FC } from 'react';
-
-export type Method = 'sixHats' | 'scamper';
 
 export type PickerProps = {
   method: Method;

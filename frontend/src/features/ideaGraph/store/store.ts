@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import type { IdeaGraphAction } from './actions';
-import type { IdeaGraph, IdeasLayer, LayerId } from './state';
+import type { IdeaGraph, IdeasData, IdeasLayer, LayerId } from './state';
 
 export const useIdeasGraph = create<IdeaGraph & IdeaGraphAction>((set) => ({
   isLoadingNewLayer: false,
@@ -17,6 +17,70 @@ export const useIdeasGraph = create<IdeaGraph & IdeaGraphAction>((set) => ({
     set((state) => ({
       layers: [...state.layers, newLayer],
     })),
+
   loadNewLayer: () => set(() => ({ isLoadingNewLayer: true })),
+
   finishLoadingNewLayer: () => set(() => ({ isLoadingNewLayer: false })),
+
+  resetChosenIdeas: (layerId) =>
+    set((state) => ({
+      layers: state.layers.map((layer) => {
+        if (layer.id !== layerId) return layer;
+
+        const updatedIdeas = Object.fromEntries(
+          Object.entries(layer.ideas).map(([key, idea]) => [
+            key,
+            {
+              ...idea,
+              chosen: false,
+            },
+          ]),
+        ) as IdeasData;
+
+        return {
+          ...layer,
+          ideas: updatedIdeas,
+        };
+      }),
+    })),
+
+  setNextLayerForIdea: (
+    layerId,
+    ideaKey,
+    nextLayerId,
+    nextMethod,
+    nextPrompt,
+  ) =>
+    set((state) => ({
+      layers: state.layers.map((layer) => {
+        if (layer.id !== layerId) return layer;
+
+        const updatedIdeas = Object.fromEntries(
+          Object.entries(layer.ideas).map(([key, idea]) => [
+            key,
+            { ...idea, chosen: false },
+          ]),
+        ) as IdeasData;
+
+        return {
+          ...layer,
+          collapsedData: {
+            chosenMethod: nextMethod,
+            chosenPrompt: nextPrompt,
+            isCollapsed: true,
+          },
+          ideas: {
+            ...updatedIdeas,
+            [ideaKey]: {
+              // @ts-expect-error everything is fine here
+              ...updatedIdeas[ideaKey],
+              chosen: true,
+              nextLayer: nextLayerId,
+              nextMethod,
+              nextPrompt,
+            },
+          },
+        };
+      }),
+    })),
 }));

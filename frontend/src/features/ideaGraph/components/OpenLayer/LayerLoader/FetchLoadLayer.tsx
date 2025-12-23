@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { LayerLoader } from './LayerLoader';
-import type { IdeasLayer } from '@/features/ideaGraph/store/state';
+import type { IdeasLayer, Method } from '@/features/ideaGraph/store/state';
 import { useEffect, type FC } from 'react';
 import { useIdeasGraph } from '@/features/ideaGraph/store';
 import { fetchIdeas } from '@/features/ideaGraph/data/fetch';
@@ -56,7 +56,13 @@ export const FetchLoadLayer: FC<FetchLoadLayerProps> = ({
   });
 
   const getIdeasCountToGenerate = () => {
-    return method === 'sixHats' ? 6 : 7;
+    const methodIdeasCountMap: Record<Method, number> = {
+      sixHats: 6,
+      scamper: 7,
+      generator: 9,
+    };
+
+    return methodIdeasCountMap[method as keyof typeof methodIdeasCountMap];
   };
 
   return (

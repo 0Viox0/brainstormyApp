@@ -17,6 +17,18 @@ export type SixHatsDataResponse = {
   red: string;
 };
 
+export type GeneratorDataResponse = {
+  1: string;
+  2: string;
+  3: string;
+  4: string;
+  5: string;
+  6: string;
+  7: string;
+  8: string;
+  9: string;
+};
+
 export type ScamperResponse = {
   type: 'scamper';
   data: ScamperDataResponse;
@@ -29,4 +41,13 @@ export type SixHatsResponse = {
   tokensUsed: number;
 };
 
-export type LayerDataResponse = SixHatsResponse | ScamperResponse;
+export type GeneratorResponse = {
+  type: 'generator';
+  data: GeneratorDataResponse;
+  tokensUsed: number;
+};
+
+export type LayerDataResponse =
+  | SixHatsResponse
+  | ScamperResponse
+  | GeneratorResponse;

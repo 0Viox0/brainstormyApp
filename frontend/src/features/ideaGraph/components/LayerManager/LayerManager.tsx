@@ -51,6 +51,8 @@ export const LayersManager: FC<LayersManagerProps> = ({ initialIdea }) => {
     loadNewLayer();
   };
 
+  console.log('layers', layers);
+
   const renderLayres = (layerId: number | undefined): ReactNode => {
     if (!layerId) return;
 

@@ -1,7 +1,6 @@
 import { Tooltip } from '@/components/atoms';
+import type { Method } from '@/features/ideaGraph/store/state';
 import { useState, type FC, type MouseEvent, type ReactNode } from 'react';
-
-export type Method = 'sixHats' | 'scamper';
 
 export type PickOption = {
   id: number;
