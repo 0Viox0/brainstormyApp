@@ -28,9 +28,10 @@ jobs:
                   
             echo "📝 Writing .env file"
             cat > .env <<EOF
-            IAM_TOKEN=${{ secrets.IAM_TOKEN }}
-            FOLDER_ID=${{ secrets.FOLDER_ID }}
             VITE_BASE_URL=${{ secrets.VITE_BASE_URL }}
+            API_TOKEN=${{ secrets.API_TOKEN }}
+            FOLDER_ID=${{ secrets.FOLDER_ID }}
+            ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
             EOF
                   
             echo "📥 Updating code"
