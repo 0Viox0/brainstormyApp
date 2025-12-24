@@ -13,12 +13,35 @@ export class YandexGptService {
     history: string[],
     maxTokens?: number,
   ): Promise<[string, number]> {
+    const environment = this.configService.get<string>('ENVIRONMENT');
     const IAM_TOKEN = this.configService.get<string>('IAM_TOKEN');
     const FOLDER_ID = this.configService.get<string>('FOLDER_ID');
+    const API_TOKEN = this.configService.get<string>('API_TOKEN');
 
-    if (!IAM_TOKEN || !FOLDER_ID) {
+    if (!environment) {
       throw new HttpException(
-        'Environment variables were not loaded',
+        'Environment variable "ENVIRONMENT" was not set',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+
+    if (!FOLDER_ID) {
+      throw new HttpException(
+        'Environment variable "FOLDER_ID" was not set',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+
+    if (environment === 'prod' && !API_TOKEN) {
+      throw new HttpException(
+        'Environment variable "API_TOKEN" was not set',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+
+    if (environment === 'dev' && !IAM_TOKEN) {
+      throw new HttpException(
+        'Environment variable "IAM_TOKEN" was not set',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
@@ -31,12 +54,26 @@ export class YandexGptService {
       maxResponseTokens: maxTokens ?? 250,
     };
 
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
+    const getHeaders = () => {
+      if (environment === 'prod') {
+        return {
+          'Content-Type': 'application/json',
+          Authorization: `Api-Key ${API_TOKEN}`,
+          'x-folder-id': `${FOLDER_ID}`,
+        };
+      }
+
+      return {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${IAM_TOKEN}`,
         'x-folder-id': `${FOLDER_ID}`,
+      };
+    };
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        ...getHeaders(),
       },
       body: JSON.stringify({
         modelUri: `gpt://${FOLDER_ID}/yandexgpt-lite/latest`,

@@ -7,8 +7,6 @@ export const fetchIdeas = async (
   helpingPrompt: string,
   history: string[],
 ): Promise<LayerDataResponse> => {
-  // console.log('context sent: ', [...new Set(history)]);
-  console.log('import.meta.env.VITE_BASE_URL', import.meta.env.VITE_BASE_URL);
   const response = await fetch(
     `${import.meta.env.VITE_BASE_URL}/api/ideas/${method}?baseIdea=${baseIdea}&prompt=${helpingPrompt}&history=${JSON.stringify([...new Set(history)])}`,
   );
