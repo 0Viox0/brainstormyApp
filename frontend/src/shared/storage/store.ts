@@ -4,8 +4,8 @@ import type { AppActions } from './actions';
 
 export const useAppStore = create<AppState & AppActions>((set) => ({
   user: {
-    username: '',
-    userLogoUrl: '',
+    username: 'none',
+    userLogoUrl: 'none',
     tokensLeft: 0,
   },
   setUser: (user: User) => set(() => ({ user })),

@@ -1,12 +1,15 @@
 import { cn } from '@/shared/utils';
-import type { FC, ReactNode } from 'react';
+import type { FC, HTMLAttributes, ReactNode } from 'react';
 
-export type BorderedDivProps = {
+export type BorderedDivProps = HTMLAttributes<HTMLDivElement> & {
   children: ReactNode;
-  className?: string;
 };
 
-export const BorderedDiv: FC<BorderedDivProps> = ({ children, className }) => {
+export const BorderedDiv: FC<BorderedDivProps> = ({
+  children,
+  className,
+  ...props
+}) => {
   return (
     <div
       className={cn(
@@ -14,6 +17,7 @@ export const BorderedDiv: FC<BorderedDivProps> = ({ children, className }) => {
         border-[1px] px-[22px] py-[8px]`,
         className,
       )}
+      {...props}
     >
       {children}
     </div>

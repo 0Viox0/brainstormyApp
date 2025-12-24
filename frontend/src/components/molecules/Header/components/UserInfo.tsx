@@ -17,6 +17,7 @@ export const UserInfo = () => {
   const handleExitAccount = () => {
     handleCloseDisplayUserInfo();
     // TODO: exiting from account logic
+    // i.e. remove jwt token
   };
 
   return (
@@ -68,12 +69,12 @@ export const UserInfo = () => {
               </div>
               <GoogleIcon />
             </div>
-            <button
-              className="outline-none hover:cursor-pointer"
+            <BorderedDiv
+              className="hover:cursor-pointer"
               onClick={handleExitAccount}
             >
-              <BorderedDiv>Выйти из аккаунта</BorderedDiv>
-            </button>
+              Выйти из аккаунта
+            </BorderedDiv>
             <div></div>
           </BorderedDiv>
         </ModalContainer>
