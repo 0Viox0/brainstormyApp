@@ -1,4 +1,4 @@
-import { EnterTextInput, Tooltip } from '@/components/atoms';
+import { EnterTextInput, ModalContainer, Tooltip } from '@/components/atoms';
 import { cn } from '@/shared/utils';
 import { useState, type FC, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
@@ -54,18 +54,14 @@ export const PromptPicker: FC<PromptPickerProps> = ({
       />
       {openModal &&
         createPortal(
-          <div
-            className="fixed top-0 left-0 h-[100vh] w-[100vw] backdrop-blur-xl"
-          >
-            <div className="absolute top-1/2 left-1/2 z-50 -translate-1/2">
-              <EnterTextInput
-                initialText={savedText}
-                onTextChange={handleTextChange}
-                heading="Введите впомогательный промпт"
-                placeholder="Введите промпт, который поможет генерировать идеи"
-              />
-            </div>
-          </div>,
+          <ModalContainer>
+            <EnterTextInput
+              initialText={savedText}
+              onTextChange={handleTextChange}
+              heading="Введите впомогательный промпт"
+              placeholder="Введите промпт, который поможет генерировать идеи"
+            />
+          </ModalContainer>,
           document.body,
         )}
       {isHovered && (

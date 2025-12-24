@@ -7,3 +7,7 @@ export { SixHatsLogo } from './SixHatsLogo';
 export { TextDefaultIcon } from './TextDefaultIcon';
 export { LightBulbIcon } from './LightBulbIcon';
 export { BulbForOpenLayer } from './BulbForOpenLayer';
+export { CrownIcon } from './CrownIcon';
+export { QuestionIcon } from './QuestionIcon';
+export { GoogleIcon } from './GoogleIcon';
+export { YandexIcon } from './YandexIcon';

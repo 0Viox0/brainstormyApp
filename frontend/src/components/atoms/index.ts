@@ -6,3 +6,5 @@ export { ThreeWayLine } from './ThreeWayLine';
 export { TextFieldLoader } from './TextFieldLoader/';
 export { GoFurtherButton } from './GoFurtherButton';
 export { TokensUsed } from './TokensUsed';
+export { ModalContainer } from './ModalContainer';
+export { BorderedDiv } from './BorderedDiv';

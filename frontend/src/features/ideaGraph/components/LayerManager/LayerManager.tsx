@@ -32,7 +32,7 @@ export const LayersManager: FC<LayersManagerProps> = ({ initialIdea }) => {
     if (!el) return;
 
     el.scrollTo({
-      top: 0,
+      top: 30,
       left: el.scrollWidth,
       behavior: 'smooth',
     });
@@ -86,7 +86,7 @@ export const LayersManager: FC<LayersManagerProps> = ({ initialIdea }) => {
     <div
       ref={scrollRef}
       className="bg-brainstormyBg flex h-screen items-start overflow-x-auto
-        text-white"
+        pt-[130px] text-white"
     >
       <div className="mt-[374px]">
         <IdeaGenerator

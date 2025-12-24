@@ -20,11 +20,11 @@ export class IdeasGeneratorController {
     @Query('prompt') prompt: string,
     @Query('history') historyRaw: string,
   ) {
-    // return this.getDummySixHatsResponse();
+    return this.getDummySixHatsResponse();
 
-    const history = historyRaw ? (JSON.parse(historyRaw) as string[]) : [];
-
-    return this.sixHatsService.getSixHats(baseIdea, prompt, history);
+    // const history = historyRaw ? (JSON.parse(historyRaw) as string[]) : [];
+    //
+    // return this.sixHatsService.getSixHats(baseIdea, prompt, history);
   }
 
   @Get('scamper')
@@ -33,11 +33,11 @@ export class IdeasGeneratorController {
     @Query('prompt') prompt: string,
     @Query('history') historyRaw: string,
   ) {
-    // return this.getDummyScamperResponse();
+    return this.getDummyScamperResponse();
 
-    const history = historyRaw ? (JSON.parse(historyRaw) as string[]) : [];
-
-    return this.scamperService.getScamper(baseIdea, prompt, history);
+    // const history = historyRaw ? (JSON.parse(historyRaw) as string[]) : [];
+    //
+    // return this.scamperService.getScamper(baseIdea, prompt, history);
   }
 
   @Get('generator')
@@ -46,11 +46,11 @@ export class IdeasGeneratorController {
     @Query('prompt') prompt: string,
     @Query('history') historyRaw: string,
   ) {
-    // return this.getDummyGeneratorResponse();
+    return this.getDummyGeneratorResponse();
 
-    const history = historyRaw ? (JSON.parse(historyRaw) as string[]) : [];
-
-    return this.generatorService.getGeneratedIdeas(baseIdea, prompt, history);
+    // const history = historyRaw ? (JSON.parse(historyRaw) as string[]) : [];
+    //
+    // return this.generatorService.getGeneratedIdeas(baseIdea, prompt, history);
   }
 
   private async getDummySixHatsResponse() {
