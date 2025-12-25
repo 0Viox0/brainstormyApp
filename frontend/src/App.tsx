@@ -2,6 +2,7 @@ import { useState, type ChangeEvent, type FormEvent } from 'react';
 import { LayersManager } from './features/ideaGraph/components/LayerManager';
 import { TokensUsed } from './components/atoms';
 import { Header } from './components/molecules/Header/Header';
+import { YandexAuth } from './features/auth/components/YandexAuth';
 
 function App() {
   const [firstIdea, setFirstIdea] = useState<string>('');
@@ -19,6 +20,7 @@ function App() {
   return (
     <>
       <Header />
+      <YandexAuth />
       <div className="min-h-[100vh]">
         {displayGraph ? (
           <div>
