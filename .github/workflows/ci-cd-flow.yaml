@@ -143,7 +143,7 @@ jobs:
     needs: copy_docker_compose
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy the app using docker compose
+      - name: Run miagrations
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -158,7 +158,7 @@ jobs:
 
             docker run --rm \
               --name migration \
-              -e DATABASE_URL=$DATABASE_URL \
+              -e "DATABASE_URL=$DATABASE_URL" \
               cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG \
               npx prisma migrate deploy
 
