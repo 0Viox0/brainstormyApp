@@ -1,15 +1,148 @@
-on:
+name: Main ci-cd build
+
+on: 
+  workflow_dispatch:
   push:
     branches:
       - master
-  workflow_dispatch:
+  pull_request:
+    branches:
+      - master
 
 jobs:
-  deploy:
+  build_stage_back:
+    name: build stage images
     runs-on: ubuntu-latest
-
     steps:
-      - name: Deploy to server via SSH
+      - uses: actions/checkout@v4
+
+      - name: Login to Yandex Cloud Container Registry
+        run: |
+          echo ${{ secrets.YC_OAUTH }}|docker login \
+           --username oauth \
+           --password-stdin \
+          registry.yandexcloud.net
+
+      - name: Build, tag, and push image to Yandex Cloud Container Registry
+        env:
+          CR_REGISTRY: cn19kjesk3i9p2a4r00n
+          CR_REPOSITORY: stage/back
+          IMAGE_TAG: main
+        run: |
+          cd backend
+          docker build -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG .
+          docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG
+
+  build_stage_front:
+    name: build stage images
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Login to Yandex Cloud Container Registry
+        run: |
+          echo ${{ secrets.YC_OAUTH }}|docker login \
+           --username oauth \
+           --password-stdin \
+          registry.yandexcloud.net
+
+      - name: Build, tag, and push image to Yandex Cloud Container Registry
+        env:
+          CR_REGISTRY: cn19kjesk3i9p2a4r00n
+          CR_REPOSITORY: stage/front
+          IMAGE_TAG: main
+        run: |
+          cd frontend
+          VITE_BASE_URL: ${VITE_BASE_URL}
+          docker build -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG --build-arg VITE_BASE_URL=${{ secrets.VITE_BASE_URL }} .
+          docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG
+
+  dummy:
+    runs-on: ubuntu-latest
+    needs:
+      - build_stage_back
+      - build_stage_front
+    steps:
+      - name: Logical
+        run: echo "Dummy job"
+
+  build_prod_back:
+    name: build prod images
+    needs: dummy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Login to Yandex Cloud Container Registry
+        run: |
+          echo ${{ secrets.YC_OAUTH }}|docker login \
+           --username oauth \
+           --password-stdin \
+          registry.yandexcloud.net
+ 
+
+      - name: Build, tag, and push image to Yandex Cloud Container Registry
+        env:
+          CR_REGISTRY: cn19kjesk3i9p2a4r00n
+          CR_REPOSITORY: prod/back
+          IMAGE_TAG: main
+        run: |
+          cd backend
+          docker build -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG .
+          docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG
+  
+  build_prod_front:
+    name: build prod images
+    needs: dummy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Login to Yandex Cloud Container Registry
+        run: |
+          echo ${{ secrets.YC_OAUTH }}|docker login \
+           --username oauth \
+           --password-stdin \
+          registry.yandexcloud.net
+ 
+
+      - name: Build, tag, and push image to Yandex Cloud Container Registry
+        env:
+          CR_REGISTRY: cn19kjesk3i9p2a4r00n
+          CR_REPOSITORY: prod/front
+          IMAGE_TAG: main
+        run: |
+          cd frontend
+          docker build -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG --build-arg VITE_BASE_URL=${{ secrets.VITE_BASE_URL }} .
+          docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG
+
+  copy_docker_compose:
+    name: build prod images
+    needs: 
+      - build_prod_front
+      - build_prod_back
+    runs-on: ubuntu-latest
+    steps:
+      - name: Scp docker compose file
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+          ssh-keyscan -H $SERVER_HOST >> ~/.ssh/known_hosts
+
+          scp docker-compose.yml $SERVER_USER@$SERVER_HOST:/path/on/server/docker-compose.yml
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SERVER_HOST: ${{ secrets.SSH_HOST }}
+          SERVER_USER: ${{ secrets.SSH_USER }}
+  
+  deploy_prod:
+    name: deploy prod
+    needs: copy_docker_compose
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy the app using docker compose
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -17,36 +150,16 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            set -Eeuo pipefail
-                  
-            echo "🚀 Starting deployment"
-                  
-            APP_DIR="$HOME/brainstormy"
-            BRANCH="master"
-                  
-            cd "$APP_DIR"
-                  
-            echo "📝 Writing .env file"
-            cat > .env <<EOF
-            VITE_BASE_URL=${{ secrets.VITE_BASE_URL }}
-            API_TOKEN=${{ secrets.API_TOKEN }}
-            FOLDER_ID=${{ secrets.FOLDER_ID }}
-            ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
-            EOF
-                  
-            echo "📥 Updating code"
-            git pull origin "$BRANCH"
-                  
             echo "🛑 Stopping containers"
-            docker compose --env-file .env down
+            docker compose down
             docker container prune -f
             docker image prune -f
             docker volume prune -f
                   
             echo "🏗 Building and starting containers"
-            docker compose --env-file .env build
-            docker compose --env-file .env up -d
-
-                  
-            echo "✅ Deployment finished successfully"
-                  
+            docker compose build
+            docker compose up -d
+        env:
+          API_TOKEN: ${{ secrets.API_TOKEN }}
+          FOLDER_ID: ${{ secrets.FOLDER_ID }}
+          ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
