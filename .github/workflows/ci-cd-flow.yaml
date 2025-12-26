@@ -25,7 +25,7 @@ jobs:
 
       - name: Build, tag, and push image to Yandex Cloud Container Registry
         env:
-          CR_REGISTRY: brainstormy
+          CR_REGISTRY: crpt00fi0ka8gt8p6c56
           CR_REPOSITORY: stage/back
           IMAGE_TAG: main
         run: |
@@ -48,7 +48,7 @@ jobs:
 
       - name: Build, tag, and push image to Yandex Cloud Container Registry
         env:
-          CR_REGISTRY: brainstormy
+          CR_REGISTRY: crpt00fi0ka8gt8p6c56
           CR_REPOSITORY: stage/front
           IMAGE_TAG: main
         run: |
@@ -82,7 +82,7 @@ jobs:
 
       - name: Build, tag, and push image to Yandex Cloud Container Registry
         env:
-          CR_REGISTRY: brainstormy
+          CR_REGISTRY: crpt00fi0ka8gt8p6c56
           CR_REPOSITORY: prod/back
           IMAGE_TAG: main
         run: |
@@ -107,7 +107,7 @@ jobs:
 
       - name: Build, tag, and push image to Yandex Cloud Container Registry
         env:
-          CR_REGISTRY: brainstormy
+          CR_REGISTRY: crpt00fi0ka8gt8p6c56
           CR_REPOSITORY: prod/front
           IMAGE_TAG: main
         run: |
