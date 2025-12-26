@@ -137,10 +137,40 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SERVER_HOST: ${{ secrets.SSH_HOST }}
           SERVER_USER: ${{ secrets.SSH_USER }}
+
+  run_migrations:
+    name: run migrations
+    needs: copy_docker_compose
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy the app using docker compose
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          port: ${{ secrets.SSH_PORT }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            echo ${{ secrets.YC_OAUTH }}|docker login \
+             --username oauth \
+             --password-stdin \
+            cr.yandex
+
+            docker run --rm \
+              --name migration \
+              -e DATABASE_URL=$DATABASE_URL \
+              cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG \
+              npx prisma migrate deploy
+
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          CR_REGISTRY: crpt00fi0ka8gt8p6c56
+          CR_REPOSITORY: prod/back
+          IMAGE_TAG: main
   
   deploy_prod:
     name: deploy prod
-    needs: copy_docker_compose
+    needs: run_migrations
     runs-on: ubuntu-latest
     steps:
       - name: Deploy the app using docker compose
