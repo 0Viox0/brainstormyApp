@@ -11,7 +11,7 @@ services:
       - backend
     restart: unless-stopped
   backend:
-    image: cr.yandex/cn19kjesk3i9p2a4r00n/prod/back:main
+    image: cr.yandex/crpt00fi0ka8gt8p6c56/prod/back:main
     container_name: nest-backend
     expose:
       - "3000"
@@ -23,7 +23,7 @@ services:
     restart: unless-stopped
 
   frontend:
-    image: cr.yandex/cn19kjesk3i9p2a4r00n/prod/front:main
+    image: cr.yandex/crpt00fi0ka8gt8p6c56/prod/front:main
     container_name: vite-frontend
     expose:
       - "80"
