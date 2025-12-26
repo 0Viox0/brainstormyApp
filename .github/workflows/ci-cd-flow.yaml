@@ -130,7 +130,7 @@ jobs:
 
           ssh-keyscan -H $SERVER_HOST >> ~/.ssh/known_hosts
 
-          scp docker-compose.yaml $SERVER_USER@$SERVER_HOST:/path/on/server/docker-compose.yml
+          scp docker-compose.yaml $SERVER_USER@$SERVER_HOST:~/
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SERVER_HOST: ${{ secrets.SSH_HOST }}
