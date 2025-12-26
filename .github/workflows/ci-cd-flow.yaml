@@ -122,6 +122,8 @@ jobs:
       - build_prod_back
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+
       - name: Scp docker compose file
         run: |
           mkdir -p ~/.ssh
