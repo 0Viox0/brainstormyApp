@@ -151,6 +151,11 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            echo ${{ secrets.YC_OAUTH }}|docker login \
+             --username oauth \
+             --password-stdin \
+            cr.yandex
+
             echo "🛑 Stopping containers"
             docker compose down
             docker container prune -f
