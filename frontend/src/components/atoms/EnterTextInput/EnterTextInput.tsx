@@ -1,4 +1,5 @@
 import { useState, type ChangeEvent, type FC } from 'react';
+import { TextLengthLimit } from '../TextLengthLimit';
 
 export type EnterTextInputProps = {
   initialText: string;
@@ -42,11 +43,16 @@ export const EnterTextInput: FC<EnterTextInputProps> = ({
         onChange={handleTextChange}
         value={text}
         placeholder={placeholder}
+        maxLength={import.meta.env.VITE_PROMPT_MAX_SYMBOLS}
       />
-      <div className="flex items-center justify-center">
+      <div className="flex w-full items-center justify-between">
+        <TextLengthLimit
+          text={text}
+          maxLength={import.meta.env.VITE_PROMPT_MAX_SYMBOLS}
+        />
         <button
           onClick={handleEnterText}
-          className="bg-brainstormySecondary mx-auto rounded-[7px] px-7 py-0.5
+          className="bg-brainstormySecondary rounded-[7px] px-7 py-0.5
             text-center text-white transition-all duration-300 ease-in-out
             hover:cursor-pointer hover:px-9"
         >

@@ -1,3 +1,4 @@
+import { WithTooltip } from '@/components/molecules';
 import { TextDefaultIcon } from '@/shared/icons';
 import { cn } from '@/shared/utils';
 import type { FC } from 'react';
@@ -5,23 +6,32 @@ import type { FC } from 'react';
 export type ViewOnlyPromptPickerProps = {
   isPromptEmpty: boolean;
   className?: string;
+  onClick: () => void;
 };
 
 export const ViewOnlyPromptPicker: FC<ViewOnlyPromptPickerProps> = ({
   isPromptEmpty,
   className,
+  onClick,
 }) => {
   return (
     <div className="relative">
-      <div
-        className={cn(
-          `bg-brainstormySecondary flex aspect-square w-8 items-center
-          justify-center overflow-hidden rounded-[37px] p-2`,
-          className,
-        )}
+      <WithTooltip
+        tooltipText="Посмотреть введённый промпт"
+        className="top-[-100%] left-1/2 -translate-x-1/2 text-nowrap"
       >
-        <TextDefaultIcon />
-      </div>
+        <div
+          className={cn(
+            `bg-brainstormySecondary flex aspect-square w-8 items-center
+            justify-center overflow-hidden rounded-[37px] p-2
+            hover:cursor-pointer`,
+            className,
+          )}
+          onClick={onClick}
+        >
+          <TextDefaultIcon />
+        </div>
+      </WithTooltip>
       <div
         className={cn(
           `bg-brainstormySecondary absolute right-[-5px] bottom-[-4px] h-4 w-4

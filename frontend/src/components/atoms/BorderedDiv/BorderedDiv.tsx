@@ -1,8 +1,9 @@
 import { cn } from '@/shared/utils';
-import type { FC, HTMLAttributes, ReactNode } from 'react';
+import type { FC, HTMLAttributes, ReactNode, Ref } from 'react';
 
 export type BorderedDivProps = HTMLAttributes<HTMLDivElement> & {
   children: ReactNode;
+  ref?: Ref<HTMLDivElement>;
 };
 
 export const BorderedDiv: FC<BorderedDivProps> = ({
