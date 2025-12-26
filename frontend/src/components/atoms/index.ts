@@ -8,3 +8,5 @@ export { GoFurtherButton } from './GoFurtherButton';
 export { TokensUsed } from './TokensUsed';
 export { ModalContainer } from './ModalContainer';
 export { BorderedDiv } from './BorderedDiv';
+export { ViewOnlyEnterTextInput } from './ViewOnlyTextInput';
+export { TextLengthLimit } from './TextLengthLimit';

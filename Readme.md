@@ -3,6 +3,8 @@
 .env: 
 VITE_BASE_URL=\<url for backend without /api (just domain)\>
 
+VITE_PROMPT_MAX_SYMBOLS=\<max symbols for initial input and propt inputs (just number)\>
+
 for example:
 VITE_BASE_URL=http://localhost:3000
 

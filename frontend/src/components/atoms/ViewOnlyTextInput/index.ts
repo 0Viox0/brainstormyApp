@@ -1,0 +1,1 @@
+export { ViewOnlyEnterTextInput } from './ViewOnlyTextInput';

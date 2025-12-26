@@ -1,7 +1,12 @@
-import { GoFurtherButton, IdeaTextHolder } from '@/components/atoms';
+import {
+  GoFurtherButton,
+  IdeaTextHolder,
+  ModalContainer,
+  ViewOnlyEnterTextInput,
+} from '@/components/atoms';
 import { MainBlockConnector } from '@/shared/images';
 import { cn } from '@/shared/utils';
-import { type FC } from 'react';
+import { useState, type FC } from 'react';
 import { ViewOnlyMethodPicker } from '../ViewOnlyIdeaGenerator/components/ViewOnlyMethodPicker';
 import { ViewOnlyPromptPicker } from '../ViewOnlyIdeaGenerator/components/ViewOnlyPromptPicker';
 import { WithTooltip } from '@/components/molecules';
@@ -23,6 +28,11 @@ export const GoFurtherIdeaGenerator: FC<IdeaGeneratorProps> = ({
   onGoFurther,
   ideaGeneratorState,
 }) => {
+  const [displayPrompt, setDisplayPrompt] = useState(false);
+
+  const handleDisplayTextWindow = () => setDisplayPrompt(true);
+  const handleCloseTextWindow = () => setDisplayPrompt(false);
+
   return (
     <div className="relative flex items-center">
       <div className="relative mr-[7px]">
@@ -38,7 +48,17 @@ export const GoFurtherIdeaGenerator: FC<IdeaGeneratorProps> = ({
           <ViewOnlyPromptPicker
             isPromptEmpty={!ideaGeneratorState.prompt}
             className="opacity-[70%]"
+            onClick={handleDisplayTextWindow}
           />
+          {displayPrompt && (
+            <ModalContainer onEscape={handleCloseTextWindow}>
+              <ViewOnlyEnterTextInput
+                initialText={ideaGeneratorState.prompt}
+                heading="Введённый впомогательный промпт"
+                onReady={handleCloseTextWindow}
+              />
+            </ModalContainer>
+          )}
         </div>
       </div>
       <MainBlockConnector className="mr-[-4px]" />

@@ -1,4 +1,5 @@
 import { useEffect, type FC, type ReactNode } from 'react';
+import { createPortal } from 'react-dom';
 
 export type ModalContainerProps = {
   children: ReactNode;
@@ -25,7 +26,7 @@ export const ModalContainer: FC<ModalContainerProps> = ({
     };
   }, []);
 
-  return (
+  return createPortal(
     <div
       className="fixed top-0 left-0 h-[100vh] w-[100vw] backdrop-blur-xl"
       onClick={onEscape}
@@ -36,6 +37,7 @@ export const ModalContainer: FC<ModalContainerProps> = ({
       >
         {children}
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 };
