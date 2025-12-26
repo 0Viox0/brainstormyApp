@@ -20,6 +20,8 @@ services:
       API_TOKEN: ${API_TOKEN}
       ENVIRONMENT: ${ENVIRONMENT}
       YANDEX_CLIENT_SECRET: ${YANDEX_CLIENT_SECRET}
+      YANDEX_CLIENT_ID: ${YANDEX_CLIENT_ID}
+      DATABASE_URL: ${DATABASE_URL}
     restart: unless-stopped
 
   frontend:
