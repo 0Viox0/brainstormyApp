@@ -19,6 +19,7 @@ services:
       FOLDER_ID: ${FOLDER_ID}
       API_TOKEN: ${API_TOKEN}
       ENVIRONMENT: ${ENVIRONMENT}
+      YANDEX_CLIENT_SECRET: ${YANDEX_CLIENT_SECRET}
     restart: unless-stopped
 
   frontend:

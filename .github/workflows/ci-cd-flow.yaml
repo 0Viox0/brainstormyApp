@@ -11,7 +11,7 @@ on:
 
 jobs:
   build_stage_back:
-    name: build stage images
+    name: build stage back image
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -34,7 +34,7 @@ jobs:
           docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG
 
   build_stage_front:
-    name: build stage images
+    name: build stage front image
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -54,7 +54,7 @@ jobs:
         run: |
           cd frontend
           VITE_BASE_URL: ${VITE_BASE_URL}
-          docker build -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG --build-arg VITE_BASE_URL=${{ secrets.VITE_BASE_URL }} .
+          docker build -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG --build-arg VITE_BASE_URL=${{ secrets.VITE_BASE_URL }} --build-arg VITE_PROMPT_MAX_SYMBOLS=${{ vars.VITE_PROMPT_MAX_SYMBOLS }}.
           docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG
 
   dummy:
@@ -67,7 +67,7 @@ jobs:
         run: echo "Dummy job"
 
   build_prod_back:
-    name: build prod images
+    name: build prod back image
     needs: dummy
     runs-on: ubuntu-latest
     steps:
@@ -92,7 +92,7 @@ jobs:
           docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG
   
   build_prod_front:
-    name: build prod images
+    name: build prod front image
     needs: dummy
     runs-on: ubuntu-latest
     steps:
@@ -113,11 +113,11 @@ jobs:
           IMAGE_TAG: main
         run: |
           cd frontend
-          docker build -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG --build-arg VITE_BASE_URL=${{ secrets.VITE_BASE_URL }} .
+          docker build -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG --build-arg VITE_BASE_URL=${{ secrets.VITE_BASE_URL }} --build-arg VITE_PROMPT_MAX_SYMBOLS=${{ vars.VITE_PROMPT_MAX_SYMBOLS }}.
           docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG
 
   copy_docker_compose:
-    name: build prod images
+    name: copy docker compose to remote
     needs: 
       - build_prod_front
       - build_prod_back
@@ -163,3 +163,6 @@ jobs:
           API_TOKEN: ${{ secrets.API_TOKEN }}
           FOLDER_ID: ${{ secrets.FOLDER_ID }}
           ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
+          YANDEX_CLIENT_SECRET: ${{ secrets.YANDEX_CLIENT_SECRET }}
+          YANDEX_CLIENT_ID: ${{ secrets.YANDEX_CLIENT_ID }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
