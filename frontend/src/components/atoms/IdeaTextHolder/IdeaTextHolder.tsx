@@ -35,8 +35,9 @@ export const IdeaTextHolder: FC<IdeaTextHolderProps> = ({
     <div
       ref={outerContainerRef}
       className={cn(
-        `border-brainstormySecondary h-[129px] w-[288px] overflow-hidden
-        rounded-[22px] border-[1px] text-center`,
+        `border-brainstormySecondary bg-brainstormyBg relative h-[129px]
+        w-[288px] overflow-hidden rounded-[22px] border-[1px] text-center
+        hover:z-30`,
         containerPaddingClass,
         {
           'flex items-center justify-center': !isOverflowing,

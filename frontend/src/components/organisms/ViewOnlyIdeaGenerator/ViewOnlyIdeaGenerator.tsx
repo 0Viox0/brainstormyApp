@@ -34,11 +34,18 @@ export const ViewOnlyIdeaGenerator: FC<IdeaGeneratorProps> = ({
   return (
     <div className="relative flex items-center">
       <div className="relative mr-[7px]">
-        <IdeaTextHolder text={ideaGeneratorState.text} />
+        <div className="relative h-[129px] w-[288px]">
+          <div className="absolute top-1/2 left-1/2 -translate-1/2">
+            <IdeaTextHolder text={ideaGeneratorState.text} />
+          </div>
+        </div>
         <div
-          className={cn('absolute top-[42%] left-[94%] space-y-4', {
-            'top-[62%]': isFirstIdea,
-          })}
+          className={cn(
+            'absolute top-1/2 left-[94%] z-50 -translate-y-[9px] space-y-4',
+            {
+              'top-[62%]': isFirstIdea,
+            },
+          )}
         >
           <ViewOnlyMethodPicker method={ideaGeneratorState.method} />
           {!isFirstIdea && (
