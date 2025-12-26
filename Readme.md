@@ -1,14 +1,46 @@
-### frontend - vite + react
+### frontend - vite + react application
 
 .env: 
-VITE_BASE_URL=\<url for backend\>
+VITE_BASE_URL=\<url for backend without /api (just domain)\>
 
 for example:
 VITE_BASE_URL=http://localhost:3000
 
-### backend - nestjs
-IAM_TOKEN=\<iamtoken\>
+### backend - nestjs application
 
+#### what to do after build:
+```
+npx prisma generate
+npx prisma migrate deploy
+```
+
+#### variables:
 FOLDER_ID=\<folderid\>
 
-PORT=\<app port\>
+PORT=\<app port if needed, by default 3000\>
+
+FOLDER_ID=\<id of folder in yandex cloud\>
+
+API_TOKEN=\<api token to get access to yandex gpt lite\>
+
+ENVIRONMENT=\<set this to prod\>
+
+YANDEX_CLIENT_SECRET=\<client secret hat you can setup after creating application in yandex oauth\>
+
+YANDEX_CLIENT_ID=\<client id that you can setup after creating application in yandex oauth\>
+
+DATABASE_URL=\<database url\>
+for example: 
+DATABASE_URL=mysql://viox:123@127.0.0.1:3306/hehe
+where 
+* mysql - db provider
+* viox - username
+* 123 - user password
+* 127.0.0.1 - host
+* 3306 - db port
+* hehe - db
+IMPORTANT: when creating db, give user premissions to create new dbs
+
+JWT_SECRET -> jwt secret
+
+NEW_USER_MAX_TOKENS -> max tokens that users will receive when first being authorised

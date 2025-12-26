@@ -1,4 +1,4 @@
-import { UserModel } from './user.model';
+import { UserModel } from 'src/user/models/user.model';
 
 export class LoginModel {
   public user: UserModel;
