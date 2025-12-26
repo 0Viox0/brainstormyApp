@@ -7,8 +7,10 @@ import { ScamperService } from './services/thinkingModels/scamper/scamper.servic
 import { ScamperParser } from './services/thinkingModels/scamper/scamper.parser';
 import { GeneratorService } from './services/thinkingModels/generator/generator.service';
 import { GeneratorParser } from './services/thinkingModels/generator/generator.parser';
+import { UserModule } from 'src/user/user.module';
 
 @Module({
+  imports: [UserModule],
   controllers: [IdeasGeneratorController],
   providers: [
     SixHatsService,

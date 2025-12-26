@@ -58,6 +58,7 @@ export type IdeasLayer = {
 };
 
 export type IdeaGraph = {
+  isError: boolean;
   isLoadingNewLayer: boolean;
   currentLayer: LayerId;
   layers: IdeasLayer[];

@@ -3,6 +3,7 @@ import type { IdeaGraphAction } from './actions';
 import type { IdeaGraph, IdeasData, IdeasLayer, LayerId } from './state';
 
 export const useIdeasGraph = create<IdeaGraph & IdeaGraphAction>((set) => ({
+  isError: false,
   isLoadingNewLayer: false,
   currentLayer: -1,
   layers: [],
@@ -19,6 +20,8 @@ export const useIdeasGraph = create<IdeaGraph & IdeaGraphAction>((set) => ({
     })),
 
   loadNewLayer: () => set(() => ({ isLoadingNewLayer: true })),
+
+  setIsError: (isError: boolean) => set(() => ({ isError })),
 
   finishLoadingNewLayer: () => set(() => ({ isLoadingNewLayer: false })),
 

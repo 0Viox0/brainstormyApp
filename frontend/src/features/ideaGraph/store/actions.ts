@@ -7,6 +7,7 @@ export type IdeaGraphAction = {
 
   loadNewLayer: () => void;
   finishLoadingNewLayer: () => void;
+  setIsError: (isError: boolean) => void;
 
   resetChosenIdeas: (layerId: LayerId) => void;
   setNextLayerForIdea: (

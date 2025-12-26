@@ -8,6 +8,7 @@ import { toLayerData } from '@/features/ideaGraph/utils/mappers/layerResponseToD
 import type { IdeaGeneratorState } from '@/components/organisms/IdeaGenerator/IdeaGenerator';
 import { historyManger } from '@/features/ideaGraph/sevices/contextSaver';
 import { tokenCounter } from '@/features/ideaGraph/sevices/tokensCounter';
+import { useAppStore } from '@/shared/storage/store';
 
 export type FetchLoadLayerProps = {
   ideaGeneratorState: IdeaGeneratorState;
@@ -18,9 +19,9 @@ export const FetchLoadLayer: FC<FetchLoadLayerProps> = ({
   ideaGeneratorState,
   onMount,
 }) => {
-  const { addLayer, finishLoadingNewLayer, goToLayer } = useIdeasGraph(
-    (state) => state,
-  );
+  const { setIsError, addLayer, finishLoadingNewLayer, goToLayer } =
+    useIdeasGraph((state) => state);
+  const substractTokens = useAppStore((state) => state.substractTokens);
   const { method, text: baseIdea, prompt: helpingPrompt } = ideaGeneratorState;
 
   useEffect(() => {
@@ -37,6 +38,14 @@ export const FetchLoadLayer: FC<FetchLoadLayerProps> = ({
         historyManger.getHistory(),
       );
 
+      if (!layerDataResponse) {
+        finishLoadingNewLayer();
+        setIsError(true);
+
+        setTimeout(() => setIsError(false), 2500);
+        return;
+      }
+
       const newIdeasLayer: IdeasLayer = {
         id: ideaGeneratorState.layerId || Date.now() + Math.random(),
         baseIdea: baseIdea,
@@ -50,6 +59,7 @@ export const FetchLoadLayer: FC<FetchLoadLayerProps> = ({
       addLayer(newIdeasLayer);
       goToLayer(newIdeasLayer.id);
       finishLoadingNewLayer();
+      substractTokens(layerDataResponse.tokensUsed);
 
       return toLayerData(layerDataResponse);
     },

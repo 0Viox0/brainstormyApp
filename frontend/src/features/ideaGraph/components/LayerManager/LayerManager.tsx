@@ -15,6 +15,7 @@ import { CollapsedLayer } from '../CollapsedLayer/CollapsedLayer';
 import { OpenLayer } from '../OpenLayer/Layer';
 import { FetchLoadLayer } from '../OpenLayer/LayerLoader/FetchLoadLayer';
 import { historyManger } from '../../sevices/contextSaver';
+import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 
 export type LayersManagerProps = {
   initialIdea: string;
@@ -26,6 +27,7 @@ export const LayersManager: FC<LayersManagerProps> = ({ initialIdea }) => {
   const { currentLayer, isLoadingNewLayer, loadNewLayer, layers } =
     useIdeasGraph((state) => state);
   const prevLayerLength = useRef(layers.length);
+  const { isError } = useIdeasGraph();
 
   const scrollViewport = useCallback(() => {
     const el = scrollRef.current;
@@ -54,8 +56,6 @@ export const LayersManager: FC<LayersManagerProps> = ({ initialIdea }) => {
     setNewLayerData(ideaGeneratorState);
     loadNewLayer();
   };
-
-  console.log('layers', layers);
 
   const renderLayres = (layerId: number | undefined): ReactNode => {
     if (!layerId) return;
@@ -106,6 +106,11 @@ export const LayersManager: FC<LayersManagerProps> = ({ initialIdea }) => {
           ideaGeneratorState={newLayerData}
           onMount={scrollViewport}
         />
+      )}
+      {isError && (
+        <div className="mt-[417px] ml-[20px]">
+          <ErrorMessage />
+        </div>
       )}
       <div className="h-[100px] w-[600px] shrink-0 grow-0" />
     </div>

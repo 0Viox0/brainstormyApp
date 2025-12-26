@@ -1,5 +1,5 @@
 import { jwtDecode } from 'jwt-decode';
-import { getJwtToken } from './jwtToken';
+import { getJwtAuthHeader, getJwtToken } from './jwtToken';
 import type { AuthResponse } from './types';
 import type { User } from '@/shared/storage/state';
 
@@ -30,9 +30,7 @@ export const fetchUserInfo = async () => {
   const response = await fetch(
     `${import.meta.env.VITE_BASE_URL}/users/${payload.sub}`,
     {
-      headers: {
-        Authorization: `Bearer ${getJwtToken()}`,
-      },
+      headers: { ...getJwtAuthHeader() },
     },
   );
 

@@ -4,6 +4,7 @@ import {
   type PickOption,
   MethodPicker,
 } from '@/components/molecules/MethodPicker/MethodPicker';
+import { useIdeasGraph } from '@/features/ideaGraph/store';
 import type { Method } from '@/features/ideaGraph/store/state';
 import {
   LightBulbIcon,
@@ -42,7 +43,7 @@ export const IdeaGenerator: FC<IdeaGeneratorProps> = ({
 }) => {
   const [ideaGeneratorState, setIdeaGeneratorState] =
     useState<IdeaGeneratorState>({ ...defaultIdeaGeneratorState, text });
-  const [isButtonVisible, setIsButtonVisible] = useState<boolean>(true);
+  const { layers } = useIdeasGraph((state) => state);
 
   const methodOptions: PickOption[] = [
     {
@@ -82,9 +83,6 @@ export const IdeaGenerator: FC<IdeaGeneratorProps> = ({
   };
 
   const handleGenerateIdea = () => {
-    if (isFirstIdea) {
-      setIsButtonVisible(false);
-    }
     onGenerate(ideaGeneratorState);
   };
 
@@ -121,7 +119,7 @@ export const IdeaGenerator: FC<IdeaGeneratorProps> = ({
       ) : (
         <div className="bg-brainstormySecondary ml-[7px] h-[1px] w-[38px]"></div>
       )}
-      {isButtonVisible && (
+      {(layers.length === 0 || !isFirstIdea) && (
         <WithTooltip
           tooltipText="Сгенерировать идеи"
           className="top-1/2 left-[130%] -translate-y-1/2 text-nowrap"

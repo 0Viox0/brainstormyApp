@@ -5,6 +5,10 @@ export const setJwtToken = (token: string) =>
 
 export const getJwtToken = () => localStorage.getItem(jwtKey);
 
+export const getJwtAuthHeader = () => ({
+  Authorization: `Bearer ${getJwtToken()}`,
+});
+
 export const hasJwtToken = () => !!localStorage.getItem(jwtKey);
 
 export const removeJwtToken = () => localStorage.removeItem(jwtKey);
