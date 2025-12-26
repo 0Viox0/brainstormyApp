@@ -32,11 +32,15 @@ export const LayersManager: FC<LayersManagerProps> = ({ initialIdea }) => {
     if (!el) return;
 
     el.scrollTo({
-      top: 30,
+      top: 140,
       left: el.scrollWidth,
       behavior: 'smooth',
     });
   }, []);
+
+  useEffect(() => {
+    scrollViewport();
+  }, [scrollViewport]);
 
   useEffect(() => {
     if (prevLayerLength.current === layers.length) {
@@ -88,6 +92,7 @@ export const LayersManager: FC<LayersManagerProps> = ({ initialIdea }) => {
       className="bg-brainstormyBg flex h-screen items-start overflow-x-auto
         pt-[130px] text-white"
     >
+      <div className="h-[1000px] w-[60px] shrink-0 grow-0" />
       <div className="mt-[374px]">
         <IdeaGenerator
           text={initialIdea}

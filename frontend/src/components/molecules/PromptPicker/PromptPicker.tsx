@@ -54,7 +54,7 @@ export const PromptPicker: FC<PromptPickerProps> = ({
       />
       {openModal &&
         createPortal(
-          <ModalContainer>
+          <ModalContainer onEscape={() => setOpenModal(false)}>
             <EnterTextInput
               initialText={savedText}
               onTextChange={handleTextChange}

@@ -1,5 +1,5 @@
-import type { User } from './state';
+import type { AppState } from './state';
 
 export type AppActions = {
-  setUser: (user: User) => void;
+  setUser: (user: AppState['user']) => void;
 };

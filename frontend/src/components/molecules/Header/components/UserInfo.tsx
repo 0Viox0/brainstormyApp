@@ -1,23 +1,28 @@
 import { useAppStore } from '@/shared/storage/store';
-import { GoogleIcon, QuestionIcon } from '@/shared/icons';
+import { QuestionIcon, YandexIcon } from '@/shared/icons';
 import { WithTooltip } from '../../WithTooltip';
-import { useState } from 'react';
+import { useState, type FC } from 'react';
 import { BorderedDiv, ModalContainer } from '@/components/atoms';
+import { removeJwtToken } from '@/features/auth/jwtToken';
+import type { User } from '@/shared/storage/state';
 
-const TOOLTIP_TEXT = `Это - количество токенов, которое вам доступно\n Приобретите платную подписку для безграниченного использования`;
+const TOOLTIP_TEXT = `Это количество токенов, которое вам доступно\n Приобретите платную подписку для безграниченного использования`;
 
-export const UserInfo = () => {
+export type UserInfoProps = {
+  user: User;
+};
+
+export const UserInfo: FC<UserInfoProps> = ({ user }) => {
   const [displayUserInfo, setDisplayUserInfo] = useState(false);
-
-  const user = useAppStore((state) => state.user);
+  const setUser = useAppStore((state) => state.setUser);
 
   const handleDisplayUserInfo = () => setDisplayUserInfo(true);
   const handleCloseDisplayUserInfo = () => setDisplayUserInfo(false);
 
   const handleExitAccount = () => {
     handleCloseDisplayUserInfo();
-    // TODO: exiting from account logic
-    // i.e. remove jwt token
+    removeJwtToken();
+    setUser(null);
   };
 
   return (
@@ -37,12 +42,17 @@ export const UserInfo = () => {
             />
           </WithTooltip>
         </BorderedDiv>
-        <img
-          onClick={handleDisplayUserInfo}
-          className="h-[33px] w-[33px] rounded-full object-cover
-            hover:cursor-pointer"
-          src={'https://i.sstatic.net/l60Hf.png'}
-        />
+        <WithTooltip
+          tooltipText="Аккаунт"
+          className="top-[140%] left-1/2 -translate-x-1/2"
+        >
+          <img
+            onClick={handleDisplayUserInfo}
+            className="h-[33px] w-[33px] rounded-full object-cover
+              hover:cursor-pointer"
+            src={user.userLogoUrl}
+          />
+        </WithTooltip>
       </div>
       {displayUserInfo && (
         <ModalContainer onEscape={handleCloseDisplayUserInfo}>
@@ -61,13 +71,19 @@ export const UserInfo = () => {
                 <img
                   onClick={handleDisplayUserInfo}
                   className="mb-[11px] h-[33px] w-[33px] shrink-0 grow-0
-                    rounded-full object-cover hover:cursor-pointer"
-                  src={'https://i.sstatic.net/l60Hf.png'}
+                    rounded-full object-cover"
+                  src={user.userLogoUrl}
                 />
 
-                <div>Viox</div>
+                <div>{user.username}</div>
               </div>
-              <GoogleIcon />
+              <WithTooltip
+                tooltipText="Яндекс"
+                className="top-1/2 left-[100%] translate-x-[7px]
+                  -translate-y-1/2 text-nowrap"
+              >
+                <YandexIcon />
+              </WithTooltip>
             </div>
             <BorderedDiv
               className="hover:cursor-pointer"

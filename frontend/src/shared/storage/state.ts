@@ -5,5 +5,5 @@ export type User = {
 };
 
 export type AppState = {
-  user: User;
+  user: User | null;
 };
