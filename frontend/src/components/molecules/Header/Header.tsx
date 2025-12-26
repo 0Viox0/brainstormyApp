@@ -6,8 +6,8 @@ export const Header = () => {
 
   return (
     <header
-      className="fixed z-30 mt-[40px] flex w-full items-center justify-between
-        px-[100px]"
+      className="fixed z-[100] mt-[40px] flex w-full items-center
+        justify-between px-[100px]"
     >
       <PrimeButton />
       {user ? <UserInfo user={user} /> : <LoginButton />}

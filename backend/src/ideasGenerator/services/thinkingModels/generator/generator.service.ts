@@ -36,8 +36,8 @@ export class GeneratorService {
     const dummyReponse: GeneratorResponse = {
       type: 'generator',
       data: {
-        1: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Impedit, expedita.',
-        2: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Impedit, expedita.',
+        1: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Impedit, expedita. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Impedit, expedita.',
+        2: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Impedit, expedita. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Impedit, expedita. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Impedit, expedita. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Impedit, expedita.',
         3: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Impedit, expedita.',
         4: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Impedit, expedita.',
         5: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Impedit, expedita.',

@@ -28,7 +28,8 @@ export const ModalContainer: FC<ModalContainerProps> = ({
 
   return createPortal(
     <div
-      className="fixed top-0 left-0 h-[100vh] w-[100vw] backdrop-blur-xl"
+      className="fixed top-0 left-0 z-[100] h-[100vh] w-[100vw]
+        backdrop-blur-xl"
       onClick={onEscape}
     >
       <div

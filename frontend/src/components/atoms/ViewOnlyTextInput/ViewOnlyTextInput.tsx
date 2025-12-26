@@ -11,7 +11,6 @@ export const ViewOnlyEnterTextInput: FC<ViewOnlyEnterTextInputProps> = ({
   heading,
   onReady,
 }) => {
-  console.log('in viewonly enter');
   return (
     <div
       className="border-brainstormySecondary w-[480px] rounded-[9px]

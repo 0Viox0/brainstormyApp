@@ -96,9 +96,12 @@ export const IdeaGenerator: FC<IdeaGeneratorProps> = ({
       <div className="relative mr-[7px]">
         <IdeaTextHolder text={text} />
         <div
-          className={cn('absolute top-[42%] left-[94%] space-y-4', {
-            'top-[62%]': isFirstIdea,
-          })}
+          className={cn(
+            'absolute top-1/2 left-[94%] z-40 -translate-y-[8px] space-y-4',
+            {
+              'top-[67%]': isFirstIdea,
+            },
+          )}
         >
           <MethodPicker
             options={methodOptions}

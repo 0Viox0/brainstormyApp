@@ -1,0 +1,1 @@
+export { ViewOnlyIdeaGenerator } from './ViewOnlyIdeaGenerator';
