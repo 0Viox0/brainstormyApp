@@ -166,8 +166,6 @@ jobs:
              --password-stdin \
             cr.yandex
 
-            echo $DATABASE_URL
-
             docker run --rm \
              --name migration \
              --env "DATABASE_URL=$DATABASE_URL" \
@@ -179,8 +177,7 @@ jobs:
           CR_REGISTRY: crpt00fi0ka8gt8p6c56
           CR_REPOSITORY: prod/back
           IMAGE_TAG: main
-          #DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          DATABASE_URL: "ENV EXISTS!!!!!"
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
   
   deploy_prod:
     name: deploy prod
