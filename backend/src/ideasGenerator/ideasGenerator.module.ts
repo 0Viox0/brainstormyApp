@@ -9,6 +9,7 @@ import { GeneratorService } from './services/thinkingModels/generator/generator.
 import { GeneratorParser } from './services/thinkingModels/generator/generator.parser';
 import { UserModule } from 'src/user/user.module';
 import { Retrier } from './services/retrier/retrier';
+import { HistoryParser } from './services/historyParser/historyParser';
 
 @Module({
   imports: [UserModule],
@@ -22,6 +23,7 @@ import { Retrier } from './services/retrier/retrier';
     ScamperParser,
     GeneratorParser,
     Retrier,
+    HistoryParser,
   ],
 })
 export class IdeasGeneratorModule {}

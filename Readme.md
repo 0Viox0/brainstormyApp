@@ -48,3 +48,5 @@ JWT_SECRET=\<jwt secret\>
 NEW_USER_MAX_TOKENS=\<max tokens that users will receive when first being authorised\>
 
 RETRY_COUNT=\<times to retry request to yandex gpt api\>
+
+MAX_HISTORY_CONTEXT\<max history context to prevent token price going to the moon\>
