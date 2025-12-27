@@ -171,8 +171,9 @@ jobs:
             docker run --rm \
              --name migration \
              --env "DATABASE_URL=$DATABASE_URL" \
+             --entrypoint /bin/sh \
              cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG \
-             npx prisma migrate deploy
+             -c "npx prisma migrate deploy"
 
         env:
           CR_REGISTRY: crpt00fi0ka8gt8p6c56
