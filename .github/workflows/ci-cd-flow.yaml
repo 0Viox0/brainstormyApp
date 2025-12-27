@@ -168,7 +168,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          envs: CR_REGISTRY,CR_REPOSITORY,IMAGE_TAG,DATABASE_URL
+          envs: CR_REGISTRY,IMAGE_TAG,DATABASE_URL
           script: |
             echo ${{ secrets.YC_OAUTH }}|docker login \
              --username oauth \
@@ -200,7 +200,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          envs: API_TOKEN,FOLDER_ID,ENVIRONMENT,YANDEX_CLIENT_SECRET,YANDEX_CLIENT_ID,DATABASE_URL
+          envs: API_TOKEN,FOLDER_ID,ENVIRONMENT,YANDEX_CLIENT_SECRET,YANDEX_CLIENT_ID,DATABASE_URL,MAX_HISTORY_CONTEXT,RETRY_COUNT,GOOGLE_CLIENT_SECRET,GOOGLE_CLIENT_ID,GOOGLE_REDIRECT_URI,NEW_USER_MAX_TOKENS
           script: |
             echo ${{ secrets.YC_OAUTH }}|docker login \
              --username oauth \
