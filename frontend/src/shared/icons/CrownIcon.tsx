@@ -1,11 +1,24 @@
-export const CrownIcon = () => {
+import type { FC } from 'react';
+
+export type CrownIconProps = {
+  width?: number;
+  height?: number;
+  className?: string;
+};
+
+export const CrownIcon: FC<CrownIconProps> = ({
+  width = '37',
+  height = '24',
+  className,
+}) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="37"
-      height="24"
+      width={width}
+      height={height}
       viewBox="0 0 37 24"
       fill="none"
+      className={className}
     >
       <path
         d="M5.73288 21.3936L1.55566 6.29155L11.581 11.1895L17.8468 1.80176L24.1126 11.1895L34.5557 6.29155L29.9607 21.8018C22.943 19.8426 10.8848 20.7133 5.73288 21.3936Z"

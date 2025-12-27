@@ -9,6 +9,8 @@ import {
 import { cn } from '@/shared/utils';
 import { BorderedDiv } from '@/components/atoms';
 import { TextLengthLimit } from '@/components/atoms/TextLengthLimit/TextLengthLimit';
+import { hasJwtToken, isTokenExpired } from '@/features/auth/jwtToken';
+import { LoginModal } from '@/features/auth/components';
 
 type AutoResizeTextareaProps = {
   onSubmit: (text: string) => void;
@@ -31,6 +33,7 @@ export const AutoResizeTextarea: FC<AutoResizeTextareaProps> = ({
   className,
 }) => {
   const [text, setText] = useState(initialValue);
+  const [displayLoginModal, setDisplayLoginModal] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -50,6 +53,9 @@ export const AutoResizeTextarea: FC<AutoResizeTextareaProps> = ({
     }
   }, [text, maxHeight]);
 
+  const handleDisplayModal = () => setDisplayLoginModal(true);
+  const handleCloseDisplayModal = () => setDisplayLoginModal(false);
+
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const newText = e.target.value;
     if (newText.length <= maxLength) {
@@ -58,6 +64,11 @@ export const AutoResizeTextarea: FC<AutoResizeTextareaProps> = ({
   };
 
   const handleSubmit = () => {
+    if (!hasJwtToken() || isTokenExpired()) {
+      handleDisplayModal();
+      return;
+    }
+
     const trimmedText = text.trim();
     if (trimmedText && trimmedText.length <= maxLength) {
       onSubmit(trimmedText);
@@ -78,54 +89,57 @@ export const AutoResizeTextarea: FC<AutoResizeTextareaProps> = ({
   };
 
   return (
-    <BorderedDiv
-      ref={containerRef}
-      className={cn(
-        'flex w-[480px] flex-col gap-3 rounded-[9px] border-[1px] p-[22px]',
-        className,
-      )}
-    >
-      <div className="relative flex-1">
-        <textarea
-          ref={textareaRef}
-          value={text}
-          onChange={handleChange}
-          onKeyDown={handleKeyDown}
-          placeholder={placeholder}
-          className={`scrollbar-thin scrollbar-thumb-brainstormySecondary
-            scrollbar-track-transparent min-h-[40px] w-full resize-none
-            overflow-hidden bg-transparent leading-relaxed text-white
-            focus:outline-none`}
-          style={{
-            maxHeight: `${maxHeight}px`,
-          }}
-          rows={1}
-          maxLength={maxLength}
-        />
-      </div>
-
-      <div className="flex items-center justify-between">
-        <div>
-          <TextLengthLimit text={text} maxLength={maxLength} />
+    <>
+      <BorderedDiv
+        ref={containerRef}
+        className={cn(
+          'flex w-[480px] flex-col gap-3 rounded-[9px] border-[1px] p-[22px]',
+          className,
+        )}
+      >
+        <div className="relative flex-1">
+          <textarea
+            ref={textareaRef}
+            value={text}
+            onChange={handleChange}
+            onKeyDown={handleKeyDown}
+            placeholder={placeholder}
+            className={`scrollbar-thin scrollbar-thumb-brainstormySecondary
+              scrollbar-track-transparent min-h-[40px] w-full resize-none
+              overflow-hidden bg-transparent leading-relaxed text-white
+              focus:outline-none`}
+            style={{
+              maxHeight: `${maxHeight}px`,
+            }}
+            rows={1}
+            maxLength={maxLength}
+          />
         </div>
 
-        <button
-          onClick={handleSubmit}
-          disabled={!text.trim() || text.length > maxLength}
-          className={cn(
-            `border-brainstormySecondary bg-brainstormyBg
-            hover:bg-brainstormySecondary/10 active:bg-brainstormySecondary/20
-            focus:ring-brainstormySecondary/50 flex items-center justify-center
-            rounded-[9px] border-[1px] px-6 py-2 transition-all duration-200
-            hover:cursor-pointer focus:ring-2 focus:outline-none
-            disabled:cursor-not-allowed disabled:opacity-50`,
-            (!text.trim() || text.length > maxLength) &&
-              'cursor-not-allowed opacity-50',
-          )}
-        >
-          {submitButtonText}
-        </button>
-      </div>
-    </BorderedDiv>
+        <div className="flex items-center justify-between">
+          <div>
+            <TextLengthLimit text={text} maxLength={maxLength} />
+          </div>
+
+          <button
+            onClick={handleSubmit}
+            disabled={!text.trim() || text.length > maxLength}
+            className={cn(
+              `border-brainstormySecondary bg-brainstormyBg
+              hover:bg-brainstormySecondary/10 active:bg-brainstormySecondary/20
+              focus:ring-brainstormySecondary/50 flex items-center
+              justify-center rounded-[9px] border-[1px] px-6 py-2 transition-all
+              duration-200 hover:cursor-pointer focus:ring-2 focus:outline-none
+              disabled:cursor-not-allowed disabled:opacity-50`,
+              (!text.trim() || text.length > maxLength) &&
+                'cursor-not-allowed opacity-50',
+            )}
+          >
+            {submitButtonText}
+          </button>
+        </div>
+      </BorderedDiv>
+      {displayLoginModal && <LoginModal onExit={handleCloseDisplayModal} />}
+    </>
   );
 };
