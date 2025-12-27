@@ -3,6 +3,7 @@ import { SixHatsResponse } from './types';
 import { AiApi } from '../../aiApi/aiApi.service';
 import { SixHatsParser } from './sixHats.parser';
 import { ConfigService } from '@nestjs/config';
+import { Retrier } from '../../retrier/retrier';
 
 @Injectable()
 export class SixHatsService {
@@ -10,6 +11,7 @@ export class SixHatsService {
     private readonly aiApi: AiApi,
     private readonly sixHatsParser: SixHatsParser,
     private readonly configService: ConfigService,
+    private readonly retrier: Retrier,
   ) {}
 
   async getSixHats(
@@ -21,14 +23,16 @@ export class SixHatsService {
 
     if (environment === 'dev') return this.getDummySixHatsResponse();
 
-    const promptToExecute = `Используй модель мозгового штурма “Шесть шляп мышления”, чтобы сгенерировать идеи на основе этой: ${baseIdea} ${prompt ? `+ ${prompt}` : ''}. Представь результат в формате JSON, где ключ — это цвет шляпы в нижнем регистре на английском, а значение — идея на русском. ВЕРНИ В ФОРМАТЕ JSON.`;
+    return this.retrier.retryTillNoExceptionsAsync(async () => {
+      const promptToExecute = `Используй модель мозгового штурма “Шесть шляп мышления”, чтобы сгенерировать идеи на основе этой: ${baseIdea} ${prompt ? `+ ${prompt}` : ''}. Представь результат в формате JSON, где ключ — это цвет шляпы в нижнем регистре на английском, а значение — идея на русском. ВЕРНИ В ФОРМАТЕ JSON.`;
 
-    const [ideas, tokensUsed] = await this.aiApi.execPrompt(
-      promptToExecute,
-      history,
-    );
+      const [ideas, tokensUsed] = await this.aiApi.execPrompt(
+        promptToExecute,
+        history,
+      );
 
-    return this.sixHatsParser.parse(ideas, tokensUsed);
+      return this.sixHatsParser.parse(ideas, tokensUsed);
+    });
   }
 
   private async getDummySixHatsResponse() {

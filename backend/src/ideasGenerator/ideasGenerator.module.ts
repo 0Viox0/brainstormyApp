@@ -8,6 +8,7 @@ import { ScamperParser } from './services/thinkingModels/scamper/scamper.parser'
 import { GeneratorService } from './services/thinkingModels/generator/generator.service';
 import { GeneratorParser } from './services/thinkingModels/generator/generator.parser';
 import { UserModule } from 'src/user/user.module';
+import { Retrier } from './services/retrier/retrier';
 
 @Module({
   imports: [UserModule],
@@ -20,6 +21,7 @@ import { UserModule } from 'src/user/user.module';
     SixHatsParser,
     ScamperParser,
     GeneratorParser,
+    Retrier,
   ],
 })
 export class IdeasGeneratorModule {}

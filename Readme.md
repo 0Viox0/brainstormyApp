@@ -43,6 +43,8 @@ where
 * hehe - db
 IMPORTANT: when creating db, give user premissions to create new dbs
 
-JWT_SECRET -> jwt secret
+JWT_SECRET=\<jwt secret\>
 
-NEW_USER_MAX_TOKENS -> max tokens that users will receive when first being authorised
+NEW_USER_MAX_TOKENS=\<max tokens that users will receive when first being authorised\>
+
+RETRY_COUNT=\<times to retry request to yandex gpt api\>
