@@ -1,10 +1,10 @@
 import { useAppStore } from '@/shared/storage/store';
-import { QuestionIcon, YandexIcon } from '@/shared/icons';
-import { WithTooltip } from '../../WithTooltip';
+import { GoogleIcon, QuestionIcon, YandexIcon } from '@/shared/icons';
 import { useState, type FC } from 'react';
 import { BorderedDiv, ModalContainer } from '@/components/atoms';
 import { removeJwtToken } from '@/features/auth/jwtToken';
 import type { User } from '@/shared/storage/state';
+import { WithTooltip } from '@/components/molecules';
 
 const TOOLTIP_TEXT = `Это количество токенов, которое вам доступно\n Приобретите платную подписку для безграниченного использования`;
 
@@ -78,11 +78,17 @@ export const UserInfo: FC<UserInfoProps> = ({ user }) => {
                 <div>{user.username}</div>
               </div>
               <WithTooltip
-                tooltipText="Яндекс"
+                tooltipText={
+                  user.accountProvider === 'yandex' ? 'Яндекс' : 'Google'
+                }
                 className="top-1/2 left-[100%] translate-x-[7px]
                   -translate-y-1/2 text-nowrap"
               >
-                <YandexIcon />
+                {user.accountProvider === 'yandex' ? (
+                  <YandexIcon />
+                ) : (
+                  <GoogleIcon />
+                )}
               </WithTooltip>
             </div>
             <BorderedDiv

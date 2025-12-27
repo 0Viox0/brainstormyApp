@@ -9,6 +9,7 @@ export class UserMapper {
     name: string;
     profilePictureUrl: string;
     tokensLeft: number;
+    accountProvider: string;
   }): UserDto {
     const { name, profilePictureUrl, ...goodPart } = user;
 
@@ -24,6 +25,7 @@ export class UserMapper {
       username: userDto.username,
       tokensLeft: userDto.tokensLeft,
       userLogoUrl: userDto.userLogoUrl,
+      accountProvider: userDto.accountProvider,
     };
   }
 }
