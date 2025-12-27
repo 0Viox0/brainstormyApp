@@ -13,7 +13,7 @@ export const LoginButton = () => {
       'https://oauth.yandex.ru/authorize?' +
       new URLSearchParams({
         client_id: 'a08c2572b1bb4c9f9d46bd7e10057e1f',
-        redirect_uri: 'http://localhost:5173',
+        redirect_uri: import.meta.env.VITE_FRONTEND_URL,
         response_type: 'code',
       });
   };
