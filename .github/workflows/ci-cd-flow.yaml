@@ -124,7 +124,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Scp docker compose file
+      - name: Scp docker compose file and Nginx config
         run: |
           mkdir -p ~/.ssh
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
@@ -133,6 +133,7 @@ jobs:
           ssh-keyscan -H $SERVER_HOST >> ~/.ssh/known_hosts
 
           scp docker-compose.yaml $SERVER_USER@$SERVER_HOST:~/
+          scp balancer/nginx.conf $SERVER_USER@$SERVER_HOST:~/
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SERVER_HOST: ${{ secrets.SSH_HOST }}
@@ -155,6 +156,9 @@ jobs:
              --username oauth \
              --password-stdin \
             cr.yandex
+
+            echo $DATABASE_URL
+            echo !!!!!!!!!!
 
             docker run --rm \
               --name migration \
