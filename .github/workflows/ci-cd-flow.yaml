@@ -172,7 +172,7 @@ jobs:
              --env "DATABASE_URL=$DATABASE_URL" \
              --entrypoint sh \
              cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG \
-             -c 'export DATABASE_URL=$DATABASE_URL && npx prisma migrate deploy'
+             -c 'npx prisma migrate deploy'
 
         env:
           CR_REGISTRY: crpt00fi0ka8gt8p6c56
