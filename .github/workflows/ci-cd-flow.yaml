@@ -54,7 +54,7 @@ jobs:
         run: |
           cd frontend
           docker build -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG \
-            --build-arg VITE_BASE_URL=${{ secrets.VITE_BASE_URL }} \
+            --build-arg VITE_BASE_URL=${{ vars.VITE_BASE_URL }} \
             --build-arg VITE_PROMPT_MAX_SYMBOLS=${{ vars.VITE_PROMPT_MAX_SYMBOLS }} \
             --build-arg VITE_FRONTEND_URL=${{ vars.VITE_FRONTEND_URL }} \
             .
@@ -117,7 +117,7 @@ jobs:
         run: |
           cd frontend
           docker build -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG \
-            --build-arg VITE_BASE_URL=${{ secrets.VITE_BASE_URL }} \
+            --build-arg VITE_BASE_URL=${{ vars.VITE_BASE_URL }} \
             --build-arg VITE_PROMPT_MAX_SYMBOLS=${{ vars.VITE_PROMPT_MAX_SYMBOLS }} \
             --build-arg VITE_FRONTEND_URL=${{ vars.VITE_FRONTEND_URL }} \
             .
@@ -209,7 +209,7 @@ jobs:
         env:
           API_TOKEN: ${{ secrets.API_TOKEN }}
           FOLDER_ID: ${{ secrets.FOLDER_ID }}
-          ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
+          ENVIRONMENT: ${{ vars.ENVIRONMENT }}
           YANDEX_CLIENT_SECRET: ${{ secrets.YANDEX_CLIENT_SECRET }}
           YANDEX_CLIENT_ID: ${{ secrets.YANDEX_CLIENT_ID }}
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
