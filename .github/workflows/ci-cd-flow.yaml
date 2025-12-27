@@ -149,7 +149,9 @@ jobs:
 
           ssh-keyscan -H $SERVER_HOST >> ~/.ssh/known_hosts
 
-          scp docker-compose.yaml $SERVER_USER@$SERVER_HOST:~/
+          scp docker-compose-default.yaml $SERVER_USER@$SERVER_HOST:~/
+          scp docker-compose-new.yaml $SERVER_USER@$SERVER_HOST:~/
+          scp docker-compose-nginx.yaml $SERVER_USER@$SERVER_HOST:~/
           scp balancer/nginx.conf $SERVER_USER@$SERVER_HOST:~/
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
