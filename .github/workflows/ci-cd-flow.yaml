@@ -96,13 +96,13 @@ jobs:
           docker build -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY .
 
           docker tag cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:latest \
-           cr.yandex/$CR_REGISTRY/prod/$CR_REPOSITORY:$IMAGE_TAG
+           cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG
 
           docker tag cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:latest \
            cr.yandex/$CR_REGISTRY/prod/migrations:migrations
 
           docker tag cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:latest \
-           cr.yandex/$CR_REGISTRY/prod/$CR_REPOSITORY:$IMAGE_TAG-new
+           cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG-new
 
           docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG
           docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG-new
