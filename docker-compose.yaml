@@ -33,6 +33,7 @@ services:
       GOOGLE_CLIENT_ID: ${VITE_GOOGLE_CLIENT_ID}
       GOOGLE_REDIRECT_URI: ${GOOGLE_REDIRECT_URI}
       NEW_USER_MAX_TOKENS: ${NEW_USER_MAX_TOKENS}
+      JWT_SECRET: ${JWT_SECRET}
     restart: unless-stopped
 
   frontend:
