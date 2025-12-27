@@ -96,9 +96,11 @@ jobs:
           docker build -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG .
 
           docker tag cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG \
-           cr.yandex/$CR_REGISTRY/prod/migrations:migrations
+           cr.yandex/$CR_REGISTRY/prod/migrations:migrations \
+           cr.yandex/$CR_REGISTRY/prod/$CR_REPOSITORY:$IMAGE_TAG-new
 
           docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG
+          docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG-new
           docker push cr.yandex/$CR_REGISTRY/prod/migrations:migrations
   
   build_prod_front:
@@ -130,7 +132,11 @@ jobs:
             --build-arg VITE_GOOGLE_CLIENT_ID=${{ secrets.VITE_GOOGLE_CLIENT_ID }} \
             --build-arg VITE_YANDEX_CLIENT_ID=${{ secrets.VITE_YANDEX_CLIENT_ID }} \
             .
+          docker tag cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG \
+           cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG-new
+
           docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG
+          docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG-new
 
   copy_docker_compose:
     name: copy docker compose and nginx config to remote

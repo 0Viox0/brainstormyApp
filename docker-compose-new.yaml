@@ -1,8 +1,8 @@
 services:
   backend-new:
-    image: cr.yandex/crpt00fi0ka8gt8p6c56/prod/back:main
+    image: cr.yandex/crpt00fi0ka8gt8p6c56/prod/back:main-new
     pull_policy: always
-    container_name: nest-backend
+    container_name: nest-backend-new
     expose:
       - "3000"
     environment:
@@ -22,9 +22,9 @@ services:
     restart: unless-stopped
 
   frontend-new:
-    image: cr.yandex/crpt00fi0ka8gt8p6c56/prod/front:main
+    image: cr.yandex/crpt00fi0ka8gt8p6c56/prod/front:main-new
     pull_policy: always
-    container_name: vite-frontend
+    container_name: vite-frontend-new
     expose:
       - "80"
     restart: unless-stopped
