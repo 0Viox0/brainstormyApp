@@ -171,7 +171,7 @@ jobs:
               --env "DATABASE_URL=$DATABASE_URL" \
               --entrypoint npx \
               cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG \
-              prisma migrate deploy
+              prisma migrate deploy --config=./dist/prisma.config.js
 
         env:
           CR_REGISTRY: crpt00fi0ka8gt8p6c56
