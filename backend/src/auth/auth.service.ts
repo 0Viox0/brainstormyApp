@@ -36,7 +36,7 @@ export class AuthService {
 
     if (!newUserMaxTokensRaw) {
       throw new HttpException(
-        'newUserMaxTokens variable was not set',
+        'NEW_USER_MAX_TOKENS variable was not set',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
@@ -45,14 +45,14 @@ export class AuthService {
 
     if (!yandexClientId) {
       throw new HttpException(
-        'yandexClientId variable was not set',
+        'YANDEX_CLIENT_ID variable was not set',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
     if (!yandexClientSecret) {
       throw new HttpException(
-        'yandexClientSecret variable was not set',
+        'YANDEX_CLIENT_SECRET variable was not set',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
