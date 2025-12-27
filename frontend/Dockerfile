@@ -1,4 +1,4 @@
-FROM node:20-alpine AS builder
+FROM node:25-alpine3.22 AS builder
 
 ARG VITE_BASE_URL=http://localhost:3000
 ARG VITE_PROMPT_MAX_SYMBOLS=250
