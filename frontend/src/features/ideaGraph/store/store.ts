@@ -5,6 +5,7 @@ import type { IdeaGraph, IdeasData, IdeasLayer, LayerId } from './state';
 export const useIdeasGraph = create<IdeaGraph & IdeaGraphAction>((set) => ({
   isError: false,
   isLoadingNewLayer: false,
+  firstIdeaText: null,
   currentLayer: -1,
   layers: [],
   goToLayer: (layerId: LayerId) => set(() => ({ currentLayer: layerId })),
@@ -86,4 +87,6 @@ export const useIdeasGraph = create<IdeaGraph & IdeaGraphAction>((set) => ({
         };
       }),
     })),
+
+  setFirstIdea: (firstIdeaText: string) => set(() => ({ firstIdeaText })),
 }));

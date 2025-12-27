@@ -32,6 +32,7 @@ export class UserService {
         name: user.username,
         profilePictureUrl: user.userLogoUrl,
         tokensLeft: user.tokensLeft,
+        accountProvider: user.accountProvider,
       },
     });
 

@@ -7,6 +7,9 @@ VITE_BASE_URL=\<url for backend without /api (just domain)\>
 
 VITE_PROMPT_MAX_SYMBOLS=\<max symbols for initial input and propt inputs (just number)\>
 
+VITE_YANDEX_CLIENT_ID=\<client id for oauth - the same as for backend\>
+VITE_GOOGLE_CLIENT_ID=\<client id for oauth - the same as for backend\>
+
 for example:
 VITE_BASE_URL=http://localhost:3000
 
@@ -27,9 +30,15 @@ API_TOKEN=\<api token to get access to yandex gpt lite\>
 
 ENVIRONMENT=\<set this to prod\>
 
-YANDEX_CLIENT_SECRET=\<client secret hat you can setup after creating application in yandex oauth\>
+YANDEX_CLIENT_SECRET=\<yandex client secret hat you can setup after creating application in yandex oauth\>
 
-YANDEX_CLIENT_ID=\<client id that you can setup after creating application in yandex oauth\>
+YANDEX_CLIENT_ID=\<yandex client id that you can setup after creating application in yandex oauth\>
+
+GOOGLE_CLIENT_SECRET=\<google client secret for oauth\>
+
+GOOGLE_CLIENT_ID=\<google client id for oauth\>
+
+GOOGLE_REDIRECT_URI=\<google redirect uri, must be <VITE_FRONTEND_URL>/auth/google\>
 
 DATABASE_URL=\<database url\>
 for example: 

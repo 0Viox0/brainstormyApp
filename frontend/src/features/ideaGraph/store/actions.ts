@@ -17,4 +17,6 @@ export type IdeaGraphAction = {
     nextMethod: Method,
     nextPrompt: string,
   ) => void;
+
+  setFirstIdea: (firstIdeaText: string) => void;
 };
