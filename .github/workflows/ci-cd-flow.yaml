@@ -166,7 +166,7 @@ jobs:
              --password-stdin \
             cr.yandex
 
-            echo $DATABASE_URL
+            echo "database url: $DATABASE_URL"
 
             docker run --rm \
              --name migration \
