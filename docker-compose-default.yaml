@@ -1,6 +1,7 @@
 services:
   backend:
     image: cr.yandex/crpt00fi0ka8gt8p6c56/prod/back:main
+    pull_policy: always
     container_name: nest-backend
     expose:
       - "3000"
@@ -22,6 +23,7 @@ services:
 
   frontend:
     image: cr.yandex/crpt00fi0ka8gt8p6c56/prod/front:main
+    pull_policy: always
     container_name: vite-frontend
     expose:
       - "80"
