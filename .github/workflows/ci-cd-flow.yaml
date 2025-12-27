@@ -199,9 +199,7 @@ jobs:
 
             echo "🛑 Stopping containers"
             docker compose down
-            docker container prune -f
-            docker image prune -f
-            docker volume prune -f
+            docker system prune -a -f
                   
             echo "🏗 Building and starting containers"
             docker compose build
