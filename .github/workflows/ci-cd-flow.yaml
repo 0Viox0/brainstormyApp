@@ -144,25 +144,23 @@ jobs:
     # needs: copy_docker_compose
     runs-on: ubuntu-latest
     steps:
-      - name: Run miagrations
+      - name: Run migrations
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          envs: CR_REGISTRY,CR_REPOSITORY,IMAGE_TAG,DATABASE_URL
           script: |
             echo ${{ secrets.YC_OAUTH }}|docker login \
              --username oauth \
              --password-stdin \
             cr.yandex
 
-            echo $DATABASE_URL
-            echo !!!!!!!!!!
-
             docker run --rm \
               --name migration \
-              -e "DATABASE_URL=${{ secrets.DATABASE_URL }}" \
+              --env "DATABASE_URL=$DATABASE_URL" \
               cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG \
               npx prisma migrate deploy
 
@@ -170,6 +168,7 @@ jobs:
           CR_REGISTRY: crpt00fi0ka8gt8p6c56
           CR_REPOSITORY: prod/back
           IMAGE_TAG: main
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
   
   deploy_prod:
     name: deploy prod
@@ -183,6 +182,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          envs: API_TOKEN,FOLDER_ID,ENVIRONMENT,YANDEX_CLIENT_SECRET,YANDEX_CLIENT_ID,DATABASE_URL
           script: |
             echo ${{ secrets.YC_OAUTH }}|docker login \
              --username oauth \
