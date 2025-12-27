@@ -58,6 +58,7 @@ jobs:
             --build-arg VITE_PROMPT_MAX_SYMBOLS=${{ vars.VITE_PROMPT_MAX_SYMBOLS }} \
             --build-arg VITE_FRONTEND_URL=${{ vars.VITE_FRONTEND_URL }} \
             --build-arg VITE_GOOGLE_CLIENT_ID=${{ secrets.VITE_GOOGLE_CLIENT_ID }} \
+            --build-arg VITE_GOOGLE_CLIENT_ID=${{ secrets.VITE_YANDEX_CLIENT_ID }} \
             .
           docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG
 
@@ -127,6 +128,7 @@ jobs:
             --build-arg VITE_PROMPT_MAX_SYMBOLS=${{ vars.VITE_PROMPT_MAX_SYMBOLS }} \
             --build-arg VITE_FRONTEND_URL=${{ vars.VITE_FRONTEND_URL }} \
             --build-arg VITE_GOOGLE_CLIENT_ID=${{ secrets.VITE_GOOGLE_CLIENT_ID }} \
+            --build-arg VITE_YANDEX_CLIENT_ID=${{ secrets.VITE_YANDEX_CLIENT_ID }} \
             .
           docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG
 
@@ -173,14 +175,14 @@ jobs:
              --password-stdin \
             cr.yandex
 
-            docker rmi cr.yandex/$CR_REGISTRY/prod/migrations:migrations
-
             docker run --rm \
              --name migration \
              --env "DATABASE_URL=$DATABASE_URL" \
              --entrypoint sh \
              cr.yandex/$CR_REGISTRY/prod/migrations:migrations \
              -c 'npx prisma migrate deploy'
+
+            docker rmi cr.yandex/$CR_REGISTRY/prod/migrations:migrations
 
         env:
           CR_REGISTRY: crpt00fi0ka8gt8p6c56
