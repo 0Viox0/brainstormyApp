@@ -166,6 +166,8 @@ jobs:
              --password-stdin \
             cr.yandex
 
+            docker container inspect migration >/dev/null 2>&1 && docker stop migration
+            
             docker run --rm \
              --name migration \
              --env "DATABASE_URL=$DATABASE_URL" \
