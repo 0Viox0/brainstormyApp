@@ -1,22 +1,6 @@
 services:
-  nginx:
-    image: nginx:alpine
-    pull_policy: always
-    container_name: nginx-gateway
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
-      - /etc/letsencrypt/live/brainstormy.ru/fullchain.pem:/etc/nginx/ssl/fullchain.pem:ro
-      - /etc/letsencrypt/live/brainstormy.ru/privkey.pem:/etc/nginx/ssl/privkey.pem:ro
-    depends_on:
-      - frontend
-      - backend
-    restart: unless-stopped
   backend:
     image: cr.yandex/crpt00fi0ka8gt8p6c56/prod/back:main
-    pull_policy: always
     container_name: nest-backend
     expose:
       - "3000"
@@ -38,8 +22,12 @@ services:
 
   frontend:
     image: cr.yandex/crpt00fi0ka8gt8p6c56/prod/front:main
-    pull_policy: always
     container_name: vite-frontend
     expose:
       - "80"
     restart: unless-stopped
+
+networks:
+  shared:
+    external: true
+    name: shared-network

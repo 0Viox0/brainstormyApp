@@ -207,12 +207,17 @@ jobs:
              --password-stdin \
             cr.yandex
 
-            echo "🛑 Stopping containers"
-            docker compose down
+            echo "Up docker-compose-new"
+            docker compose -f docker-compose-new.yaml up --wait
+            echo "Down docker-compose-new"
+            docker compose -f docker-compose-default.yaml down
             docker system prune -a -f
-                  
-            echo "🏗 Building and starting containers"
-            docker compose up -d
+
+            echo "Up updated default docker-compose-new"
+            docker compose -f docker-compose-default.yaml up --wait
+            echo "Down updated default docker-compose-new"
+            docker compose -f docker-compose-new.yaml down
+            docker system prune -a -f
         env:
           API_TOKEN: ${{ secrets.API_TOKEN }}
           FOLDER_ID: ${{ secrets.FOLDER_ID }}

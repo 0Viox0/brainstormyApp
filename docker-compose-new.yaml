@@ -1,0 +1,35 @@
+services:
+  backend-new:
+    image: cr.yandex/crpt00fi0ka8gt8p6c56/prod/back:main
+    pull_policy: always
+    container_name: nest-backend
+    expose:
+      - "3000"
+    environment:
+      FOLDER_ID: ${FOLDER_ID}
+      API_TOKEN: ${API_TOKEN}
+      ENVIRONMENT: ${ENVIRONMENT}
+      YANDEX_CLIENT_SECRET: ${YANDEX_CLIENT_SECRET}
+      YANDEX_CLIENT_ID: ${YANDEX_CLIENT_ID}
+      DATABASE_URL: ${DATABASE_URL}
+      MAX_HISTORY_CONTEXT: ${MAX_HISTORY_CONTEXT} 
+      RETRY_COUNT: ${RETRY_COUNT}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_REDIRECT_URI: ${GOOGLE_REDIRECT_URI}
+      NEW_USER_MAX_TOKENS: ${NEW_USER_MAX_TOKENS}
+      JWT_SECRET: ${JWT_SECRET}
+    restart: unless-stopped
+
+  frontend-new:
+    image: cr.yandex/crpt00fi0ka8gt8p6c56/prod/front:main
+    pull_policy: always
+    container_name: vite-frontend
+    expose:
+      - "80"
+    restart: unless-stopped
+
+networks:
+  shared:
+    external: true
+    name: shared-network
