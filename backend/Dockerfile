@@ -27,4 +27,4 @@ COPY --from=builder /app/generated ./generated
 
 EXPOSE 3000
 
-ENTRYPOINT ["npm", "run", "start:prod-src"]
+CMD ["npm", "run", "start:prod-src"]
