@@ -228,7 +228,7 @@ jobs:
             docker compose -f docker-compose-new.yaml up --wait
 
             docker compose -f docker-compose-nginx-default.yaml down 
-            docker compose -f docker-compose-nginx-new up --wait
+            docker compose -f docker-compose-nginx-new.yaml up --wait
 
             docker compose -f docker-compose-default.yaml down
             docker system prune -a -f
