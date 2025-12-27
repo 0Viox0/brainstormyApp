@@ -1,7 +1,6 @@
 services:
   nginx:
     image: nginx:alpine
-    pull_policy: always
     container_name: nginx-gateway
     ports:
       - "80:80"

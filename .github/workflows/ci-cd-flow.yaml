@@ -223,6 +223,10 @@ jobs:
              --password-stdin \
             cr.yandex
 
+            echo "Restart Nginx"
+            docker compose -f docker-compose-nginx.yaml down 
+            docker compose -f docker-compose-nginx.yaml up --wait
+
             echo "Up docker-compose-new"
             docker compose -f docker-compose-new.yaml up --wait
             echo "Down docker-compose-new"
