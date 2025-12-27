@@ -1,6 +1,8 @@
 ### frontend - vite + react application
 
 .env: 
+VITE_FRONTEND_URL=\<url for frontend\>
+
 VITE_BASE_URL=\<url for backend without /api (just domain)\>
 
 VITE_PROMPT_MAX_SYMBOLS=\<max symbols for initial input and propt inputs (just number)\>
@@ -17,8 +19,6 @@ npx prisma migrate deploy
 ```
 
 #### variables:
-FOLDER_ID=\<folderid\>
-
 PORT=\<app port if needed, by default 3000\>
 
 FOLDER_ID=\<id of folder in yandex cloud\>
