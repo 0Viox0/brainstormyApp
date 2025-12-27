@@ -69,30 +69,30 @@ jobs:
   #     - name: Logical
   #       run: echo "Dummy job"
 
-  # build_prod_back:
-  #   name: build prod back image
-  #   needs: dummy
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v4
+  build_prod_back:
+    name: build prod back image
+    # needs: dummy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
 
-  #     - name: Login to Yandex Cloud Container Registry
-  #       run: |
-  #         echo ${{ secrets.YC_OAUTH }}|docker login \
-  #          --username oauth \
-  #          --password-stdin \
-  #         cr.yandex
+      - name: Login to Yandex Cloud Container Registry
+        run: |
+          echo ${{ secrets.YC_OAUTH }}|docker login \
+           --username oauth \
+           --password-stdin \
+          cr.yandex
  
 
-  #     - name: Build, tag, and push image to Yandex Cloud Container Registry
-  #       env:
-  #         CR_REGISTRY: crpt00fi0ka8gt8p6c56
-  #         CR_REPOSITORY: prod/back
-  #         IMAGE_TAG: main
-  #       run: |
-  #         cd backend
-  #         docker build -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG .
-  #         docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG
+      - name: Build, tag, and push image to Yandex Cloud Container Registry
+        env:
+          CR_REGISTRY: crpt00fi0ka8gt8p6c56
+          CR_REPOSITORY: prod/back
+          IMAGE_TAG: main
+        run: |
+          cd backend
+          docker build -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG .
+          docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG
   
   # build_prod_front:
   #   name: build prod front image
@@ -150,6 +150,7 @@ jobs:
   run_migrations:
     name: run migrations
     # needs: copy_docker_compose
+    needs: build_prod_back
     runs-on: ubuntu-latest
     steps:
       - name: Run migrations
@@ -171,7 +172,7 @@ jobs:
               --env "DATABASE_URL=$DATABASE_URL" \
               --entrypoint npx \
               cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG \
-              prisma migrate deploy --schema=prisma/schema.prisma
+              prisma migrate deploy
 
         env:
           CR_REGISTRY: crpt00fi0ka8gt8p6c56
