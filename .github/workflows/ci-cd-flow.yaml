@@ -53,7 +53,11 @@ jobs:
           IMAGE_TAG: main
         run: |
           cd frontend
-          docker build -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG --build-arg VITE_BASE_URL=${{ secrets.VITE_BASE_URL }} --build-arg VITE_PROMPT_MAX_SYMBOLS=${{ vars.VITE_PROMPT_MAX_SYMBOLS }} .
+          docker build -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG \ 
+            --build-arg VITE_BASE_URL=${{ secrets.VITE_BASE_URL }} \ 
+            --build-arg VITE_PROMPT_MAX_SYMBOLS=${{ vars.VITE_PROMPT_MAX_SYMBOLS }} \
+            --build-arg VITE_FRONTEND_URL=${{ vars.VITE_FRONTEND_URL }} \
+            .
           docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG
 
   dummy:
@@ -112,7 +116,11 @@ jobs:
           IMAGE_TAG: main
         run: |
           cd frontend
-          docker build -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG --build-arg VITE_BASE_URL=${{ secrets.VITE_BASE_URL }} --build-arg VITE_PROMPT_MAX_SYMBOLS=${{ vars.VITE_PROMPT_MAX_SYMBOLS }} .
+          docker build -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG \ 
+            --build-arg VITE_BASE_URL=${{ secrets.VITE_BASE_URL }} \ 
+            --build-arg VITE_PROMPT_MAX_SYMBOLS=${{ vars.VITE_PROMPT_MAX_SYMBOLS }} \
+            --build-arg VITE_FRONTEND_URL=${{ vars.VITE_FRONTEND_URL }} \
+            .
           docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG
 
   copy_docker_compose:
