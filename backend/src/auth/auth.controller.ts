@@ -3,7 +3,7 @@ import { YandexKeyModel } from './models/yandexKey.model';
 import { AuthService } from './auth.service';
 import { GoogleKeyModel } from './models/googleKey.model';
 
-@Controller('auth')
+@Controller('/api/auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 

@@ -13,7 +13,7 @@ import { UserService } from './user.service';
 import { UserMapper } from './mappers/user.mapper';
 import { HttpStatusCode } from 'axios';
 
-@Controller('users')
+@Controller('/api/users')
 export class UserController {
   constructor(
     private readonly userService: UserService,
