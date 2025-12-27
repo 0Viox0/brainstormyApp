@@ -3,6 +3,7 @@ import { AiApi } from '../../aiApi/aiApi.service';
 import { ScamperParser } from './scamper.parser';
 import { ScamperResponse } from './types';
 import { ConfigService } from '@nestjs/config';
+import { Retrier } from '../../retrier/retrier';
 
 @Injectable()
 export class ScamperService {
@@ -10,6 +11,7 @@ export class ScamperService {
     private readonly aiApi: AiApi,
     private readonly sixHatsParser: ScamperParser,
     private readonly configService: ConfigService,
+    private readonly retrier: Retrier,
   ) {}
 
   async getScamper(
@@ -21,14 +23,16 @@ export class ScamperService {
 
     if (environment === 'dev') return this.getDummyScamperResponse();
 
-    const promptToExecute = `Используй модель мозгового штурма “SCAMPER”, чтобы сгенерировать идеи на основе этой: ${baseIdea} ${prompt ? `+ ${prompt}` : ''}. Представь результат в формате JSON, где ключ — это буква в нижнем регистре на английском, а значение — идея на русском. ВЕРНИ В ФОРМАТЕ JSON.`;
+    return this.retrier.retryTillNoExceptionsAsync(async () => {
+      const promptToExecute = `Используй модель мозгового штурма “SCAMPER”, чтобы сгенерировать идеи на основе этой: ${baseIdea} ${prompt ? `+ ${prompt}` : ''}. Представь результат в формате JSON, где ключ — это буква в нижнем регистре на английском, а значение — идея на русском. ВЕРНИ В ФОРМАТЕ JSON.`;
 
-    const [ideas, tokensUsed] = await this.aiApi.execPrompt(
-      promptToExecute,
-      history,
-    );
+      const [ideas, tokensUsed] = await this.aiApi.execPrompt(
+        promptToExecute,
+        history,
+      );
 
-    return this.sixHatsParser.parse(ideas, tokensUsed);
+      return this.sixHatsParser.parse(ideas, tokensUsed);
+    });
   }
 
   private async getDummyScamperResponse() {

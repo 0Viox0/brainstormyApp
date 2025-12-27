@@ -5,6 +5,7 @@ import { GeneratorService } from './services/thinkingModels/generator/generator.
 import { UserService } from 'src/user/user.service';
 import type { RequestWithUser } from 'src/user/types/RequestWithUser';
 import { JwtGuard } from 'src/auth/guards/JwtToken.guard';
+import { HistoryParser } from './services/historyParser/historyParser';
 
 @Controller('/api/ideas')
 export class IdeasGeneratorController {
@@ -13,6 +14,7 @@ export class IdeasGeneratorController {
     private readonly scamperService: ScamperService,
     private readonly generatorService: GeneratorService,
     private readonly userService: UserService,
+    private readonly historyParser: HistoryParser,
   ) {}
 
   @Get('sixHats')
@@ -23,7 +25,7 @@ export class IdeasGeneratorController {
     @Query('history') historyRaw: string,
     @Req() req: RequestWithUser,
   ) {
-    const history = historyRaw ? (JSON.parse(historyRaw) as string[]) : [];
+    const history = this.historyParser.parseHistoryString(historyRaw);
 
     const sixHatsGenerationResult = await this.sixHatsService.getSixHats(
       baseIdea,
@@ -47,7 +49,7 @@ export class IdeasGeneratorController {
     @Query('history') historyRaw: string,
     @Req() req: RequestWithUser,
   ) {
-    const history = historyRaw ? (JSON.parse(historyRaw) as string[]) : [];
+    const history = this.historyParser.parseHistoryString(historyRaw);
 
     const scamperGenerationResult = await this.scamperService.getScamper(
       baseIdea,
@@ -71,7 +73,7 @@ export class IdeasGeneratorController {
     @Query('history') historyRaw: string,
     @Req() req: RequestWithUser,
   ) {
-    const history = historyRaw ? (JSON.parse(historyRaw) as string[]) : [];
+    const history = this.historyParser.parseHistoryString(historyRaw);
 
     const generatorGenerationResult =
       await this.generatorService.getGeneratedIdeas(baseIdea, prompt, history);

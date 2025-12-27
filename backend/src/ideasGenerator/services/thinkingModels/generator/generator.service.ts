@@ -3,6 +3,7 @@ import { AiApi } from '../../aiApi/aiApi.service';
 import { GeneratorParser } from './generator.parser';
 import { GeneratorResponse } from './types';
 import { ConfigService } from '@nestjs/config';
+import { Retrier } from '../../retrier/retrier';
 
 @Injectable()
 export class GeneratorService {
@@ -10,6 +11,7 @@ export class GeneratorService {
     private readonly aiApi: AiApi,
     private readonly sixHatsParser: GeneratorParser,
     private readonly configService: ConfigService,
+    private readonly retrier: Retrier,
   ) {}
 
   async getGeneratedIdeas(
@@ -21,15 +23,17 @@ export class GeneratorService {
 
     if (environment === 'dev') return this.getDummyGeneratorResponse();
 
-    const promptToExecute = `Сделай мозговой штурм и просто сгенерируй 9 идей на основе этой: ${baseIdea} ${prompt ? `+ ${prompt}` : ''}. Представь результат в формате JSON, где ключ — это номер идеи, а значение — идея на русском. ВЕРНИ В ФОРМАТЕ JSON.`;
+    return await this.retrier.retryTillNoExceptionsAsync(async () => {
+      const promptToExecute = `Сделай мозговой штурм и просто сгенерируй 9 идей на основе этой: ${baseIdea} ${prompt ? `+ ${prompt}` : ''}. Представь результат в формате JSON, где ключ — это номер идеи, а значение — идея на русском. ВЕРНИ В ФОРМАТЕ JSON.`;
 
-    const [ideas, tokensUsed] = await this.aiApi.execPrompt(
-      promptToExecute,
-      history,
-      370,
-    );
+      const [ideas, tokensUsed] = await this.aiApi.execPrompt(
+        promptToExecute,
+        history,
+        370,
+      );
 
-    return this.sixHatsParser.parse(ideas, tokensUsed);
+      return this.sixHatsParser.parse(ideas, tokensUsed);
+    });
   }
 
   private async getDummyGeneratorResponse() {

@@ -1,13 +1,12 @@
 import { useAppStore } from '@/shared/storage/store';
 import { useEffect } from 'react';
 import {
-  getJwtToken,
   hasJwtToken,
+  isTokenExpired,
   removeJwtToken,
   setJwtToken,
 } from '../jwtToken';
 import { fetchUserInfo, fetchYandexOAuth } from '../fetch';
-import { jwtDecode } from 'jwt-decode';
 
 export const YandexAuth = () => {
   const setUser = useAppStore((state) => state.setUser);
@@ -24,18 +23,6 @@ export const YandexAuth = () => {
       const user = await fetchUserInfo();
       if (!user) return;
       setUser(user);
-    };
-
-    const isTokenExpired = () => {
-      const token = getJwtToken();
-      if (!token || token === 'undefined') return true;
-
-      const payload = jwtDecode(token);
-      if (!payload.exp) return true;
-
-      const currentTime = Date.now() / 1000;
-
-      return payload.exp < currentTime;
     };
 
     const params = new URLSearchParams(window.location.search);
