@@ -1,4 +1,3 @@
-import { TokensUsed } from '@/components/atoms';
 import { LayersManager } from '@/features/ideaGraph/components/LayerManager';
 import { useIdeasGraph } from '@/features/ideaGraph/store';
 import { useNavigate } from 'react-router';
@@ -14,7 +13,6 @@ export const Graph = () => {
   return (
     <>
       <LayersManager initialIdea={firstIdea!} />
-      <TokensUsed />
     </>
   );
 };
