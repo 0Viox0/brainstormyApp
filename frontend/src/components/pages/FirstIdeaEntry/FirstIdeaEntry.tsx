@@ -8,7 +8,7 @@ export const FirstIdeaEntry = () => {
 
   const handleSubmit = (text: string) => {
     setFirstidea(text);
-    navigate('/');
+    navigate('/graph');
   };
 
   return (
