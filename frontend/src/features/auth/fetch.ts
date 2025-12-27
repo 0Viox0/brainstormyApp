@@ -5,7 +5,7 @@ import type { User } from '@/shared/storage/state';
 
 export const fetchYandexOAuth = async (code: string) => {
   const response = await fetch(
-    `${import.meta.env.VITE_BASE_URL}/auth/yandex`,
+    `${import.meta.env.VITE_BASE_URL}/api/auth/yandex`,
 
     {
       method: 'POST',
@@ -23,7 +23,7 @@ export const fetchYandexOAuth = async (code: string) => {
 
 export const fetchGoogleOAuth = async (code: string) => {
   const response = await fetch(
-    `${import.meta.env.VITE_BASE_URL}/auth/google`,
+    `${import.meta.env.VITE_BASE_URL}/api/auth/google`,
 
     {
       method: 'POST',
@@ -46,7 +46,7 @@ export const fetchUserInfo = async () => {
   const payload = jwtDecode(token);
 
   const response = await fetch(
-    `${import.meta.env.VITE_BASE_URL}/users/${payload.sub}`,
+    `${import.meta.env.VITE_BASE_URL}/api/users/${payload.sub}`,
     {
       headers: { ...getJwtAuthHeader() },
     },
