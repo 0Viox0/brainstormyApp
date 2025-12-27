@@ -235,7 +235,7 @@ jobs:
 
             docker compose -f docker-compose-default.yaml up --wait
 
-            docker compose -f docker-compose-nginx-new down
+            docker compose -f docker-compose-nginx-new.yaml down
             docker compose -f docker-compose-nginx-default.yaml up --wait
 
             docker compose -f docker-compose-new.yaml down
