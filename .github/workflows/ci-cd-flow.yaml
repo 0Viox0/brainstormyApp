@@ -57,6 +57,7 @@ jobs:
             --build-arg VITE_BASE_URL=${{ vars.VITE_BASE_URL }} \
             --build-arg VITE_PROMPT_MAX_SYMBOLS=${{ vars.VITE_PROMPT_MAX_SYMBOLS }} \
             --build-arg VITE_FRONTEND_URL=${{ vars.VITE_FRONTEND_URL }} \
+            --build-arg VITE_GOOGLE_CLIENT_ID=${{ secrets.VITE_GOOGLE_CLIENT_ID }} \
             .
           docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG
 
@@ -120,6 +121,7 @@ jobs:
             --build-arg VITE_BASE_URL=${{ vars.VITE_BASE_URL }} \
             --build-arg VITE_PROMPT_MAX_SYMBOLS=${{ vars.VITE_PROMPT_MAX_SYMBOLS }} \
             --build-arg VITE_FRONTEND_URL=${{ vars.VITE_FRONTEND_URL }} \
+            --build-arg VITE_GOOGLE_CLIENT_ID=${{ secrets.VITE_GOOGLE_CLIENT_ID }} \
             .
           docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG
 
@@ -211,3 +213,8 @@ jobs:
           YANDEX_CLIENT_SECRET: ${{ secrets.YANDEX_CLIENT_SECRET }}
           YANDEX_CLIENT_ID: ${{ secrets.YANDEX_CLIENT_ID }}
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          MAX_HISTORY_CONTEXT: ${{ vars.MAX_HISTORY_CONTEXT }} 
+          RETRY_COUNT: ${{ vars.RETRY_COUNT }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          GOOGLE_CLIENT_ID: ${{ secrets.VITE_GOOGLE_CLIENT_ID }}
+          GOOGLE_REDIRECT_URI: ${{ vars.GOOGLE_REDIRECT_URI }}
