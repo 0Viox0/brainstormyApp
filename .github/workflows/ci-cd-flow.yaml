@@ -93,7 +93,12 @@ jobs:
         run: |
           cd backend
           docker build -t cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG .
+
+          docker tag cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG \
+           cr.yandex/$CR_REGISTRY/prod/migrations:migrations
+
           docker push cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG
+          docker push cr.yandex/$CR_REGISTRY/prod/migrations:migrations
   
   build_prod_front:
     name: build prod front image
@@ -168,17 +173,17 @@ jobs:
              --password-stdin \
             cr.yandex
 
+            docker rmi cr.yandex/$CR_REGISTRY/prod/migrations:migrations
+
             docker run --rm \
              --name migration \
              --env "DATABASE_URL=$DATABASE_URL" \
              --entrypoint sh \
-             cr.yandex/$CR_REGISTRY/$CR_REPOSITORY:$IMAGE_TAG \
+             cr.yandex/$CR_REGISTRY/prod/migrations:migrations \
              -c 'npx prisma migrate deploy'
 
         env:
           CR_REGISTRY: crpt00fi0ka8gt8p6c56
-          CR_REPOSITORY: prod/back
-          IMAGE_TAG: main
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
   
   deploy_prod:
