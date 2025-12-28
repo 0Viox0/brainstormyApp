@@ -23,6 +23,6 @@ scrape_configs:
       - targets: ['backend:3000']
     metrics_path: /metrics
 
-  # - job_name: 'node-exporter'
-  #   static_configs:
-  #     - targets: ['node-exporter:9100']
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets: ['node-exporter:9100']
