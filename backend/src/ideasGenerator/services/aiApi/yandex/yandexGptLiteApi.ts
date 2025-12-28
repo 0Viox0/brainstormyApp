@@ -1,10 +1,14 @@
 import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { CompletionResponse } from './types';
+import { MetricsService } from 'src/metrics/metrics.service';
 
 @Injectable()
 export class YandexGptService {
-  constructor(private configService: ConfigService) {}
+  constructor(
+    private configService: ConfigService,
+    private metricsService: MetricsService,
+  ) {}
 
   private readonly logger = new Logger(YandexGptService.name);
 
@@ -70,41 +74,58 @@ export class YandexGptService {
       };
     };
 
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        ...getHeaders(),
-      },
-      body: JSON.stringify({
-        modelUri: `gpt://${FOLDER_ID}/yandexgpt-lite/latest`,
-        completionOptions: {
-          stream: false,
-          temperature: modelConfig.temperature,
-          maxTokens: modelConfig.maxResponseTokens,
-          reasoningOptions: { mode: 'DISABLED' },
+    const method = 'POST';
+    let statusCode = '500';
+
+    try {
+      const response = await fetch(url, {
+        method,
+        headers: {
+          ...getHeaders(),
         },
-        messages: [
-          {
-            role: 'system',
-            text: `Используй предоставленный контекст, чтобы сгенерировать идеи: ${history.join(' -> ')}`,
+        body: JSON.stringify({
+          modelUri: `gpt://${FOLDER_ID}/yandexgpt-lite/latest`,
+          completionOptions: {
+            stream: false,
+            temperature: modelConfig.temperature,
+            maxTokens: modelConfig.maxResponseTokens,
+            reasoningOptions: { mode: 'DISABLED' },
           },
-          { role: 'user', text: prompt },
-        ],
-      }),
-    });
+          messages: [
+            {
+              role: 'system',
+              text: `Используй предоставленный контекст, чтобы сгенерировать идеи: ${history.join(' -> ')}`,
+            },
+            { role: 'user', text: prompt },
+          ],
+        }),
+      });
 
-    if (!response.ok) {
-      const text = await response.text();
-      throw new HttpException(text, response.status);
+      statusCode = response.status.toString();
+
+      if (!response.ok) {
+        const text = await response.text();
+        throw new HttpException(text, response.status);
+      }
+
+      const data = (await response.json()) as CompletionResponse;
+
+      this.logger.log(data);
+
+      return [
+        data.result.alternatives[0].message.text,
+        parseInt(data.result.usage.totalTokens),
+      ];
+    } catch (error) {
+      if (error instanceof HttpException) {
+        statusCode = error.getStatus().toString();
+      }
+      throw error;
+    } finally {
+      this.metricsService.yandexGptLiteResponse.inc({
+        method,
+        statusCode,
+      });
     }
-
-    const data = (await response.json()) as CompletionResponse;
-
-    this.logger.log(data);
-
-    return [
-      data.result.alternatives[0].message.text,
-      parseInt(data.result.usage.totalTokens),
-    ];
   }
 }
