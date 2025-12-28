@@ -11,3 +11,6 @@ export { CrownIcon } from './CrownIcon';
 export { QuestionIcon } from './QuestionIcon';
 export { GoogleIcon } from './GoogleIcon';
 export { YandexIcon } from './YandexIcon';
+export { BookIcon } from './BookIcon';
+export { BrainstormyLogo } from './BrainstormyLogo';
+export { ArrowIcon } from './ArrowIcon';
