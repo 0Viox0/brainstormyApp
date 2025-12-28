@@ -35,7 +35,6 @@ jobs:
           scp ./monitoring/prometheus/prometheus.yaml $SERVER_USER@$SERVER_HOST:~/monitoring/prometheus/prometheus.yaml
           scp ./monitoring/prometheus/alerts.yaml $SERVER_USER@$SERVER_HOST:~/monitoring/prometheus/alerts.yaml
           scp ./monitoring/prometheus/alerts.yaml $SERVER_USER@$SERVER_HOST:~/monitoring/prometheus/alerts.yaml
-          scp -r ./monitoring/grafana/provisioning $SERVER_USER@$SERVER_HOST:~/monitoring/grafana/provisioning
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SERVER_HOST: ${{ secrets.SSH_HOST }}
