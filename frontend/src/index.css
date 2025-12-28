@@ -2,8 +2,7 @@
 @import 'tailwindcss';
 
 @theme {
-  /* --color-brainstormyBg: #232323; */
-  --color-brainstormyBg: red;
+  --color-brainstormyBg: #232323;
   --color-brainstormySecondary: #9c9c9c;
   --color-brainstormyPrimary: #8b5cf6;
 
