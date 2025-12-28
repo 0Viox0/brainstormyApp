@@ -16,7 +16,7 @@ services:
     expose:
       - "9090"
     networks:
-      - shared
+      - shared-network 
     restart: unless-stopped
 
   grafana:
@@ -31,7 +31,7 @@ services:
     expose:
       - "3000"
     networks:
-      - shared
+      - shared-network
     restart: unless-stopped
     depends_on:
       - prometheus
@@ -41,5 +41,5 @@ volumes:
   grafana_data:
 
 networks:
-  shared:
-    driver: bridge
+  shared-network:
+    external: true

@@ -11,8 +11,8 @@ services:
       - /etc/letsencrypt/live/brainstormy.ru/privkey.pem:/etc/nginx/ssl/privkey.pem:ro
     restart: unless-stopped
     networks:
-      - shared
+      - shared-network
 
 networks:
-  shared:
-    driver: bridge
+  shared-network:
+    external: true

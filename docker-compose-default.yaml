@@ -21,7 +21,7 @@ services:
       JWT_SECRET: ${JWT_SECRET}
     restart: unless-stopped
     networks:
-      - shared
+      - shared-network
 
   frontend:
     image: cr.yandex/crpt00fi0ka8gt8p6c56/prod/front:main
@@ -31,8 +31,8 @@ services:
       - "80"
     restart: unless-stopped
     networks:
-      - shared
+      - shared-network
 
 networks:
-  shared:
-    driver: bridge
+  shared-network:
+    external: true

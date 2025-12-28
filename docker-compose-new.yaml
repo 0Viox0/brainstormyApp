@@ -31,8 +31,8 @@ services:
       - "80"
     restart: unless-stopped
     networks:
-      - shared
+      - shared-network
 
 networks:
-  shared:
-    driver: bridge
+  shared-network:
+    external: true
