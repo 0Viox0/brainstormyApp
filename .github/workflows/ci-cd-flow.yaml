@@ -5,9 +5,13 @@ on:
   push:
     branches:
       - master
+    paths-ignore:
+      - 'monitoring/**'
   pull_request:
     branches:
       - master
+    paths-ignore:
+      - 'monitoring/**'
 
 jobs:
   build_stage_back:

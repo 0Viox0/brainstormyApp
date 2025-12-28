@@ -20,6 +20,8 @@ services:
       NEW_USER_MAX_TOKENS: ${NEW_USER_MAX_TOKENS}
       JWT_SECRET: ${JWT_SECRET}
     restart: unless-stopped
+    networks:
+      - shared
 
   frontend:
     image: cr.yandex/crpt00fi0ka8gt8p6c56/prod/front:main
@@ -28,6 +30,8 @@ services:
     expose:
       - "80"
     restart: unless-stopped
+    networks:
+      - shared
 
 networks:
   shared:

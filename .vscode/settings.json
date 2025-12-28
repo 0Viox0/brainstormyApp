@@ -1,0 +1,5 @@
+{
+    "yaml.schemas": {
+        "https://www.schemastore.org/prometheus.json": "file:///home/incept1on/devOps/brainstormy/monitoring/grafana/provisioning/datasources/prometheus.yaml"
+    }
+}

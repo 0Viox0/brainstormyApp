@@ -10,6 +10,8 @@ services:
       - /etc/letsencrypt/live/brainstormy.ru/fullchain.pem:/etc/nginx/ssl/fullchain.pem:ro
       - /etc/letsencrypt/live/brainstormy.ru/privkey.pem:/etc/nginx/ssl/privkey.pem:ro
     restart: unless-stopped
+    networks:
+      - shared
 
 networks:
   shared:
