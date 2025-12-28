@@ -28,9 +28,9 @@ jobs:
 
           ssh-keyscan -H $SERVER_HOST >> ~/.ssh/known_hosts
 
-          scp ./monitoring/prometheus/prometheus.yml $SERVER_USER@$SERVER_HOST:~/monitoring/prometheus/prometheus.yml
-          scp ./monitoring/prometheus/alerts.yml $SERVER_USER@$SERVER_HOST:~/monitoring/prometheus/alerts.yml
-          scp ./monitoring/prometheus/alerts.yml $SERVER_USER@$SERVER_HOST:~/monitoring/prometheus/alerts.yml
+          scp ./monitoring/prometheus/prometheus.yaml $SERVER_USER@$SERVER_HOST:~/monitoring/prometheus/prometheus.yaml
+          scp ./monitoring/prometheus/alerts.yaml $SERVER_USER@$SERVER_HOST:~/monitoring/prometheus/alerts.yaml
+          scp ./monitoring/prometheus/alerts.yaml $SERVER_USER@$SERVER_HOST:~/monitoring/prometheus/alerts.yaml
           scp -r ./monitoring/grafana/provisioning $SERVER_USER@$SERVER_HOST:~/monitoring/grafana/provisioning
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
