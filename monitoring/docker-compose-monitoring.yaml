@@ -44,8 +44,6 @@ services:
       - "9113"
     networks:
       - shared-network
-    depends_on:
-      - nginx
     restart: unless-stopped
 
   node-exporter:
