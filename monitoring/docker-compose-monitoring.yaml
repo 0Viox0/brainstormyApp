@@ -35,6 +35,19 @@ services:
     depends_on:
       - prometheus
 
+  nginx-exporter:
+    image: nginx/nginx-prometheus-exporter:latest
+    container_name: nginx-exporter
+    command:
+      - '-nginx.scrape-uri=http://nginx:80/stub_status'
+    expose:
+      - "9113"
+    networks:
+      - shared-network
+    depends_on:
+      - nginx
+    restart: unless-stopped
+
   node-exporter:
     image: prom/node-exporter:latest
     container_name: node-exporter
