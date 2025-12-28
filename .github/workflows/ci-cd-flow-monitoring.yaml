@@ -54,7 +54,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           envs: GRAFANA_ADMIN_PASSWORD
           script: |
-            docker compose -f docker-compose-monitoring.yaml down
-            docker compose -f docker-compose-monitoring.yaml up
+            docker compose -f ./monitoring/docker-compose-monitoring.yaml down
+            docker compose -f ./monitoring/docker-compose-monitoring.yaml up
         env:
           GRAFANA_ADMIN_PASSWORD: ${{ secrets.GRAFANA_ADMIN_PASSWORD }}
