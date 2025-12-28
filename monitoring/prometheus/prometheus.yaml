@@ -34,6 +34,11 @@ scrape_configs:
         labels:
           instance: 'database'
 
+  - job_name: 'mysql-exporter'
+    static_configs:
+      - targets: 
+        - '10.128.0.26:9104'
+
   - job_name: 'nginx-exporter'
     static_configs:
       - targets: ['nginx-exporter:9113']
