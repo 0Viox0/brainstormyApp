@@ -5,13 +5,15 @@ on:
   push:
     branches:
       - master
-    paths-ignore:
-      - 'monitoring/**'
+    paths:
+      - '**'
+      - '!monitoring/**'
   pull_request:
     branches:
       - master
-    paths-ignore:
-      - 'monitoring/**'
+    paths:
+      - '**'
+      - '!monitoring/**'
 
 jobs:
   build_stage_back:

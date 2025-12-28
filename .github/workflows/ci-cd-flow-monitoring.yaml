@@ -31,6 +31,7 @@ jobs:
           ssh $SERVER_USER@$SERVER_HOST "mkdir -p ~/monitoring/prometheus"
           ssh $SERVER_USER@$SERVER_HOST "mkdir -p ~/monitoring/grafana"
 
+          scp ./monitoring/docker-compose-monitoring.yaml $SERVER_USER@$SERVER_HOST:~/monitoring/docker-compose-monitoring.yaml
           scp ./monitoring/prometheus/prometheus.yaml $SERVER_USER@$SERVER_HOST:~/monitoring/prometheus/prometheus.yaml
           scp ./monitoring/prometheus/alerts.yaml $SERVER_USER@$SERVER_HOST:~/monitoring/prometheus/alerts.yaml
           scp ./monitoring/prometheus/alerts.yaml $SERVER_USER@$SERVER_HOST:~/monitoring/prometheus/alerts.yaml
