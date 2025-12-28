@@ -55,6 +55,6 @@ jobs:
           envs: GRAFANA_ADMIN_PASSWORD
           script: |
             docker compose -f ./monitoring/docker-compose-monitoring.yaml down
-            docker compose -f ./monitoring/docker-compose-monitoring.yaml up
+            docker compose -f ./monitoring/docker-compose-monitoring.yaml up --wait
         env:
           GRAFANA_ADMIN_PASSWORD: ${{ secrets.GRAFANA_ADMIN_PASSWORD }}
