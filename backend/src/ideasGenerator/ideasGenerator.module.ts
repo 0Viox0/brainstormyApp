@@ -10,9 +10,10 @@ import { GeneratorParser } from './services/thinkingModels/generator/generator.p
 import { UserModule } from 'src/user/user.module';
 import { Retrier } from './services/retrier/retrier';
 import { HistoryParser } from './services/historyParser/historyParser';
+import { MetricsModule } from 'src/metrics/metrics.module';
 
 @Module({
-  imports: [UserModule],
+  imports: [UserModule, MetricsModule],
   controllers: [IdeasGeneratorController],
   providers: [
     SixHatsService,
