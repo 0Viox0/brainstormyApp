@@ -19,7 +19,7 @@ export class MetricsService implements OnModuleInit {
     });
 
     this.yandexGptLiteResponse = new client.Counter({
-      name: 'yandex_http_requests_total',
+      name: 'brainstormy_yandex_http_requests_total',
       help: 'Total HTTP requests from yandex gpt lite api',
       labelNames: ['method', 'statusCode'] as const,
       registers: [this.registry],
