@@ -1,1 +1,1 @@
-export { Tutorial } from './Tutorial';
+export { BookHeaderIcon } from './BookHeaderIcon';

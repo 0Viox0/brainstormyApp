@@ -16,3 +16,4 @@ export { BrainstormyLogo } from './BrainstormyLogo';
 export { ArrowIcon } from './ArrowIcon';
 export { CrossIcon } from './CrossIcon';
 export { CheckmarkIcon } from './CheckmarkIcon';
+export { ExclamationMark } from './ExclamationMark';

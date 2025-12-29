@@ -1,1 +1,1 @@
-export { Tutorial } from './components';
+export { BookHeaderIcon } from './components';

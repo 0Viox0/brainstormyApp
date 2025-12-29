@@ -1,6 +1,6 @@
 import { useAppStore } from '@/shared/storage/store';
 import { LoginButton, PrimeButton, UserInfo } from './components';
-import { Tutorial } from '@/features/help';
+import { BookHeaderIcon } from '@/features/help';
 
 export const Header = () => {
   const user = useAppStore((state) => state.user);
@@ -12,7 +12,7 @@ export const Header = () => {
     >
       <PrimeButton />
       <div className="flex items-center space-x-[40px]">
-        <Tutorial />
+        <BookHeaderIcon />
         {user ? <UserInfo user={user} /> : <LoginButton />}
       </div>
     </header>
