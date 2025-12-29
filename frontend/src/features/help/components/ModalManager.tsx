@@ -1,34 +1,63 @@
-import { BorderedDiv, ModalContainer } from '@/components/atoms';
-import type { FC } from 'react';
+import { useState, type FC, type ReactNode } from 'react';
 import { ModalContentTemplate } from './ModalContentTemplate';
+import {
+  Controls,
+  GeneralDescriptionPage,
+  IdeasAndLevels,
+  RightWrong,
+} from './tutorialPages';
 
 export type ModalManagerProps = {
   onCloseTutorial: () => void;
 };
 
-const COPYWRITING = {
-  firstParagraph:
-    'Brainstormy — это приложение для структурированного создания и развития идей. Это не ChatGPT или DeepSeek.',
-  seconParagraph: [
-    'Если вам нужен ответ, факт или развернутое объяснение — используйте их.',
-    'Если вам нужно придумать, изобрести или улучшить что-то своё — вы в нужном месте.',
-  ],
-  thirdParagraph:
-    'Brainstormy помогает превратить одну мысль в множество, исследуя её с разных сторон удобным визуальным способом.',
+type Page = {
+  title: string;
+  content: ReactNode;
 };
 
+type TutorialPages = Page[];
+
 export const ModalManager: FC<ModalManagerProps> = ({ onCloseTutorial }) => {
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const pages: TutorialPages = [
+    {
+      title: 'О приложении',
+      content: <GeneralDescriptionPage />,
+    },
+    {
+      title: 'Идея и уровни',
+      content: <IdeasAndLevels />,
+    },
+    {
+      title: 'Что вводить в начале?',
+      content: <RightWrong />,
+    },
+    {
+      title: 'Как работать с приложением',
+      content: <Controls />,
+    },
+  ];
+
+  const handleGoBack = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
+  const handleGoForward = () => {
+    setCurrentPage((prev) => Math.min(prev + 1, pages.length));
+
+    if (currentPage === pages.length) {
+      onCloseTutorial();
+    }
+  };
+
   return (
-    <ModalContentTemplate headerText="Обучение">
-      <p>{COPYWRITING.firstParagraph}</p>
-      <p>
-        <ul>
-          {COPYWRITING.seconParagraph.map((text) => (
-            <li>{text}</li>
-          ))}
-        </ul>
-      </p>
-      <p>{COPYWRITING.thirdParagraph}</p>
+    <ModalContentTemplate
+      headerText={pages[currentPage - 1].title}
+      totalPages={pages.length}
+      currentPage={currentPage}
+      onGoBack={handleGoBack}
+      onGoForward={handleGoForward}
+    >
+      {pages[currentPage - 1].content}
     </ModalContentTemplate>
   );
 };

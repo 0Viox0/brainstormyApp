@@ -14,3 +14,5 @@ export { YandexIcon } from './YandexIcon';
 export { BookIcon } from './BookIcon';
 export { BrainstormyLogo } from './BrainstormyLogo';
 export { ArrowIcon } from './ArrowIcon';
+export { CrossIcon } from './CrossIcon';
+export { CheckmarkIcon } from './CheckmarkIcon';
