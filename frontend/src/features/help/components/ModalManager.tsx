@@ -2,7 +2,9 @@ import { useState, type FC, type ReactNode } from 'react';
 import { ModalContentTemplate } from './ModalContentTemplate';
 import {
   Controls,
+  GeneralAppUse,
   GeneralDescriptionPage,
+  GoBackFunctionalityShowcase,
   IdeasAndLevels,
   RightWrong,
 } from './tutorialPages';
@@ -37,6 +39,14 @@ export const ModalManager: FC<ModalManagerProps> = ({ onCloseTutorial }) => {
     {
       title: 'Как работать с приложением',
       content: <Controls />,
+    },
+    {
+      title: 'Как работать с приложением',
+      content: <GeneralAppUse />,
+    },
+    {
+      title: 'Как работать с приложением',
+      content: <GoBackFunctionalityShowcase />,
     },
   ];
 
