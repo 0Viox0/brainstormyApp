@@ -5,11 +5,19 @@ import { ScamperResponse } from './types';
 export class ScamperParser {
   parse(ideas: string, tokensUsed: number): ScamperResponse {
     const cleanJson = this.stripCodeFences(ideas);
-    const sixHatsJson = JSON.parse(cleanJson) as ScamperResponse['data'];
+    const scampperJson = JSON.parse(cleanJson) as ScamperResponse['data'];
+
+    const scamperKeys = ['s', 'c', 'a', 'm', 'p', 'e', 'r'];
+
+    for (const key of scamperKeys) {
+      if (!(key in scampperJson)) {
+        throw new Error(`Missing key '${key}' in Scamper response`);
+      }
+    }
 
     return {
       type: 'scamper',
-      data: sixHatsJson,
+      data: scampperJson,
       tokensUsed,
     };
   }
