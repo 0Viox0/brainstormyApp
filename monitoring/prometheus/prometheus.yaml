@@ -44,7 +44,8 @@ scrape_configs:
   #     - targets: ['nginx-exporter:9113']
   #   metrics_path: /metrics
 
-  - job_name: 'nginx-exporter'
+  - job_name: 'telegraf'
     static_configs:
-      - targets: ['nginx:8080']  # Change from nginx-exporter:9113 to nginx:8080
-    metrics_path: /stub_status
+      - targets: ['telegraf:9273']
+        labels:
+          instance: 'nginx-server'

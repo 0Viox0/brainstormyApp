@@ -35,17 +35,6 @@ services:
     depends_on:
       - prometheus
 
-  nginx-exporter:
-    image: nginx/nginx-prometheus-exporter:latest
-    container_name: nginx-exporter
-    command:
-      - '-nginx.scrape-uri=http://nginx:8080/stub_status'
-    expose:
-      - "9113"
-    networks:
-      - shared-network
-    restart: unless-stopped
-
   node-exporter:
     image: prom/node-exporter:latest
     container_name: node-exporter
@@ -59,6 +48,23 @@ services:
       - "9100"
     networks:
       - shared-network
+    
+  telegraf:
+    image: telegraf:latest
+    container_name: telegraf
+    volumes:
+      - ./telegraf/telegraf.conf:/etc/telegraf/telegraf.conf
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - nginx_logs:/var/log/nginx:ro
+    environment:
+      - HOST_PROC=/rootfs/proc
+      - HOST_SYS=/rootfs/sys
+      - HOST_ETC=/rootfs/etc
+    expose:
+      - "9273"
+    networks:
+      - shared-network
+    restart: unless-stopped
 
 volumes:
   prometheus_data:
