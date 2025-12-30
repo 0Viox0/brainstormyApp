@@ -13,6 +13,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/user/user.service';
 import { UserMapper } from 'src/user/mappers/user.mapper';
 import { GoogleUserResponseDto } from './dtos/googleUserRespose.dto';
+import { AppStatsService } from 'src/appStats/appStats.service';
 
 @Injectable()
 export class AuthService {
@@ -23,6 +24,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly userService: UserService,
     private readonly userMapper: UserMapper,
+    private readonly appStats: AppStatsService,
   ) {}
 
   public async loginWithYandex(code: string): Promise<LoginModel> {
@@ -92,6 +94,7 @@ export class AuthService {
         accountProvider: 'yandex',
       });
       isNewUser = true;
+      await this.appStats.incTotalYandexRegisteredUsers();
     } else {
       user = await this.userService.updateUser(yandexUser.id, {
         username: yandexUser.display_name,
@@ -184,6 +187,7 @@ export class AuthService {
         accountProvider: 'google',
       });
       isNewUser = true;
+      await this.appStats.incTotalGoogleRegisteredUsers();
     } else {
       user = await this.userService.updateUser(googleUser.sub, {
         username: googleUser.name,

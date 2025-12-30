@@ -6,6 +6,7 @@ import { UserService } from 'src/user/user.service';
 import type { RequestWithUser } from 'src/user/types/RequestWithUser';
 import { JwtGuard } from 'src/auth/guards/JwtToken.guard';
 import { HistoryParser } from './services/historyParser/historyParser';
+import { AppStatsService } from 'src/appStats/appStats.service';
 
 @Controller('/api/ideas')
 export class IdeasGeneratorController {
@@ -15,6 +16,7 @@ export class IdeasGeneratorController {
     private readonly generatorService: GeneratorService,
     private readonly userService: UserService,
     private readonly historyParser: HistoryParser,
+    private readonly appStatsService: AppStatsService,
   ) {}
 
   @Get('sixHats')
@@ -37,6 +39,8 @@ export class IdeasGeneratorController {
       req.user.id,
       sixHatsGenerationResult.tokensUsed,
     );
+
+    await this.appStatsService.incSixHatsUses();
 
     return sixHatsGenerationResult;
   }
@@ -62,6 +66,8 @@ export class IdeasGeneratorController {
       scamperGenerationResult.tokensUsed,
     );
 
+    await this.appStatsService.incScamperUses();
+
     return scamperGenerationResult;
   }
 
@@ -82,6 +88,8 @@ export class IdeasGeneratorController {
       req.user.id,
       generatorGenerationResult.tokensUsed,
     );
+
+    await this.appStatsService.incGeneratorUses();
 
     return generatorGenerationResult;
   }

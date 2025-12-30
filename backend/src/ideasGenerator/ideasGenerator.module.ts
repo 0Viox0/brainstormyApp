@@ -11,9 +11,10 @@ import { UserModule } from 'src/user/user.module';
 import { Retrier } from './services/retrier/retrier';
 import { HistoryParser } from './services/historyParser/historyParser';
 import { MetricsModule } from 'src/metrics/metrics.module';
+import { AppStatsModule } from 'src/appStats/appStats.module';
 
 @Module({
-  imports: [UserModule, MetricsModule],
+  imports: [UserModule, MetricsModule, AppStatsModule],
   controllers: [IdeasGeneratorController],
   providers: [
     SixHatsService,
