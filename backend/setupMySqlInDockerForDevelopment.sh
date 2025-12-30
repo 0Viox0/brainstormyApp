@@ -8,3 +8,7 @@ docker run -d \
   -e MYSQL_USER=viox \
   -e MYSQL_PASSWORD=123 \
   mysql:8
+
+mysql -u root -p
+
+GRANT ALL PRIVILEGES ON *.* TO 'viox'@'%';
