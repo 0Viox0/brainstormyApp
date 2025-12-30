@@ -1,0 +1,1 @@
+export { BookHeaderIcon } from './BookHeaderIcon';

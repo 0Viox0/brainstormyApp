@@ -10,3 +10,4 @@ export { ModalContainer } from './ModalContainer';
 export { BorderedDiv } from './BorderedDiv';
 export { ViewOnlyEnterTextInput } from './ViewOnlyTextInput';
 export { TextLengthLimit } from './TextLengthLimit';
+export { BorderedButton } from './BorderedButton';

@@ -6,6 +6,7 @@ export class MetricsService implements OnModuleInit {
   readonly registry: client.Registry;
 
   readonly yandexGptLiteResponse: client.Counter<string>;
+  readonly yandexGptLiteRetries: client.Counter<string>;
 
   constructor() {
     this.registry = new client.Registry();
@@ -22,6 +23,13 @@ export class MetricsService implements OnModuleInit {
       name: 'brainstormy_yandex_http_requests_total',
       help: 'Total HTTP requests from yandex gpt lite api',
       labelNames: ['method', 'statusCode'] as const,
+      registers: [this.registry],
+    });
+
+    this.yandexGptLiteRetries = new client.Counter({
+      name: 'brainstormy_yandex_retries_llm',
+      help: 'Total retries for yandex gpt lite api',
+      labelNames: ['cause'] as const,
       registers: [this.registry],
     });
   }

@@ -49,19 +49,19 @@ export const IdeaGenerator: FC<IdeaGeneratorProps> = ({
     {
       id: 3,
       icon: <LightBulbIcon className="mb-[-1px]" />,
-      name: 'Генератор',
+      name: 'Запустить стандартную генерацию',
       type: 'generator',
     },
     {
       id: 2,
       icon: <ScamperLogo />,
-      name: 'Скампер',
+      name: 'Тансформировать идею',
       type: 'scamper',
     },
     {
       id: 1,
       icon: <SixHatsLogo />,
-      name: 'Шесть шляп',
+      name: 'Проанализировать с разных сторон',
       type: 'sixHats',
     },
   ];

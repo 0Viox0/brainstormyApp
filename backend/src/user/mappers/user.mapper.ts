@@ -20,12 +20,13 @@ export class UserMapper {
     };
   }
 
-  toUserModel(userDto: UserDto): UserModel {
+  toUserModel(userDto: UserDto, isNew: boolean): UserModel {
     return {
       username: userDto.username,
       tokensLeft: userDto.tokensLeft,
       userLogoUrl: userDto.userLogoUrl,
       accountProvider: userDto.accountProvider,
+      isNew: isNew,
     };
   }
 }

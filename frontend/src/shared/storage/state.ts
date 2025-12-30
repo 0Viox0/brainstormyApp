@@ -3,6 +3,7 @@ export type User = {
   userLogoUrl: string;
   tokensLeft: number;
   accountProvider: string;
+  isNew: boolean;
 };
 
 export type AppState = {

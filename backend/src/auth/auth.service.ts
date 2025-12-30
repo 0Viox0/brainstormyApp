@@ -81,6 +81,7 @@ export class AuthService {
     const yandexUser = userResponse.data as YandexUserResponseDto;
 
     let user = await this.userService.getUserById(yandexUser.id);
+    let isNewUser = false;
 
     if (!user) {
       user = await this.userService.createUser({
@@ -90,12 +91,18 @@ export class AuthService {
         tokensLeft: newUserMaxTokens,
         accountProvider: 'yandex',
       });
+      isNewUser = true;
+    } else {
+      user = await this.userService.updateUser(yandexUser.id, {
+        username: yandexUser.display_name,
+        userLogoUrl: `https://avatars.yandex.net/get-yapic/${yandexUser.default_avatar_id}`,
+      });
     }
 
     const jwtToken = this.jwtService.sign({ sub: user.id });
 
     return {
-      user: this.userMapper.toUserModel(user),
+      user: this.userMapper.toUserModel(user, isNewUser),
       jwtToken: jwtToken,
     };
   }
@@ -166,6 +173,7 @@ export class AuthService {
     const googleUser = userInfoResponse.data as GoogleUserResponseDto;
 
     let user = await this.userService.getUserById(googleUser.sub);
+    let isNewUser = false;
 
     if (!user) {
       user = await this.userService.createUser({
@@ -175,12 +183,18 @@ export class AuthService {
         tokensLeft: newUserMaxTokens,
         accountProvider: 'google',
       });
+      isNewUser = true;
+    } else {
+      user = await this.userService.updateUser(googleUser.sub, {
+        username: googleUser.name,
+        userLogoUrl: googleUser.picture,
+      });
     }
 
     const jwtToken = this.jwtService.sign({ sub: user.id });
 
     return {
-      user: this.userMapper.toUserModel(user),
+      user: this.userMapper.toUserModel(user, isNewUser),
       jwtToken: jwtToken,
     };
   }
