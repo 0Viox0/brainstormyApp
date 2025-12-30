@@ -1,15 +1,19 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, OnModuleInit } from '@nestjs/common';
 import { MetricsService } from 'src/metrics/metrics.service';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
-export class AppStatsService {
+export class AppStatsService implements OnModuleInit {
+  private readonly STATS_ID = 1;
+
   constructor(
     private readonly prismaService: PrismaService,
     private readonly metricsService: MetricsService,
   ) {}
 
-  private readonly STATS_ID = 1;
+  public async onModuleInit() {
+    await this.syncMetricsWithDb();
+  }
 
   public async incTotalYandexRegisteredUsers(): Promise<void> {
     await this.prismaService.appStats.update({
@@ -60,5 +64,22 @@ export class AppStatsService {
     return this.prismaService.appStats.findUnique({
       where: { id: this.STATS_ID },
     });
+  }
+
+  private async syncMetricsWithDb() {
+    const stats = await this.getStats();
+    if (!stats) return;
+
+    this.metricsService.totalAuthRegisteredUsers.inc(
+      { provider: 'yandex' },
+      stats.totalYandexRegisteredUsers,
+    );
+    this.metricsService.totalAuthRegisteredUsers.inc(
+      { provider: 'google' },
+      stats.totalGoogleRegisteredUsers,
+    );
+    this.metricsService.generatorUses.inc(stats.generatorUses);
+    this.metricsService.scamperUses.inc(stats.scamperUses);
+    this.metricsService.sixHatsUses.inc(stats.sixHatsUses);
   }
 }
