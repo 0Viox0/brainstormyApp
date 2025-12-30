@@ -1,10 +1,19 @@
 import { WithTooltip } from '@/components/molecules';
 import { BookIcon } from '@/shared/icons/';
 import { MainHelpEntry } from './MainHelpEntry';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useAppStore } from '@/shared/storage/store';
 
 export const BookHeaderIcon = () => {
+  const user = useAppStore((state) => state.user);
   const [isHelpEntryOpened, setIsHelpEntryOpened] = useState(false);
+
+  useEffect(() => {
+    if (user?.isNew) {
+      setIsHelpEntryOpened(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.isNew]);
 
   const closeHelpEntry = () => setIsHelpEntryOpened(false);
   const openHelpEntry = () => setIsHelpEntryOpened(true);

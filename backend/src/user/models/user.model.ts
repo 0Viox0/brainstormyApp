@@ -3,4 +3,5 @@ export class UserModel {
   public userLogoUrl: string;
   public tokensLeft: number;
   public accountProvider: string;
+  public isNew: boolean;
 }

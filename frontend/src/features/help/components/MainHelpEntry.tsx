@@ -2,16 +2,25 @@ import { BorderedButton } from '@/components/atoms';
 import { BorderedBrainstormyModal } from '@/components/molecules';
 import { BookIcon, ExclamationMark } from '@/shared/icons';
 import { ModalManager } from './tutorial/ModalManager';
-import { useState, type FC } from 'react';
+import { useEffect, useState, type FC } from 'react';
 import { Reference } from './reference';
+import { useAppStore } from '@/shared/storage/store';
 
 export type MainHelpEntryProps = {
   onCloseHelpEntry: () => void;
 };
 
 export const MainHelpEntry: FC<MainHelpEntryProps> = ({ onCloseHelpEntry }) => {
+  const user = useAppStore((state) => state.user);
   const [isTutorialOpened, setIsTutorialOpened] = useState(false);
   const [isReferenceOpened, setIsReferenceOpened] = useState(false);
+
+  useEffect(() => {
+    if (user?.isNew) {
+      setIsTutorialOpened(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.isNew]);
 
   const handleOpenTutorial = () => setIsTutorialOpened(true);
   const handleCloseTutorial = () => setIsTutorialOpened(false);

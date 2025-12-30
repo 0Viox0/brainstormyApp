@@ -60,4 +60,18 @@ export class UserService {
 
     return this.userMapper.toDto(updatedUser);
   }
+
+  async updateUser(id: string, userData: Partial<UserDto>): Promise<UserDto> {
+    const updatedUser = await this.prismaService.user.update({
+      where: { id },
+      data: {
+        name: userData.username,
+        profilePictureUrl: userData.userLogoUrl,
+        tokensLeft: userData.tokensLeft,
+        accountProvider: userData.accountProvider,
+      },
+    });
+
+    return this.userMapper.toDto(updatedUser);
+  }
 }

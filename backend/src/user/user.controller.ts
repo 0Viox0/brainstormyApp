@@ -38,6 +38,6 @@ export class UserController {
       );
     }
 
-    return this.userMapper.toUserModel(user);
+    return this.userMapper.toUserModel(user, false);
   }
 }
