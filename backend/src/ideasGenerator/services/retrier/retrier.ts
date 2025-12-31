@@ -28,7 +28,7 @@ export class Retrier {
         return await action();
       } catch (err) {
         retryNumber++;
-        this.logger.error(`RETRY NUMBER ${retryNumber} BECAUSE OF `, err);
+        this.logger.warn(`RETRY NUMBER ${retryNumber} BECAUSE OF `, err);
         this.metricsService.yandexGptLiteRetries.inc({
           cause: (err as Error).name,
         });
@@ -57,7 +57,7 @@ export class Retrier {
         return action();
       } catch (err) {
         retryNumber++;
-        this.logger.error(`RETRY NUMBER ${retryNumber} BECAUSE OF `, err);
+        this.logger.warn(`RETRY NUMBER ${retryNumber} BECAUSE OF `, err);
         this.metricsService.yandexGptLiteRetries.inc({
           cause: (err as Error).name,
         });

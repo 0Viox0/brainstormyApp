@@ -12,6 +12,7 @@ export class AppStatsService implements OnModuleInit {
   ) {}
 
   public async onModuleInit() {
+    await this.ensureStatsRowExists();
     await this.syncMetricsWithDb();
   }
 
@@ -90,5 +91,20 @@ export class AppStatsService implements OnModuleInit {
       { method: 'sixHats' },
       stats.sixHatsUses,
     );
+  }
+
+  private async ensureStatsRowExists(): Promise<void> {
+    await this.prismaService.appStats.upsert({
+      where: { id: this.STATS_ID },
+      update: {},
+      create: {
+        id: this.STATS_ID,
+        totalYandexRegisteredUsers: 0,
+        totalGoogleRegisteredUsers: 0,
+        generatorUses: 0,
+        scamperUses: 0,
+        sixHatsUses: 0,
+      },
+    });
   }
 }
