@@ -13,15 +13,14 @@ services:
     restart: unless-stopped
     networks:
       - shared-network
+    environment:
+      - TZ=Europe/Moscow
     command: >
       sh -c "
       rm -f /var/log/nginx/access.log /var/log/nginx/error.log &&
       touch /var/log/nginx/access.log /var/log/nginx/error.log &&
       nginx -g 'daemon off;'
       "
-
-# volumes:
-#   nginx_logs:
 
 networks:
   shared-network:
