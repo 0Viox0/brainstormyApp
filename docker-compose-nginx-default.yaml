@@ -15,7 +15,7 @@ services:
       - shared-network
 
 volumes:
-  nginx_logs:  # Add this volume definition
+  nginx_logs:
 
 networks:
   shared-network:

@@ -1,5 +1,5 @@
 services:
-  nginx:
+  nginx-new:
     image: nginx:alpine
     container_name: nginx-gateway-new
     ports:
@@ -13,6 +13,9 @@ services:
     restart: unless-stopped
     networks:
       - shared-network
+
+volumes:
+  nginx_logs:
 
 networks:
   shared-network:
