@@ -55,7 +55,7 @@ services:
     volumes:
       - ./telegraf/telegraf.conf:/etc/telegraf/telegraf.conf
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - nginx_logs:/var/log/nginx:ro
+      - ../nginx_logs:/var/log/nginx:ro
     environment:
       - HOST_PROC=/rootfs/proc
       - HOST_SYS=/rootfs/sys
