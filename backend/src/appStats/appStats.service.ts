@@ -39,7 +39,7 @@ export class AppStatsService implements OnModuleInit {
       data: { generatorUses: { increment: 1 } },
     });
 
-    this.metricsService.generatorUses.inc();
+    this.metricsService.methodUses.inc({ method: 'generator' });
   }
 
   public async incScamperUses(): Promise<void> {
@@ -48,7 +48,7 @@ export class AppStatsService implements OnModuleInit {
       data: { scamperUses: { increment: 1 } },
     });
 
-    this.metricsService.scamperUses.inc();
+    this.metricsService.methodUses.inc({ method: 'scamper' });
   }
 
   public async incSixHatsUses(): Promise<void> {
@@ -57,7 +57,7 @@ export class AppStatsService implements OnModuleInit {
       data: { sixHatsUses: { increment: 1 } },
     });
 
-    this.metricsService.sixHatsUses.inc();
+    this.metricsService.methodUses.inc({ method: 'sixHats' });
   }
 
   public async getStats() {
@@ -78,8 +78,17 @@ export class AppStatsService implements OnModuleInit {
       { provider: 'google' },
       stats.totalGoogleRegisteredUsers,
     );
-    this.metricsService.generatorUses.inc(stats.generatorUses);
-    this.metricsService.scamperUses.inc(stats.scamperUses);
-    this.metricsService.sixHatsUses.inc(stats.sixHatsUses);
+    this.metricsService.methodUses.inc(
+      { method: 'generator' },
+      stats.generatorUses,
+    );
+    this.metricsService.methodUses.inc(
+      { method: 'scamper' },
+      stats.scamperUses,
+    );
+    this.metricsService.methodUses.inc(
+      { method: 'sixHats' },
+      stats.sixHatsUses,
+    );
   }
 }

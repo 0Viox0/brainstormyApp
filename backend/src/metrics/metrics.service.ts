@@ -8,9 +8,7 @@ export class MetricsService implements OnModuleInit {
   readonly yandexGptLiteResponse: client.Counter<string>;
   readonly yandexGptLiteRetries: client.Counter<string>;
   readonly totalAuthRegisteredUsers: client.Counter<string>;
-  readonly generatorUses: client.Counter<string>;
-  readonly scamperUses: client.Counter<string>;
-  readonly sixHatsUses: client.Counter<string>;
+  readonly methodUses: client.Counter<string>;
 
   constructor() {
     this.registry = new client.Registry();
@@ -44,21 +42,10 @@ export class MetricsService implements OnModuleInit {
       registers: [this.registry],
     });
 
-    this.generatorUses = new client.Counter({
-      name: 'brainstormy_generator_uses_total',
-      help: 'Total generator uses',
-      registers: [this.registry],
-    });
-
-    this.scamperUses = new client.Counter({
-      name: 'brainstormy_scamper_uses_total',
-      help: 'Total scamper uses',
-      registers: [this.registry],
-    });
-
-    this.sixHatsUses = new client.Counter({
-      name: 'brainstormy_six_hats_uses_total',
-      help: 'Total six hats uses',
+    this.methodUses = new client.Counter({
+      name: 'brainstormy_method_uses_total',
+      help: 'Total method uses',
+      labelNames: ['method'] as const,
       registers: [this.registry],
     });
   }
