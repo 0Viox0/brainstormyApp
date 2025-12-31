@@ -24,7 +24,7 @@ export class GeneratorService {
     if (environment === 'dev') return this.getDummyGeneratorResponse();
 
     return await this.retrier.retryTillNoExceptionsAsync(async () => {
-      const promptToExecute = `Сделай мозговой штурм и просто сгенерируй 9 идей на основе этой: ${baseIdea} ${prompt ? `+ ${prompt}` : ''}. Представь результат в формате JSON, где ключ — это номер идеи, а значение — идея на русском. ВЕРНИ В ФОРМАТЕ JSON.`;
+      const promptToExecute = `Сделай мозговой штурм и просто сгенерируй 9 идей на основе этой: ${baseIdea} ${prompt ? `+ ${prompt}` : ''}. Представь результат в формате JSON, где ключ — это номер идеи, а значение — идея на русском, генерируй значения максимум 20 слов. ВЕРНИ В ФОРМАТЕ JSON.`;
 
       const [ideas, tokensUsed] = await this.aiApi.execPrompt(
         promptToExecute,

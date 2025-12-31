@@ -24,7 +24,7 @@ export class SixHatsService {
     if (environment === 'dev') return this.getDummySixHatsResponse();
 
     return this.retrier.retryTillNoExceptionsAsync(async () => {
-      const promptToExecute = `Используй модель мозгового штурма “Шесть шляп мышления”, чтобы сгенерировать идеи на основе этой: ${baseIdea} ${prompt ? `+ ${prompt}` : ''}. Представь результат в формате JSON, где ключ — это цвет шляпы в нижнем регистре на английском, а значение — идея на русском. ВЕРНИ В ФОРМАТЕ JSON.`;
+      const promptToExecute = `Используй модель мозгового штурма “Шесть шляп мышления”, чтобы сгенерировать идеи на основе этой: ${baseIdea} ${prompt ? `+ ${prompt}` : ''}. Представь результат в формате JSON, где ключ — это цвет шляпы в нижнем регистре на английском, а значение — идея на русском (генерируй значения максимум 20 слов). ВЕРНИ В ФОРМАТЕ JSON.`;
 
       const [ideas, tokensUsed] = await this.aiApi.execPrompt(
         promptToExecute,

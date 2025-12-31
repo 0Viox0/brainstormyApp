@@ -10,7 +10,7 @@ export class SixHatsParser {
     const sixHatsKeys = ['blue', 'white', 'green', 'yellow', 'black', 'red'];
 
     for (const key of sixHatsKeys) {
-      if (!(key in sixHatsKeys)) {
+      if (!(key in sixHatsJson)) {
         throw new Error(`Missing key '${key}' in SixHats response`);
       }
     }
