@@ -4,6 +4,7 @@ import { ScamperParser } from './scamper.parser';
 import { ScamperResponse } from './types';
 import { ConfigService } from '@nestjs/config';
 import { Retrier } from '../../retrier/retrier';
+import { MetricsService } from 'src/metrics/metrics.service';
 
 @Injectable()
 export class ScamperService {
@@ -12,6 +13,7 @@ export class ScamperService {
     private readonly sixHatsParser: ScamperParser,
     private readonly configService: ConfigService,
     private readonly retrier: Retrier,
+    private readonly metricsService: MetricsService,
   ) {}
 
   async getScamper(
@@ -31,6 +33,8 @@ export class ScamperService {
         history,
         300,
       );
+
+      this.metricsService.tokensSpent.inc({ kind: 'actual' }, tokensUsed);
 
       return this.sixHatsParser.parse(ideas, tokensUsed);
     });

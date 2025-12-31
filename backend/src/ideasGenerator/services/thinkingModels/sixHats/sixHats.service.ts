@@ -4,6 +4,7 @@ import { AiApi } from '../../aiApi/aiApi.service';
 import { SixHatsParser } from './sixHats.parser';
 import { ConfigService } from '@nestjs/config';
 import { Retrier } from '../../retrier/retrier';
+import { MetricsService } from 'src/metrics/metrics.service';
 
 @Injectable()
 export class SixHatsService {
@@ -12,6 +13,7 @@ export class SixHatsService {
     private readonly sixHatsParser: SixHatsParser,
     private readonly configService: ConfigService,
     private readonly retrier: Retrier,
+    private readonly metricsService: MetricsService,
   ) {}
 
   async getSixHats(
@@ -30,6 +32,8 @@ export class SixHatsService {
         promptToExecute,
         history,
       );
+
+      this.metricsService.tokensSpent.inc({ kind: 'actual' }, tokensUsed);
 
       return this.sixHatsParser.parse(ideas, tokensUsed);
     });

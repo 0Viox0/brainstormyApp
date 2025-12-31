@@ -4,6 +4,7 @@ import { GeneratorParser } from './generator.parser';
 import { GeneratorResponse } from './types';
 import { ConfigService } from '@nestjs/config';
 import { Retrier } from '../../retrier/retrier';
+import { MetricsService } from 'src/metrics/metrics.service';
 
 @Injectable()
 export class GeneratorService {
@@ -12,6 +13,7 @@ export class GeneratorService {
     private readonly sixHatsParser: GeneratorParser,
     private readonly configService: ConfigService,
     private readonly retrier: Retrier,
+    private readonly metricsService: MetricsService,
   ) {}
 
   async getGeneratedIdeas(
@@ -31,6 +33,8 @@ export class GeneratorService {
         history,
         370,
       );
+
+      this.metricsService.tokensSpent.inc({ kind: 'actual' }, tokensUsed);
 
       return this.sixHatsParser.parse(ideas, tokensUsed);
     });
