@@ -6,6 +6,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { JwtGuard } from './guards/JwtToken.guard';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserModule } from 'src/user/user.module';
+import { AppStatsModule } from 'src/appStats/appStats.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { UserModule } from 'src/user/user.module';
       inject: [ConfigService],
     }),
     UserModule,
+    AppStatsModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtGuard],
