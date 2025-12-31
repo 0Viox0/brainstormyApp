@@ -24,11 +24,12 @@ export class ScamperService {
     if (environment === 'dev') return this.getDummyScamperResponse();
 
     return this.retrier.retryTillNoExceptionsAsync(async () => {
-      const promptToExecute = `Используй модель мозгового штурма “SCAMPER”, чтобы сгенерировать идеи на основе этой: ${baseIdea} ${prompt ? `+ ${prompt}` : ''}. Представь результат в формате JSON, где ключ — это буква в нижнем регистре на английском, а значение — идея на русском. ВЕРНИ В ФОРМАТЕ JSON.`;
+      const promptToExecute = `Используй модель мозгового штурма “SCAMPER”, чтобы сгенерировать идеи на основе этой: ${baseIdea} ${prompt ? `+ ${prompt}` : ''}. Представь результат в формате JSON, где ключ — это буква в нижнем регистре на английском (должны быть использованы все буквы из слова 'scamper'), а значение — идея на русском (генерируй значения максимум 20 слов). ВЕРНИ В ФОРМАТЕ JSON.`;
 
       const [ideas, tokensUsed] = await this.aiApi.execPrompt(
         promptToExecute,
         history,
+        300,
       );
 
       return this.sixHatsParser.parse(ideas, tokensUsed);
