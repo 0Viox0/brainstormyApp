@@ -60,8 +60,6 @@ services:
       - HOST_PROC=/rootfs/proc
       - HOST_SYS=/rootfs/sys
       - HOST_ETC=/rootfs/etc
-    expose:
-      - "9273"
     networks:
       - shared-network
     restart: unless-stopped
