@@ -9,13 +9,13 @@ services:
       - ./nginx-new.conf:/etc/nginx/conf.d/default.conf:ro
       - /etc/letsencrypt/live/brainstormy.ru/fullchain.pem:/etc/nginx/ssl/fullchain.pem:ro
       - /etc/letsencrypt/live/brainstormy.ru/privkey.pem:/etc/nginx/ssl/privkey.pem:ro
-      - nginx_logs:/var/log/nginx
+      - ./nginx_logs:/var/log/nginx
     restart: unless-stopped
     networks:
       - shared-network
 
-volumes:
-  nginx_logs:
+# volumes:
+#   nginx_logs:
 
 networks:
   shared-network:
